@@ -1,0 +1,26 @@
+{
+	"name": "karma-webpack-plugin",
+	"version": "1.0.0",
+	"author": "Tobias Koppers @sokra",
+	"description": "Use webpack with karma",
+	"peerDependencies": {
+		"webpack": "1.x",
+		"karma": ">=0.9"
+	},
+	"dependencies": {
+		"webpack-dev-middleware": "1.x",
+		"async": "0.2.x"
+	},
+	"devDependencies": {
+		"karma-mocha": "0.1.x",
+		"coffee-loader": "0.5.x"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://www.opensource.org/licenses/mit-license.php"
+		}
+	],
+	"homepage": "http://github.com/webpack/karma-webpack-plugin",
+	"main": "index.js"
+}
