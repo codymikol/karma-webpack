@@ -1,14 +1,14 @@
 {
-	"name": "karma-webpack-plugin",
+	"name": "karma-webpack",
 	"version": "1.0.0",
 	"author": "Tobias Koppers @sokra",
 	"description": "Use webpack with karma",
 	"peerDependencies": {
 		"webpack": "1.x",
+		"webpack-dev-server": "1.x",
 		"karma": ">=0.9"
 	},
 	"dependencies": {
-		"webpack-dev-middleware": "1.x",
 		"async": "0.2.x"
 	},
 	"devDependencies": {
@@ -21,6 +21,6 @@
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
 	],
-	"homepage": "http://github.com/webpack/karma-webpack-plugin",
+	"homepage": "http://github.com/webpack/karma-webpack",
 	"main": "index.js"
 }
