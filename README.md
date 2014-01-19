@@ -5,7 +5,7 @@
 
 module.exports = function(config) {
 	config.set({
-		// ... normal karam configuration
+		// ... normal karma configuration
 
 		// add webpack as preprocessor
 		preprocessors: {
@@ -27,7 +27,7 @@ module.exports = function(config) {
 		webpackPort: 1234,
 
 		plugins: [
-			require("karam-webpack")
+			require("karma-webpack")
 		}
 
 	});
