@@ -49,7 +49,7 @@ Plugin.prototype.addFile = function(entry) {
 };
 
 Plugin.prototype.make = function(compilation, callback) {
-	async.forEach(this.files, function(file, callback) {
+	async.forEach(this.files.slice(), function(file, callback) {
 		compilation.addEntry("", new SingleEntryDependency(file), path.relative(this.basePath, file).replace(/\\/g, "/"), callback);
 	}.bind(this), callback);
 };
