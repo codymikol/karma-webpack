@@ -69,8 +69,7 @@ function createPreprocesor(/* config.basePath */basePath, webpackPlugin, logger,
 	return function(content, file, done) {
 		webpackPlugin.addFile(file.path);
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
-			if(err) return done("throw new Error(" + JSON.stringify(""+err.stack) + ")");
-			done(content);
+			done(err, content);
 		});
 	};
 }
