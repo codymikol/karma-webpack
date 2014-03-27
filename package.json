@@ -6,14 +6,15 @@
 	"peerDependencies": {
 		"webpack": "1.x",
 		"webpack-dev-server": "1.x",
-		"karma": ">=0.9 <0.12"
+		"karma": ">=0.12 < 1"
 	},
 	"dependencies": {
 		"async": "0.2.x"
 	},
 	"devDependencies": {
 		"karma-mocha": "0.1.x",
-		"coffee-loader": "0.5.x"
+		"karma-chrome-launcher": "0.1.x",
+		"coffee-loader": "0.7.x"
 	},
 	"licenses": [
 		{
