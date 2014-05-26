@@ -28,16 +28,16 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 		compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
 	});
 	compiler.plugin("done", function(stats) {
-		this.excludeRemovedTests(stats);
+		var compilation = stats.compilation;
+		stats = stats.toJson();
 
-		// If karma is already in preprocessing phase, no need to trigger karma run.
-		if(!this.karmaWaitsForPreprocessing) {
+		if(!this.waiting || this.waiting.length === 0) {
 			// If file required in tests is changed, webpack compilation is done silently for karma.
 			// Fix this by emulating test file change.
 			this.notifyKarmaAboutChanges(stats);
 		}
 
-		if(this.waiting) {
+		if(this.waiting && stats.assets.length > 0) {
 			var w = this.waiting;
 			this.waiting = null;
 			w.forEach(function(cb) {
@@ -55,7 +55,7 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 
 Plugin.prototype.notifyKarmaAboutChanges = function(stats) {
 	// Find recently recompiled files.
-	var changedAssets = stats.toJson().assets.filter(function (asset) {
+	var changedAssets = stats.assets.filter(function (asset) {
 		return asset.emitted;
 	}).map(function(asset) {
 		return asset.name;
@@ -79,36 +79,30 @@ Plugin.prototype.notifyKarmaAboutChanges = function(stats) {
 	}.bind(this));
 };
 
-Plugin.prototype.excludeRemovedTests = function(stats) {
-	if(stats.compilation.errors.length === 0) return;
-	stats.compilation.errors.forEach(function(error) {
-		var missingFile = error.error.path;
-		this.files = this.files.filter(function (file) {
-			return missingFile !== file;
-		});
-	}.bind(this))
-};
-
 Plugin.prototype.addFile = function(entry) {
 	if(this.files.indexOf(entry) >= 0) return;
 	this.files.push(entry);
-	if(!this.waiting) this.waiting = [];
-	this.server.invalidate();
 };
 
 Plugin.prototype.changeKarmaFile = function(watchedFile) {
-	// Hack: utimes
-	//
-	// Karma v0.12 will do fs.stat to compare it with watchedFile.mtime.
-	// https://github.com/karma-runner/karma/blob/v0.12.16/lib/file_list.js#L362
-	// Not doing utimes() causes karma to ignore changeFile event.
-	fs.utimesSync(watchedFile.originalPath, new Date(), new Date());
-	this.fileList.changeFile(watchedFile.originalPath);
+	// Add and remove triggers a rebuild for karma
+	this.fileList.removeFile(watchedFile.originalPath);
+	this.fileList.addFile(watchedFile.originalPath);
 };
 
 Plugin.prototype.make = function(compilation, callback) {
 	async.forEach(this.files.slice(), function(file, callback) {
-		compilation.addEntry("", new SingleEntryDependency(file), path.relative(this.basePath, file).replace(/\\/g, "/"), callback);
+		var dep = new SingleEntryDependency(file);
+		compilation.addEntry("", dep, path.relative(this.basePath, file).replace(/\\/g, "/"), function() {
+			// If the module fails because of an File not found error, remove the test file
+			if(dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
+				this.files = this.files.filter(function(f) {
+					return file !== f;
+				});
+				this.server.invalidate();
+			}
+			callback();
+		}.bind(this));
 	}.bind(this), callback);
 };
 
@@ -117,21 +111,32 @@ Plugin.prototype.readFile = function(file, callback) {
 	function doRead() {
 		server.middleware.fileSystem.readFile("/_js/"+file.replace(/\\/g, "/"), callback);
 	}
-	if(!this.waiting) this.waiting = [];
-	this.waiting.push(doRead);
+	if(!this.waiting)
+		doRead();
+	else
+		// Retry to read once a build is finished
+		// do it on process.nextTick to catch changes while building
+		this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, file, callback)));
 }
 
 var sha1 = function(data) {
-  var hash = crypto.createHash('sha1');
-  hash.update(data);
-  return hash.digest('hex');
+	var hash = crypto.createHash('sha1');
+	hash.update(data);
+	return hash.digest('hex');
 };
 
 function createPreprocesor(/* config.basePath */basePath, webpackPlugin, logger, config) {
 	var log = logger.create("preprocessor.webpack");
 	return function(content, file, done) {
 		webpackPlugin.karmaWaitsForPreprocessing = true;
+
+
 		webpackPlugin.addFile(file.path);
+
+		// recompile
+		webpackPlugin.server.invalidate()
+
+		// read blocks until bundle is done
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
 			webpackPlugin.karmaWaitsForPreprocessing = false;
 			// Hack: file.sha
