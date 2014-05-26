@@ -28,6 +28,8 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 		compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
 	});
 	compiler.plugin("done", function(stats) {
+		this.excludeRemovedTests(stats);
+
 		// If karma is already in preprocessing phase, no need to trigger karma run.
 		if(!this.karmaWaitsForPreprocessing) {
 			// If file required in tests is changed, webpack compilation is done silently for karma.
@@ -75,7 +77,17 @@ Plugin.prototype.notifyKarmaAboutChanges = function(stats) {
 			}.bind(this));
 		}.bind(this));
 	}.bind(this));
-}
+};
+
+Plugin.prototype.excludeRemovedTests = function(stats) {
+	if(stats.compilation.errors.length === 0) return;
+	stats.compilation.errors.forEach(function(error) {
+		var missingFile = error.error.path;
+		this.files = this.files.filter(function (file) {
+			return missingFile !== file;
+		});
+	}.bind(this))
+};
 
 Plugin.prototype.addFile = function(entry) {
 	if(this.files.indexOf(entry) >= 0) return;
