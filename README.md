@@ -36,7 +36,7 @@ module.exports = function(config) {
 
 Every test file is compiled with webpack and the resulting bundle is served.
 
-## Lisence
+## License
 
 Copyright 2014 Tobias Koppers
 
