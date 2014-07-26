@@ -28,7 +28,7 @@ module.exports = function(config) {
 
 		plugins: [
 			require("karma-webpack")
-		}
+		]
 
 	});
 };
