@@ -36,6 +36,17 @@ module.exports = function(config) {
 
 Every test file is compiled with webpack and the resulting bundle is served.
 
+## contribute
+
+	npm install -g karma webpack webpack-dev-server
+
+Always be testing!
+
+	npm test || karma start ./example/karma.conf.js
+
+
+
+
 ## License
 
 Copyright 2014 Tobias Koppers

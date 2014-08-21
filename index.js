@@ -121,6 +121,7 @@ Plugin.prototype.readFile = function(file, callback) {
 
 var sha1 = function(data) {
 	var hash = crypto.createHash('sha1');
+	// console.info("SHA1 DATA: " + data);
 	hash.update(data);
 	return hash.digest('hex');
 };
@@ -135,9 +136,16 @@ function createPreprocesor(/* config.basePath */basePath, webpackPlugin, logger,
 
 		// recompile
 		webpackPlugin.server.invalidate()
-
+		log.info("basePath: " + basePath);
+		log.info("file.path: " + file.path);
 		// read blocks until bundle is done
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
+			//log.info("CONTENT BLOCK: " + content);
+			if(!content){
+				log.error('ERROR!!! NO CONTENT to process for hash!');
+				log.error('ERROR!!! err: ' + err);
+				return;
+			}
 			webpackPlugin.karmaWaitsForPreprocessing = false;
 			// Hack: file.sha
 			//
