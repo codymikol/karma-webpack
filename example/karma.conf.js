@@ -13,24 +13,18 @@ module.exports = function(config) {
 
 	// list of files / patterns to load in the browser
 	files: [
-	  'test/*Test.*'
-	],
-
-
-	// list of files to exclude
-	exclude: [
-
+	  'test/index.js'
 	],
 
 
 	// list of preprocessors
 	preprocessors: {
-	  'test/*Test.*': ['webpack']
+	  'test/index.js': ['webpack']
 	},
 	
 	
 	webpack: {
-		cache: true,
+		watch: true,
 		module: {
 			loaders: [
 				{ test: /\.coffee$/, loader: "coffee-loader" }
@@ -88,6 +82,8 @@ module.exports = function(config) {
 	singleRun: false,
 
 
+	// List plugins explicitly, since autoloading karma-webpack
+	// won't work here
 	plugins: [
 		require("karma-mocha"),
 		require("karma-chrome-launcher"),
