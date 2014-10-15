@@ -52,6 +52,7 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
 	server.listen(port, hostname);
 	emitter.on("exit", function (done) {
+		server.middleware.close();
 		server.listeningApp.close();
 		done();
 	});
