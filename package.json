@@ -5,16 +5,16 @@
 	"description": "Use webpack with karma",
 	"peerDependencies": {
 		"webpack": "^1.2.0-beta5",
-		"webpack-dev-server": "1.x",
+		"webpack-dev-server": "^1.0.0",
 		"karma": ">=0.12 < 1"
 	},
 	"dependencies": {
-		"async": "0.2.x"
+		"async": "~0.9.0"
 	},
 	"devDependencies": {
-		"karma-mocha": "0.1.x",
-		"karma-chrome-launcher": "0.1.x",
-		"coffee-loader": "0.7.x"
+		"karma-mocha": "~0.1.9",
+		"karma-chrome-launcher": "~0.1.5",
+		"coffee-loader": "~0.7.2"
 	},
 	"licenses": [
 		{
