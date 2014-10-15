@@ -126,6 +126,17 @@ Configuration for webpack-dev-server and webpack-dev-middleware.
 
 Port used by the webpack-dev-server. Defaults to "karmaConfig.port" + 1.
 
+## contribute
+
+	npm install -g karma webpack webpack-dev-server
+
+Always be testing!
+
+	npm test || karma start ./example/karma.conf.js
+
+
+
+
 ## License
 
 Copyright 2014 Tobias Koppers
