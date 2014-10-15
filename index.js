@@ -6,7 +6,7 @@ var webpackDevServer = require("webpack-dev-server");
 var webpack = require("webpack");
 var SingleEntryDependency = require("webpack/lib/dependencies/SingleEntryDependency");
 
-function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* config.webpackPort */port, /* config.webpack */webpackOptions, /* config.webpackServer */webpackServerOptions, /* config.basePath */basePath, fileList) {
+function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* config.webpackPort */port, /* config.webpack */webpackOptions, /* config.webpackServer */webpackServerOptions, /* config.basePath */basePath, fileList, emitter) {
 	if(!port) port = karmaPort + 1;
 	if(!hostname) hostname = "localhost";
 	if(!webpackOptions) webpackOptions = {};
@@ -51,6 +51,11 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	compiler.plugin("make", this.make.bind(this));
 	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
 	server.listen(port, hostname);
+	emitter.on("exit", function (done) {
+		server.middleware.close();
+		server.listeningApp.close();
+		done();
+	});
 }
 
 Plugin.prototype.notifyKarmaAboutChanges = function(stats) {
