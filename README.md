@@ -13,36 +13,71 @@ npm install --save-dev karma-webpack
 
 module.exports = function(config) {
 	config.set({
-		
+		// ... normal karma configuration
+
+		files: [
+			// all files ending in "_test"
+			'test/*_test.js',
+			'test/**/*_test.js'
+			// each file acts as entry point for the webpack configuration
+		],
+
+		preprocessors: {
+			// add webpack as preprocessor
+			'test/*_test.js': ['webpack'],
+			'test/**/*_test.js': ['webpack']
+		},
+
+		webpack: {
+			// karma watches the test entry points
+			// (you don't need to specify the entry option)
+			// webpack watches dependencies
+
+			// webpack configuration
+		},
+
+		webpackServer: {
+			// webpack-dev-server configuration
+			// webpack-dev-middleware configuration
+			// i. e.
+			noInfo: true
+		},
+
+		// the port used by the webpack-dev-server
+		// defaults to "config.port" + 1
+		webpackPort: 1234,
+
+		plugins: [
+			require("karma-webpack")
+		]
+
+	});
+};
+```
+
+## Alternative usage
+
+This configuration is more performant, but you cannot run single test anymore (only the complete suite).
+
+The above configuration generate a webpack bundle for each test. For many testcases this can result in many big files. The alterative configuration creates a single bundle with all testcases.
+
+``` javascript
 		files: [
 			// only specify one entry point
 			// and require all tests in there
 			'test/test_index.js'
 		],
 
-		// add webpack as preprocessor
 		preprocessors: {
+			// add webpack as preprocessor
 			'test/test_index.js': ['webpack']
 		},
-
-		webpack: {
-			// karma watches test/test_index.js
-			// webpack watches dependencies of test/test_index.js
-			watch: true
-		},
-
-		webpackServer: {
-			noInfo: true
-		}
-
-	});
-};
 ```
 
 ``` javascript
 // test/test_index.js
 
-// require all modules ending in _test from the
+// require all modules ending in "_test" from the
 // current directory and all subdirectories
 var testsContext = require.context(".", true, /_test$/);
 testsContext.keys().forEach(testsContext);
