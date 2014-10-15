@@ -52,7 +52,6 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
 	server.listen(port, hostname);
 	emitter.on("exit", function (done) {
-		server.middleware.close();
 		server.listeningApp.close();
 		done();
 	});
@@ -100,7 +99,7 @@ Plugin.prototype.make = function(compilation, callback) {
 		var dep = new SingleEntryDependency(file);
 		compilation.addEntry("", dep, path.relative(this.basePath, file).replace(/\\/g, "/"), function() {
 			// If the module fails because of an File not found error, remove the test file
-			if(dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
+			if(dep.module && dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
 				this.files = this.files.filter(function(f) {
 					return file !== f;
 				});
