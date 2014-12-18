@@ -160,6 +160,10 @@ function createPreprocesor(/* config.basePath */basePath, webpackPlugin, logger,
 
 		// read blocks until bundle is done
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
+			if (err) {
+				throw err;
+			}
+
 			webpackPlugin.karmaWaitsForPreprocessing = false;
 			// Hack: file.sha
 			//
