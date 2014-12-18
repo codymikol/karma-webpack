@@ -10,7 +10,6 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	if(!port) port = karmaPort + 1;
 	if(!hostname) hostname = "localhost";
 	if(!webpackOptions) webpackOptions = {};
-	if(!webpackOptions.output) webpackOptions.output = {};
 	if(!webpackServerOptions) webpackServerOptions = {};
 
 	this.files = [];
@@ -18,37 +17,55 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	this.waiting = [];
 	this.fileList = fileList;
 
-	webpackOptions.output.path = "/";
-	webpackOptions.output.filename = "_js/[name]";
-	webpackOptions.output.chunkFilename = "_js/[id].chunk.js";
-	webpackOptions.output.publicPath = "http://" + hostname + ":" + port + "/";
+	var applyOptions = Array.isArray(webpackOptions) ? webpackOptions : [webpackOptions];
+	applyOptions.forEach(function(webpackOptions) {
+		if(!webpackOptions.output) webpackOptions.output = {};
+		webpackOptions.output.path = "/";
+		webpackOptions.output.filename = "_js/[name]";
+		webpackOptions.output.chunkFilename = "_js/[id].chunk.js";
+		webpackOptions.output.publicPath = "http://" + hostname + ":" + port + "/";
+	});
 
 	var compiler = webpack(webpackOptions);
-	compiler.plugin("compilation", function(compilation, params) {
-		compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
-	});
-	compiler.plugin("done", function(stats) {
-		var compilation = stats.compilation;
-		stats = stats.toJson();
+	var applyPlugins = compiler.compilers || [compiler];
+	applyPlugins.forEach(function(compiler) {
+		compiler.plugin("compilation", function(compilation, params) {
+			compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
+		});
+		compiler.plugin("done", function(stats) {
+			var compilation = stats.compilation;
+			stats = stats.toJson();
 
-		if(!this.waiting || this.waiting.length === 0) {
-			// If file required in tests is changed, webpack compilation is done silently for karma.
-			// Fix this by emulating test file change.
-			this.notifyKarmaAboutChanges(stats);
-		}
+			if(!this.waiting || this.waiting.length === 0) {
+				// If file required in tests is changed, webpack compilation is done silently for karma.
+				// Fix this by emulating test file change.
+				this.notifyKarmaAboutChanges(stats);
+			}
 
-		if(this.waiting && stats.assets.length > 0) {
-			var w = this.waiting;
-			this.waiting = null;
-			w.forEach(function(cb) {
-				cb();
-			});
-		}
-	}.bind(this));
-	compiler.plugin("invalid", function() {
-		if(!this.waiting) this.waiting = [];
-	}.bind(this));
-	compiler.plugin("make", this.make.bind(this));
+			var complete = true;
+			if (stats.children && stats.children.length) {
+				complete = stats.children.every(function(stats) {
+					return stats.assets.length > 0;
+				});
+			}
+			if (stats.assets) {
+				complete = complete && stats.assets.length > 0;
+			}
+
+			if(this.waiting && complete) {
+				var w = this.waiting;
+				this.waiting = null;
+				w.forEach(function(cb) {
+					cb();
+				});
+			}
+		}.bind(this));
+		compiler.plugin("invalid", function() {
+			if(!this.waiting) this.waiting = [];
+		}.bind(this));
+		compiler.plugin("make", this.make.bind(this));
+	}, this);
+
 	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
 	server.listen(port, hostname);
 	emitter.on("exit", function (done) {

@@ -23,14 +23,14 @@ module.exports = function(config) {
 	},
 	
 	
-	webpack: {
+	webpack: [{
 		watch: true,
 		module: {
 			loaders: [
 				{ test: /\.coffee$/, loader: "coffee-loader" }
 			]
 		}
-	},
+	}],
 
 
 	webpackServer: {
