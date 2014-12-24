@@ -32,39 +32,40 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 		compiler.plugin("compilation", function(compilation, params) {
 			compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
 		});
-		compiler.plugin("done", function(stats) {
-			var compilation = stats.compilation;
-			stats = stats.toJson();
-
-			if(!this.waiting || this.waiting.length === 0) {
-				// If file required in tests is changed, webpack compilation is done silently for karma.
-				// Fix this by emulating test file change.
-				this.notifyKarmaAboutChanges(stats);
-			}
-
-			var complete = true;
-			if (stats.children && stats.children.length) {
-				complete = stats.children.every(function(stats) {
-					return stats.assets.length > 0;
-				});
-			}
-			if (stats.assets) {
-				complete = complete && stats.assets.length > 0;
-			}
-
-			if(this.waiting && complete) {
-				var w = this.waiting;
-				this.waiting = null;
-				w.forEach(function(cb) {
-					cb();
-				});
-			}
-		}.bind(this));
-		compiler.plugin("invalid", function() {
-			if(!this.waiting) this.waiting = [];
-		}.bind(this));
 		compiler.plugin("make", this.make.bind(this));
 	}, this);
+
+	compiler.plugin("done", function(stats) {
+		var compilation = stats.compilation;
+		stats = stats.toJson();
+
+		if(!this.waiting || this.waiting.length === 0) {
+			// If file required in tests is changed, webpack compilation is done silently for karma.
+			// Fix this by emulating test file change.
+			this.notifyKarmaAboutChanges(stats);
+		}
+
+		var complete = true;
+		if (stats.children && stats.children.length) {
+			complete = stats.children.every(function(stats) {
+				return stats.assets.length > 0;
+			});
+		}
+		if (stats.assets) {
+			complete = complete && stats.assets.length > 0;
+		}
+
+		if(this.waiting && complete) {
+			var w = this.waiting;
+			this.waiting = null;
+			w.forEach(function(cb) {
+				cb();
+			});
+		}
+	}.bind(this));
+	compiler.plugin("invalid", function() {
+		if(!this.waiting) this.waiting = [];
+	}.bind(this));
 
 	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
 	server.listen(port, hostname);
