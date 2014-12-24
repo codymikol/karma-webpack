@@ -29,7 +29,7 @@ function Plugin(/* config.port */karmaPort, /* config.hostname */hostname, /* co
 	var compiler = webpack(webpackOptions);
 	var applyPlugins = compiler.compilers || [compiler];
 	applyPlugins.forEach(function(compiler) {
-		compiler.plugin("compilation", function(compilation, params) {
+		compiler.plugin("this-compilation", function(compilation, params) {
 			compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory);
 		});
 		compiler.plugin("make", this.make.bind(this));
