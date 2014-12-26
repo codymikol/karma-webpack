@@ -22,6 +22,8 @@ module.exports = function(config) {
 			// each file acts as entry point for the webpack configuration
 		],
 
+		frameworks: ['webpack'],
+
 		preprocessors: {
 			// add webpack as preprocessor
 			'test/*_test.js': ['webpack'],
