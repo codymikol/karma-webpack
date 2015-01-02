@@ -1,23 +1,31 @@
 var path = require("path");
 var SourceNode = require("source-map").SourceNode;
+var loaderUtils = require("loader-utils");
 
-module.exports = function(content) {
+module.exports = function(content, map) {
 	this.cacheable();
 
-	var callback = this.async();
-	var fileName = path.relative(this.options.context, this.resource);
-	var id = this.options.configName || ("Compiler " + this.options.output.path.replace(/\/_js\/(\d*).*/, "$1"));
+	var id = this.options.name;
+	if(!id) this.callback(null, content, map);
 
-	var sourceNode = new SourceNode(1, 0, fileName, content);
-	sourceNode.setSourceContent(fileName, content);
+	if(map) {
+		var sourceNode = SourceNode.fromSourceWithMap(content, map);
+	} else {
+		var fileName = loaderUtils.getRemainingRequest(this);
+		var sourceNode = new SourceNode(null, null, null);
+		content.split("\n").forEach(function(line, idx) {
+			sourceNode.add(new SourceNode(idx + 1, 0, fileName, line + "\n"));
+		})
+		sourceNode.setSourceContent(fileName, content);
+	}
 
 	var concatSrc = new SourceNode();
 	concatSrc.add([
 		"describe(" + JSON.stringify(id)  + ", function() {\n",
 		sourceNode,
-		"});"
+		"\n});"
 	]);
 
 	var result = concatSrc.toStringWithSourceMap();
-	callback(undefined, result.code, result.map.toString());
+	this.callback(undefined, result.code, result.map.toString());
 };

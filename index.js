@@ -43,13 +43,15 @@ function Plugin(
 
 		// When using an array, even of length 1, we want to include the index value for the build.
 		// This is due to the way that the dev server exposes commonPath for build output.
-		index = includeIndex ? index + "/" : "";
+		var indexPath = includeIndex ? index + "/" : "";
 
 		// Must have the common _js prefix on path here to avoid
 		// https://github.com/webpack/webpack/issues/645
-		webpackOptions.output.path = "/_js/" + index;
-		webpackOptions.output.publicPath = "http://" + hostname + ":" + port + "/" + index;
+		webpackOptions.output.path = "/_js/" + indexPath;
+		webpackOptions.output.publicPath = "http://" + hostname + ":" + port + "/" + indexPath;
 		webpackOptions.output.filename = "[name]";
+		if(includeIndex)
+			webpackOptions.output.jsonpFunction = "webpackJsonp" + index;
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
 
 		// Create a test reference for this particular compiler option set.
@@ -77,40 +79,28 @@ function Plugin(
 	}, this);
 
 	compiler.plugin("done", function(stats) {
+		var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats];
+		var assets = [];
+		applyStats.forEach(function(stats) {
+			var compilation = stats.compilation;
+			stats = stats.toJson();
+
+			assets.push.apply(assets, stats.assets.map(function(asset) {
+				return {
+					url: compilation.options.output.publicPath + asset.name,
+					name: asset.name,
+					emitted: asset.emitted
+				};
+			}));
+		});
+
 		if(!this.waiting || this.waiting.length === 0) {
-			var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats],
-					assets = [];
-			applyStats.forEach(function(stats) {
-				var compilation = stats.compilation;
-				stats = stats.toJson();
-
-				assets.push.apply(assets, stats.assets.map(function(asset) {
-					return {
-						url: compilation.options.output.publicPath + asset.name,
-						name: asset.name,
-						emitted: asset.emitted
-					};
-				}));
-			});
-
 			// If file required in tests is changed, webpack compilation is done silently for karma.
 			// Fix this by emulating test file change.
 			this.notifyKarmaAboutChanges(assets);
 		}
 
-		stats = stats.toJson();
-
-		var complete = true;
-		if (stats.children && stats.children.length) {
-			complete = stats.children.every(function(stats) {
-				return stats.assets.length > 0;
-			});
-		}
-		if (stats.assets) {
-			complete = complete && stats.assets.length > 0;
-		}
-
-		if(this.waiting && complete) {
+		if(this.waiting && assets.length > 0) {
 			var w = this.waiting;
 			this.waiting = null;
 			w.forEach(function(cb) {
