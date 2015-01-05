@@ -5,13 +5,13 @@
 	"description": "Use webpack with karma",
 	"peerDependencies": {
 		"webpack": "^1.4.0",
-		"webpack-dev-server": "^1.0.0",
 		"karma": ">=0.12 < 1"
 	},
 	"dependencies": {
 		"async": "~0.9.0",
+		"loader-utils": "^0.2.5",
 		"source-map": "^0.1.41",
-		"loader-utils": "^0.2.5"
+		"webpack-dev-middleware": "^1.0.11"
 	},
 	"devDependencies": {
 		"karma-mocha": "~0.1.9",
