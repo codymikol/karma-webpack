@@ -160,7 +160,7 @@ function createPreprocesor(/* config.basePath */basePath, webpackPlugin, fileLis
 				throw err;
 			}
 
-			done(err, content);
+			done(err, content && content.toString());
 		});
 	};
 }
