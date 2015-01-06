@@ -24,7 +24,8 @@ module.exports = function(config) {
 
 	// list of files / patterns to load in the browser
 	files: [
-	  'test/index.js'
+	  'test/index.js',
+	  'test/separate.js',
 	],
 
 
@@ -34,16 +35,23 @@ module.exports = function(config) {
 	},
 
 
-	webpack: {
-		resolve: {
-			extensions: ["", ".js", ".coffee"]
-		},
-		module: {
-			loaders: [
-				{ test: /\.coffee$/, loader: "coffee-loader" }
-			]
-		}
-	},
+	webpack: Object.keys(configSettings).map(function(name) {
+		var config = {
+			name: name,
+			resolve: {
+				extensions: ["", ".js", ".coffee"]
+			},
+			module: {
+				loaders: [
+					{ test: /\.coffee$/, loader: "coffee-loader" }
+				]
+			}
+		};
+		Object.keys(configSettings[name]).forEach(function(key) {
+			config[key] = configSettings[name][key]
+		});
+		return config;
+	}),
 
 
 	webpackMiddleware: {
@@ -92,7 +100,7 @@ module.exports = function(config) {
 
 	// Continuous Integration mode
 	// if true, it capture browsers, run tests and exit
-	singleRun: false,
+	singleRun: true,
 
 
 	// List plugins explicitly, since autoloading karma-webpack

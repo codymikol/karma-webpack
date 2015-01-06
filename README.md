@@ -22,8 +22,6 @@ module.exports = function(config) {
 			// each file acts as entry point for the webpack configuration
 		],
 
-		frameworks: ['webpack'],
-
 		preprocessors: {
 			// add webpack as preprocessor
 			'test/*_test.js': ['webpack'],
@@ -38,16 +36,11 @@ module.exports = function(config) {
 			// webpack configuration
 		},
 
-		webpackServer: {
-			// webpack-dev-server configuration
+		webpackMiddleware: {
 			// webpack-dev-middleware configuration
 			// i. e.
 			noInfo: true
 		},
-
-		// the port used by the webpack-dev-server
-		// defaults to "config.port" + 1
-		webpackPort: 1234,
 
 		plugins: [
 			require("karma-webpack")
@@ -120,13 +113,9 @@ This is the full list of options you can specify in your Karma config.
 
 Webpack configuration.
 
-### webpackServer
+### webpackMiddleware
 
-Configuration for webpack-dev-server and webpack-dev-middleware.
-
-### webpackPort
-
-Port used by the webpack-dev-server. Defaults to "karmaConfig.port" + 1.
+Configuration for webpack-dev-middleware.
 
 ## License
 

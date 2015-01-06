@@ -1,39 +1,25 @@
 var path = require("path");
 var async = require("async");
-var webpackDevServer = require("webpack-dev-server");
+var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpack = require("webpack");
 var SingleEntryDependency = require("webpack/lib/dependencies/SingleEntryDependency");
-var Pattern = require("karma/lib/config").Pattern;
-
 
 function Plugin(
-			/* config.port */karmaPort,
-			/* config.hostname */hostname, /* config.webpackPort */port,
-			/* config.webpack */webpackOptions, /* config.webpackServer */webpackServerOptions,
+			/* config.webpack */webpackOptions,
+			/* config.webpackServer */webpackServerOptions,
+			/* config.webpackMiddleware */webpackMiddlewareOptions,
 			/* config.basePath */basePath,
 			/* config.files */files,
 			/* config.frameworks */frameworks,
+			fileList,
+			customFileHandlers,
 			emitter) {
-	if(!port) port = karmaPort + 1;
-	if(!hostname) hostname = "localhost";
 	if(!webpackOptions) webpackOptions = {};
 
-	if(!webpackServerOptions) webpackServerOptions = {};
+	if(!webpackMiddlewareOptions) webpackMiddlewareOptions = webpackServerOptions || {};
 
 	var applyOptions = Array.isArray(webpackOptions) ? webpackOptions : [webpackOptions];
 	var includeIndex = applyOptions.length > 1;
-
-	// Mark all explicitly listed files as not being included. Rather than utilizing the karma
-	// server, we will utilize the webpack dev server to serve all content for the test. The
-	// configed paths are left in place for change tracking and webpack entry point setup.
-	var baseWithSlash = basePath.replace(/[^\/]$/, '$&/');
-	var testFiles = files.filter(function(file) {
-		if (file.pattern.indexOf(baseWithSlash) === 0) {
-			file.included = false;
-			file.served = false;
-			return true;
-		}
-	});
 
 	applyOptions.forEach(function(webpackOptions, index) {
 		// The webpack tier owns the watch behavior so we want to force it in the config
@@ -45,29 +31,22 @@ function Plugin(
 		// This is due to the way that the dev server exposes commonPath for build output.
 		var indexPath = includeIndex ? index + "/" : "";
 
-		// Must have the common _js prefix on path here to avoid
+		// Must have the common _karma_webpack_ prefix on path here to avoid
 		// https://github.com/webpack/webpack/issues/645
-		webpackOptions.output.path = "/_js/" + indexPath;
-		webpackOptions.output.publicPath = "http://" + hostname + ":" + port + "/" + indexPath;
+		webpackOptions.output.path = "/_karma_webpack_/" + indexPath;
+		webpackOptions.output.publicPath = "/_karma_webpack_/" + indexPath + "/";
 		webpackOptions.output.filename = "[name]";
 		if(includeIndex)
 			webpackOptions.output.jsonpFunction = "webpackJsonp" + index;
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
-
-		// Create a test reference for this particular compiler option set.
-		testFiles.forEach(function(file) {
-			var pattern = webpackOptions.output.publicPath + file.pattern.substring(baseWithSlash.length);
-
-			files.push(new Pattern(pattern, false, true, false));
-		});
 	});
 
+	this.fileList = fileList;
 	this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
-	this.includeIndex = includeIndex;
+	this.optionsCount = applyOptions.length;
 	this.files = [];
 	this.basePath = basePath;
 	this.waiting = [];
-
 
 	var compiler = webpack(webpackOptions);
 	var applyPlugins = compiler.compilers || [compiler];
@@ -81,26 +60,20 @@ function Plugin(
 	compiler.plugin("done", function(stats) {
 		var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats];
 		var assets = [];
+		var noAssets = false;
 		applyStats.forEach(function(stats) {
-			var compilation = stats.compilation;
 			stats = stats.toJson();
 
-			assets.push.apply(assets, stats.assets.map(function(asset) {
-				return {
-					url: compilation.options.output.publicPath + asset.name,
-					name: asset.name,
-					emitted: asset.emitted
-				};
-			}));
+			assets.push.apply(assets, stats.assets);
+			if(stats.assets.length === 0)
+				noAssets = true;
 		});
 
 		if(!this.waiting || this.waiting.length === 0) {
-			// If file required in tests is changed, webpack compilation is done silently for karma.
-			// Fix this by emulating test file change.
-			this.notifyKarmaAboutChanges(assets);
+			this.notifyKarmaAboutChanges();
 		}
 
-		if(this.waiting && assets.length > 0) {
+		if(this.waiting && !noAssets) {
 			var w = this.waiting;
 			this.waiting = null;
 			w.forEach(function(cb) {
@@ -112,39 +85,28 @@ function Plugin(
 		if(!this.waiting) this.waiting = [];
 	}.bind(this));
 
-	var server = this.server = new webpackDevServer(compiler, webpackServerOptions);
-	server.listen(port, hostname);
+	webpackMiddlewareOptions.publicPath = "/_karma_webpack_/";
+	var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions);
+
+	customFileHandlers.push({
+		urlRegex: /^\/_karma_webpack_\/.*/,
+		handler: function(req, res) {
+			middleware(req, res, function() {
+				res.statusCode = 404;
+				res.end('Not found');
+			});
+		}
+	});
+
 	emitter.on("exit", function (done) {
-		server.middleware.close();
-		server.listeningApp.close();
+		middleware.close();
 		done();
 	});
 }
 
-Plugin.prototype.notifyKarmaAboutChanges = function(assets) {
-	// Find recently recompiled files.
-	var changedAssets = assets.filter(function (asset) {
-		return asset.emitted;
-	}).map(function(asset) {
-		return asset.name;
-	});
-
-	// Pick files watched by karma among them.
-	var changedTests = this.files.filter(function (file) {
-		var assetName = path.relative(this.basePath, file).replace(/\\/g, "/");
-		return changedAssets.indexOf(assetName) !== -1;
-	}.bind(this));
-
-	// Make karma to run preprocessors on changed tests.
-	changedTests.forEach(function(changedTestFile) {
-		this.fileList.buckets.forEach(function(bucket) {
-			bucket.forEach(function(watchedFile) {
-				if (watchedFile.originalPath === changedTestFile) {
-					this.changeKarmaFile(watchedFile);
-				}
-			}.bind(this));
-		}.bind(this));
-	}.bind(this));
+Plugin.prototype.notifyKarmaAboutChanges = function() {
+	// Force a rebuild
+	this.fileList.refresh();
 };
 
 Plugin.prototype.addFile = function(entry) {
@@ -153,15 +115,9 @@ Plugin.prototype.addFile = function(entry) {
 	return true;
 };
 
-Plugin.prototype.changeKarmaFile = function(watchedFile) {
-	// Add and remove triggers a rebuild for karma
-	this.fileList.removeFile(watchedFile.originalPath);
-	this.fileList.addFile(watchedFile.originalPath);
-};
-
 Plugin.prototype.make = function(compilation, callback) {
 	async.forEach(this.files.slice(), function(file, callback) {
-		var entry = "./" + path.relative(this.basePath, file);
+		var entry = file;
 		if (this.wrapMocha) {
 			entry = require.resolve("./mocha-env-loader") + "!" + entry;
 		}
@@ -173,7 +129,7 @@ Plugin.prototype.make = function(compilation, callback) {
 				this.files = this.files.filter(function(f) {
 					return file !== f;
 				});
-				this.server.invalidate();
+				this.middleware.invalidate();
 			}
 			callback();
 		}.bind(this));
@@ -181,11 +137,25 @@ Plugin.prototype.make = function(compilation, callback) {
 };
 
 Plugin.prototype.readFile = function(file, callback) {
-	var server = this.server;
-	var includeIndex = this.includeIndex;
+	var middleware = this.middleware;
+	var optionsCount = this.optionsCount;
 
 	function doRead() {
-		server.middleware.fileSystem.readFile("/_js/" + (includeIndex ? "0/" : "") + file.replace(/\\/g, "/"), callback);
+		if(optionsCount > 1) {
+			async.times(optionsCount, function(idx, callback) {
+				middleware.fileSystem.readFile("/_karma_webpack_/" + idx + "/" + file.replace(/\\/g, "/"), callback);
+			}, function(err, contents) {
+				if(err) return callback(err);
+				contents = contents.reduce(function(arr, x) {
+					if(!arr) return [x];
+					arr.push(new Buffer("\n"), x);
+					return arr;
+				}, null);
+				callback(null, Buffer.concat(contents));
+			});
+		} else {
+			middleware.fileSystem.readFile("/_karma_webpack_/" + file.replace(/\\/g, "/"), callback);
+		}
 	}
 	if(!this.waiting)
 		doRead();
@@ -195,42 +165,26 @@ Plugin.prototype.readFile = function(file, callback) {
 		this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, file, callback)));
 };
 
-// This has to be a separate step from the preprocessor instantiation as we need to modify
-// the files array prior to the fileList instance being constructed and the Plugin
-// having a dependency on fileList precludes setup there.
-function createFramework(webpackPlugin) {
-	// This just instantiates the plugin instance. No direct references necessary
-}
-
-function createPreprocesor(/* config.basePath */basePath, webpackPlugin, fileList) {
-	webpackPlugin.fileList = fileList;
-
+function createPreprocesor(/* config.basePath */basePath, webpackPlugin) {
 	return function(content, file, done) {
 
-		if (!webpackPlugin.addFile(file.path)) {
-			// We are already aware of this particular file. No need to rebuild since the webpack
-			// server has already rebuilt this file (we assume).
-			setImmediate(function() {
-				done(undefined, content);
-			});
-			return;
+		if (webpackPlugin.addFile(file.path)) {
+			// recompile as we have an asset that we have not seen before
+			webpackPlugin.middleware.invalidate();
 		}
-
-		// recompile
-		webpackPlugin.server.invalidate();
 
 		// read blocks until bundle is done
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
 			if (err) {
 				throw err;
 			}
-			done(err, content);
+
+			done(err, content && content.toString());
 		});
 	};
 }
 
 module.exports = {
 	"webpackPlugin": ["type", Plugin],
-	"framework:webpack": ["factory", createFramework],
 	"preprocessor:webpack": ["factory", createPreprocesor]
 };
