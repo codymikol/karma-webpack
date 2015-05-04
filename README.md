@@ -119,6 +119,6 @@ Configuration for webpack-dev-middleware.
 
 ## License
 
-Copyright 2014 Tobias Koppers
+Copyright 2014-2015 Tobias Koppers
 
 [MIT](http://www.opensource.org/licenses/mit-license.php)
