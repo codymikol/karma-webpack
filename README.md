@@ -36,10 +36,12 @@ module.exports = function(config) {
 			// webpack configuration
 		},
 
-		webpackMiddleware: {
-			// webpack-dev-middleware configuration
+		webpackServer: {
+			// webpack-dev-server configuration
 			// i. e.
-			noInfo: true
+			noInfo: true,
+			// or
+			quiet: true
 		},
 
 		plugins: [
