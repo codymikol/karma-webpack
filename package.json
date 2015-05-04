@@ -1,34 +1,35 @@
 {
-	"name": "karma-webpack",
-	"version": "1.5.0",
-	"author": "Tobias Koppers @sokra",
-	"description": "Use webpack with karma",
-	"peerDependencies": {
-		"webpack": "^1.4.0",
-		"karma": ">=0.12 < 1"
-	},
-	"dependencies": {
-		"async": "~0.9.0",
-		"loader-utils": "^0.2.5",
-		"source-map": "^0.1.41",
-		"webpack-dev-middleware": "^1.0.11"
-	},
-	"devDependencies": {
-		"karma-mocha": "~0.1.9",
-		"karma-chrome-launcher": "~0.1.5",
-		"karma-spec-reporter": "~0.0.16",
-		"coffee-loader": "~0.7.2"
-	},
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "http://www.opensource.org/licenses/mit-license.php"
-		}
-	],
-	"homepage": "http://github.com/webpack/karma-webpack",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/webpack/karma-webpack.git"
-	},
-	"main": "index.js"
+  "name": "karma-webpack",
+  "version": "1.5.0",
+  "author": "Tobias Koppers @sokra",
+  "description": "Use webpack with karma",
+  "peerDependencies": {
+    "webpack": "^1.4.0",
+    "karma": ">=0.12 < 1"
+  },
+  "dependencies": {
+    "async": "~0.9.0",
+    "loader-utils": "^0.2.5",
+    "lodash": "^3.8.0",
+    "source-map": "^0.1.41",
+    "webpack-dev-middleware": "^1.0.11"
+  },
+  "devDependencies": {
+    "karma-mocha": "~0.1.9",
+    "karma-chrome-launcher": "~0.1.5",
+    "karma-spec-reporter": "~0.0.16",
+    "coffee-loader": "~0.7.2"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "homepage": "http://github.com/webpack/karma-webpack",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/karma-webpack.git"
+  },
+  "main": "index.js"
 }

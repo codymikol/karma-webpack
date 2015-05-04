@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var path = require("path");
 var async = require("async");
 var webpackDevMiddleware = require("webpack-dev-middleware");
@@ -14,9 +15,8 @@ function Plugin(
 			fileList,
 			customFileHandlers,
 			emitter) {
-	if(!webpackOptions) webpackOptions = {};
-
-	if(!webpackMiddlewareOptions) webpackMiddlewareOptions = webpackServerOptions || {};
+	webpackOptions = _.clone(webpackOptions) || {};
+	webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
 	var applyOptions = Array.isArray(webpackOptions) ? webpackOptions : [webpackOptions];
 	var includeIndex = applyOptions.length > 1;
