@@ -1,6 +1,6 @@
 {
   "name": "karma-webpack",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Tobias Koppers @sokra",
   "description": "Use webpack with karma",
   "peerDependencies": {
