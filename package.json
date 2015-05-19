@@ -20,12 +20,7 @@
     "karma-spec-reporter": "~0.0.16",
     "coffee-loader": "~0.7.2"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ],
+  "license": "MIT",
   "homepage": "http://github.com/webpack/karma-webpack",
   "repository": {
     "type": "git",
