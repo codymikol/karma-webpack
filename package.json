@@ -12,7 +12,7 @@
     "loader-utils": "^0.2.5",
     "lodash": "^3.8.0",
     "source-map": "^0.1.41",
-    "webpack-dev-middleware": "^1.0.11"
+    "webpack-dev-middleware": "^1.2.0"
   },
   "devDependencies": {
     "karma-mocha": "~0.1.9",
