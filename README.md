@@ -117,6 +117,37 @@ Webpack configuration.
 
 Configuration for webpack-dev-middleware.
 
+### webpackLogging
+
+Override the default webpack-middleware log.  You can set this to one of the following:
+
+* **String:** Convenience presets; one of `none`, `errors-only`, `minimal`, `normal`, `verbose`.  
+	> _Warning: `none` will completely silence any webpack output, including any possible errors._
+	
+	```
+	webpackLogging: 'normal'
+	```
+	
+* **Config object:** An object that will be passed on to `stats.toString()`.  See [here](https://github.com/webpack/webpack/blob/master/lib/Stats.js#L26-L40) for all possible options.
+	
+	```
+	webpackLogging: {
+		colors: true,
+		chunkModules: false
+	}
+	```
+
+* **Function:** Your own logging function
+	```
+	webpackLogging: function(stats, files) {
+		// your code
+		options = { colors: true }
+		console.log(stats.toString(options));
+	}
+	```
+* **Boolean:** `true` is alias of `normal`, `false` is alias of `none`
+* **Null:** Equivalent of not setting the `webpackLogging` key, uses the default webpack-middleware logging.
+
 ## License
 
 Copyright 2014-2015 Tobias Koppers
