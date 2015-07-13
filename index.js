@@ -124,6 +124,10 @@ Plugin.prototype.make = function(compilation, callback) {
 
 		var dep = new SingleEntryDependency(entry);
 		compilation.addEntry("", dep, path.relative(this.basePath, file).replace(/\\/g, "/"), function() {
+			// If the module fails because of a compilation error
+			if(dep.module && dep.module.error){
+				throw dep.module.error;
+			}
 			// If the module fails because of an File not found error, remove the test file
 			if(dep.module && dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
 				this.files = this.files.filter(function(f) {
