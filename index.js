@@ -12,7 +12,6 @@ function Plugin(
 			/* config.basePath */basePath,
 			/* config.files */files,
 			/* config.frameworks */frameworks,
-			fileList,
 			customFileHandlers,
 			emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
@@ -41,7 +40,6 @@ function Plugin(
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
 	});
 
-	this.fileList = fileList;
 	this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
 	this.optionsCount = applyOptions.length;
 	this.files = [];
@@ -70,7 +68,7 @@ function Plugin(
 		});
 
 		if(!this.waiting || this.waiting.length === 0) {
-			this.notifyKarmaAboutChanges();
+			emitter.refreshFiles();
 		}
 
 		if(this.waiting && !noAssets) {
@@ -103,11 +101,6 @@ function Plugin(
 		done();
 	});
 }
-
-Plugin.prototype.notifyKarmaAboutChanges = function() {
-	// Force a rebuild
-	this.fileList.refresh();
-};
 
 Plugin.prototype.addFile = function(entry) {
 	if(this.files.indexOf(entry) >= 0) return;
