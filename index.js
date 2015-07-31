@@ -156,8 +156,18 @@ Plugin.prototype.readFile = function(file, callback) {
 			middleware.fileSystem.readFile("/_karma_webpack_/" + file.replace(/\\/g, "/"), callback);
 		}
 	}
-	if(!this.waiting)
-		doRead();
+	if (!this.waiting) {
+		try {
+			doRead();
+		} catch (e) {
+			// If this is an error from MemoryFileSystem's `readFileSync` method, wait for the next tick.
+			if (e.message.substring(0, 20) === "Path doesn't exist '") {
+				this.waiting = [process.nextTick.bind(process, this.readFile.bind(this, file, callback))];
+			} else {
+				throw e;
+			}
+		}
+	}
 	else
 		// Retry to read once a build is finished
 		// do it on process.nextTick to catch changes while building
