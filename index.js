@@ -105,7 +105,9 @@ function Plugin(
 
 Plugin.prototype.notifyKarmaAboutChanges = function() {
 	// Force a rebuild
-	this.emitter.refreshFiles();
+	if (this.emitter.refreshFiles) {
+	    this.emitter.refreshFiles();
+	}
 };
 
 Plugin.prototype.addFile = function(entry) {
