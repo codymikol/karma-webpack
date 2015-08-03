@@ -72,43 +72,17 @@ function Plugin(
 		if(webpackLogging) {
 			//Disable webpack-middleware's default logging to use custom one
 			webpackMiddlewareOptions.quiet = true;
+			var webpackLoggingOptions = webpackLogging;
 
 			if(_.isFunction(webpackLogging)) {
 				webpackLogging(stats, this.files);
-			} else {
-				var webpackLoggingOptions = {};
-				if(webpackLogging === true) webpackLogging = 'normal';
-				else if(webpackLogging === false) webpackLogging = 'none';
-
-				if(_.isString(webpackLogging)) {
-					var wo = webpackLogging.toLowerCase();
-					if(wo === 'none') {
-						webpackLoggingOptions = null;
-					} else {
-						webpackLoggingOptions = {
-							//Available options: https://github.com/webpack/webpack/blob/master/lib/Stats.js#L26-L40
-							assets: wo === 'verbose',
-							version: wo === 'verbose',
-							timings: wo !== 'errors-only' && wo !== 'minimal',
-							hash: wo !== 'errors-only' && wo !== 'minimal',
-							chunks: wo !== 'errors-only',
-							chunkModules: wo === 'verbose',
-							errorDetails: wo !== 'errors-only' && wo !== 'minimal',
-						  reasons: wo === 'verbose',
-							colors: true
-						};
-					}
-				} else if(_.isPlainObject(webpackLogging)) {
-					webpackLoggingOptions = webpackLogging;
-				}
-				if(webpackLoggingOptions !== null) {
-					var chalk = require("chalk"),
-							stringStats = stats.toString(webpackLoggingOptions);
-					if(stringStats.trim().length > 0) {
-						console.log(chalk.cyan("Karma-Webpack bundle: ") + "\n", 
-						//"Files: ", chalk.bold(this.files.join(', ')), "\n",
-						stringStats, "\n");
-					}
+			} else if(webpackLoggingOptions) {
+				var chalk = require("chalk"),
+						stringStats = stats.toString(webpackLoggingOptions);
+				if(stringStats.trim().length > 0) {
+					console.log(chalk.cyan("Karma-Webpack bundle: ") + "\n", 
+					//"Files: ", chalk.bold(this.files.join(', ')), "\n",
+					stringStats, "\n");
 				}
 			}
 		}
