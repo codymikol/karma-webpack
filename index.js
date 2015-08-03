@@ -69,6 +69,7 @@ function Plugin(
 				noAssets = true;
 		});
 
+		webpackLogging = (typeof webpackLogging === "undefined" ? "normal" : webpackLogging);
 		if(webpackLogging) {
 			//Disable webpack-middleware's default logging to use custom one
 			webpackMiddlewareOptions.quiet = true;
