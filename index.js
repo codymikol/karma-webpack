@@ -13,7 +13,6 @@ function Plugin(
 			/* config.files */files,
 			/* config.frameworks */frameworks,
 			/* config.webpackLogging */webpackLogging,
-			fileList,
 			customFileHandlers,
 			emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
@@ -42,7 +41,7 @@ function Plugin(
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
 	});
 
-	this.fileList = fileList;
+	this.emitter = emitter;
 	this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
 	this.optionsCount = applyOptions.length;
 	this.files = [];
@@ -151,7 +150,7 @@ function Plugin(
 
 Plugin.prototype.notifyKarmaAboutChanges = function() {
 	// Force a rebuild
-	this.fileList.refresh();
+	this.emitter.refreshFiles();
 };
 
 Plugin.prototype.addFile = function(entry) {
