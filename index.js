@@ -70,13 +70,14 @@ function Plugin(
 		});
 
 		webpackLogging = (typeof webpackLogging === "undefined" ? "normal" : webpackLogging);
-		if(webpackLogging) {
+		if(webpackLogging !== null) {
 			//Disable webpack-middleware's default logging to use custom one
 			webpackMiddlewareOptions.quiet = true;
 			
 			if(_.isFunction(webpackLogging)) {
 				webpackLogging(stats, this.files);
 			} else if(webpackLogging) {
+				if(webpackLogging === true) webpackLogging = "normal";
 				var chalk = require("chalk"),
 				    stringStats = stats.toString(webpackLogging);
 				if(stringStats.trim().length > 0) {
