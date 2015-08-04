@@ -119,7 +119,7 @@ Configuration for webpack-dev-middleware.
 
 ### webpackLogging
 
-Override the default webpack-middleware log ("normal" by default).  You can set this to one of the following:
+Configure the webpack stats log ("normal" by default).  You can set this to one of the following:
 
 * **String:** Convenience presets; one of `none`, `errors-only`, `minimal`, `normal`, `verbose`.  
 	> _Warning: `none` will completely silence any webpack output, including any possible errors._
