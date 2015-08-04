@@ -73,13 +73,12 @@ function Plugin(
 		if(webpackLogging) {
 			//Disable webpack-middleware's default logging to use custom one
 			webpackMiddlewareOptions.quiet = true;
-			var webpackLoggingOptions = webpackLogging;
-
+			
 			if(_.isFunction(webpackLogging)) {
 				webpackLogging(stats, this.files);
-			} else if(webpackLoggingOptions) {
+			} else if(webpackLogging) {
 				var chalk = require("chalk"),
-						stringStats = stats.toString(webpackLoggingOptions);
+				    stringStats = stats.toString(webpackLogging);
 				if(stringStats.trim().length > 0) {
 					console.log(chalk.cyan("Karma-Webpack bundle: ") + "\n", 
 					//"Files: ", chalk.bold(this.files.join(', ')), "\n",
