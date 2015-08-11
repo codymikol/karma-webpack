@@ -82,7 +82,20 @@ Every test file is required using the [require.context](http://webpack.github.io
 
 ## Source Maps
 
-You can use the `karma-sourcemap-loader` to get the source maps generated for your test bundle.
+### File (Faster)
+
+File source maps are faster and work out of the box. Use: 
+
+``` javascript
+webpack: {
+  // ...
+	devtool: 'cheap-module-source-map'
+}
+```
+
+### Inline
+
+Or, if you want inline source maps, you can use the `karma-sourcemap-loader`:
 
 ```
 npm install --save-dev karma-sourcemap-loader
