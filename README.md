@@ -40,12 +40,7 @@ module.exports = function(config) {
 			// webpack-dev-middleware configuration
 			// i. e.
 			noInfo: true
-		},
-
-		plugins: [
-			require("karma-webpack")
-		]
-
+		}
 	});
 };
 ```
