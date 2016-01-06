@@ -13,7 +13,8 @@ function Plugin(
 			/* config.files */files,
 			/* config.frameworks */frameworks,
 			customFileHandlers,
-			emitter) {
+                        emitter,
+                        logger) {
 	webpackOptions = _.clone(webpackOptions) || {};
 	webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
@@ -40,6 +41,7 @@ function Plugin(
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
 	});
 
+        this.log = logger.create('plugin.webpack');
 	this.emitter = emitter;
 	this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
 	this.optionsCount = applyOptions.length;
@@ -123,8 +125,11 @@ Plugin.prototype.make = function(compilation, callback) {
 
 		var dep = new SingleEntryDependency(entry);
 		compilation.addEntry("", dep, path.relative(this.basePath, file).replace(/\\/g, "/"), function() {
+		        if(dep.module && dep.module.error && dep.module.error.error && dep.module.error.error.stack) {
+                                this.log.warn(dep.module.error.error.stack);
+                        }
 			// If the module fails because of an File not found error, remove the test file
-			if(dep.module && dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
+		        if(dep.module && dep.module.error && dep.module.error.error && dep.module.error.error.code === "ENOENT") {
 				this.files = this.files.filter(function(f) {
 					return file !== f;
 				});
