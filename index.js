@@ -13,8 +13,8 @@ function Plugin(
 			/* config.files */files,
 			/* config.frameworks */frameworks,
 			customFileHandlers,
-                        emitter,
-                        logger) {
+			emitter,
+			logger) {
 	webpackOptions = _.clone(webpackOptions) || {};
 	webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
@@ -41,7 +41,7 @@ function Plugin(
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
 	});
 
-        this.log = logger.create('plugin.webpack');
+	this.log = logger.create('plugin.webpack');
 	this.emitter = emitter;
 	this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
 	this.optionsCount = applyOptions.length;
