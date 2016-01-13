@@ -48,7 +48,7 @@ module.exports = function(config) {
     files: [
       // all files ending in "_test"
       {pattern: 'test/*_test.js', watched: false},
-      {pattern: 'test/**/*_test.js', watched: false},
+      {pattern: 'test/**/*_test.js', watched: false}
       // each file acts as entry point for the webpack configuration
     ],
 
