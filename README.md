@@ -39,7 +39,7 @@ module.exports = function(config) {
 		webpackMiddleware: {
 			// webpack-dev-middleware configuration
 			// i. e.
-			noInfo: true
+			stats: 'errors-only'
 		},
 
 		plugins: [
