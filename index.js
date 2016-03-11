@@ -29,15 +29,16 @@ function Plugin(
 		// When using an array, even of length 1, we want to include the index value for the build.
 		// This is due to the way that the dev server exposes commonPath for build output.
 		var indexPath = includeIndex ? index + "/" : "";
+		var publicPath = indexPath !== "" ? indexPath + '/' : "";
 
 		// Must have the common _karma_webpack_ prefix on path here to avoid
 		// https://github.com/webpack/webpack/issues/645
 		webpackOptions.output.path = "/_karma_webpack_/" + indexPath;
-		webpackOptions.output.publicPath = "/_karma_webpack_/" + indexPath + "/";
+		webpackOptions.output.publicPath = "/_karma_webpack_/" + publicPath;
 		webpackOptions.output.filename = "[name]";
 		if(includeIndex)
 			webpackOptions.output.jsonpFunction = "webpackJsonp" + index;
-		webpackOptions.output.chunkFilename = "[id].chunk.js";
+		webpackOptions.output.chunkFilename = "[id].bundle.js";
 	});
 
 	this.emitter = emitter;
