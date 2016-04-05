@@ -3,20 +3,17 @@
   "version": "1.7.0",
   "author": "Tobias Koppers @sokra",
   "description": "Use webpack with karma",
-  "peerDependencies": {
-    "webpack": "^1.4.0"
-  },
   "dependencies": {
-    "async": "~0.9.0",
+    "async": "~2.0.0-rc.2",
     "loader-utils": "^0.2.5",
-    "lodash": "^3.8.0",
-    "source-map": "^0.1.41",
+    "lodash": "^4.8.2",
+    "source-map": "^0.5.3",
     "webpack-dev-middleware": "^1.0.11"
   },
   "devDependencies": {
     "karma": ">=0.13.2 < 1",
-    "karma-mocha": "~0.1.9",
-    "karma-chrome-launcher": "~0.1.5",
+    "karma-mocha": "~0.2.2",
+    "karma-chrome-launcher": "~0.2.3",
     "karma-spec-reporter": "~0.0.16",
     "coffee-loader": "~0.7.2"
   },
