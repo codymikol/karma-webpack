@@ -64,8 +64,14 @@ function Plugin(
 		compiler.plugin("make", this.make.bind(this));
 	}, this);
 
-	compiler.plugin("compile", function() {
-		isBlocked = true
+	["invalid", "watch-run", "run"].forEach(function(name) {
+		compiler.plugin(name, function(_, callback) {
+			isBlocked = true;
+
+			if (callback) {
+				callback();
+			}
+		})
 	})
 
 	compiler.plugin("done", function(stats) {
