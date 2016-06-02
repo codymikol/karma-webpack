@@ -34,7 +34,7 @@ function Plugin(
 		// https://github.com/webpack/webpack/issues/645
 		webpackOptions.output.path = "/_karma_webpack_/" + indexPath;
 		webpackOptions.output.publicPath = "/_karma_webpack_/" + indexPath + "/";
-		webpackOptions.output.filename = "[name]";
+		webpackOptions.output.filename = "[name].js";
 		if(includeIndex)
 			webpackOptions.output.jsonpFunction = "webpackJsonp" + index;
 		webpackOptions.output.chunkFilename = "[id].chunk.js";
@@ -139,6 +139,9 @@ Plugin.prototype.readFile = function(file, callback) {
 	var middleware = this.middleware;
 	var optionsCount = this.optionsCount;
 
+	var origFile = file;
+	file += '.js';
+
 	function doRead() {
 		if(optionsCount > 1) {
 			async.times(optionsCount, function(idx, callback) {
@@ -161,7 +164,7 @@ Plugin.prototype.readFile = function(file, callback) {
 	else
 		// Retry to read once a build is finished
 		// do it on process.nextTick to catch changes while building
-		this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, file, callback)));
+		this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, origFile, callback)));
 };
 
 function createPreprocesor(/* config.basePath */basePath, webpackPlugin) {
