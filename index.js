@@ -24,6 +24,10 @@ function Plugin(
 		// The webpack tier owns the watch behavior so we want to force it in the config
 		webpackOptions.watch = true;
 
+		// Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
+		// https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
+		if(!webpackOptions.entry) webpackOptions.entry = {};
+
 		if(!webpackOptions.output) webpackOptions.output = {};
 
 		// When using an array, even of length 1, we want to include the index value for the build.
