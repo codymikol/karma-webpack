@@ -12,6 +12,7 @@ function Plugin(
 			/* config.basePath */basePath,
 			/* config.files */files,
 			/* config.frameworks */frameworks,
+			/* config.webpackLogging */webpackLogging,
 			customFileHandlers,
 			emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
@@ -67,6 +68,25 @@ function Plugin(
 			if(stats.assets.length === 0)
 				noAssets = true;
 		});
+
+		webpackLogging = (typeof webpackLogging === "undefined" ? "normal" : webpackLogging);
+		if(webpackLogging !== null) {
+			//Disable webpack-middleware's default logging to use custom one
+			webpackMiddlewareOptions.quiet = true;
+			
+			if(_.isFunction(webpackLogging)) {
+				webpackLogging(stats, this.files);
+			} else if(webpackLogging) {
+				if(webpackLogging === true) webpackLogging = "normal";
+				var chalk = require("chalk"),
+				    stringStats = stats.toString(webpackLogging);
+				if(stringStats.trim().length > 0) {
+					console.log(chalk.cyan("Karma-Webpack bundle: ") + "\n", 
+					//"Files: ", chalk.bold(this.files.join(', ')), "\n",
+					stringStats, "\n");
+				}
+			}
+		}
 
 		if(!this.waiting || this.waiting.length === 0) {
 			this.notifyKarmaAboutChanges();
