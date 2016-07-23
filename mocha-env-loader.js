@@ -21,7 +21,7 @@ module.exports = function(content, map) {
 
 	var concatSrc = new SourceNode();
 	concatSrc.add([
-		"describe(" + JSON.stringify(id)  + ", function() {\n",
+		"describe(" + JSON.stringify(id) + ", function() {\n",
 		sourceNode,
 		"\n});"
 	]);
