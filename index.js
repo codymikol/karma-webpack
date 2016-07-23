@@ -6,14 +6,14 @@ var webpack = require("webpack");
 var SingleEntryDependency = require("webpack/lib/dependencies/SingleEntryDependency");
 
 function Plugin(
-			/* config.webpack */webpackOptions,
-			/* config.webpackServer */webpackServerOptions,
-			/* config.webpackMiddleware */webpackMiddlewareOptions,
-			/* config.basePath */basePath,
-			/* config.files */files,
-			/* config.frameworks */frameworks,
-			customFileHandlers,
-			emitter) {
+	webpackOptions, /* config.webpack */
+	webpackServerOptions, /* config.webpackServer */
+	webpackMiddlewareOptions, /* config.webpackMiddleware */
+	basePath, /* config.basePath */
+	files, /* config.files */
+	frameworks, /* config.frameworks */
+	customFileHandlers,
+	emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
 	webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
@@ -97,7 +97,7 @@ function Plugin(
 		}
 	});
 
-	emitter.on("exit", function (done) {
+	emitter.on("exit", function(done) {
 		middleware.close();
 		done();
 	});
@@ -117,7 +117,7 @@ Plugin.prototype.addFile = function(entry) {
 Plugin.prototype.make = function(compilation, callback) {
 	async.forEach(this.files.slice(), function(file, callback) {
 		var entry = file;
-		if (this.wrapMocha) {
+		if(this.wrapMocha) {
 			entry = require.resolve("./mocha-env-loader") + "!" + entry;
 		}
 
@@ -159,22 +159,22 @@ Plugin.prototype.readFile = function(file, callback) {
 	if(!this.waiting)
 		doRead();
 	else
-		// Retry to read once a build is finished
-		// do it on process.nextTick to catch changes while building
+	// Retry to read once a build is finished
+	// do it on process.nextTick to catch changes while building
 		this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, file, callback)));
 };
 
-function createPreprocesor(/* config.basePath */basePath, webpackPlugin) {
+function createPreprocesor( /* config.basePath */ basePath, webpackPlugin) {
 	return function(content, file, done) {
 
-		if (webpackPlugin.addFile(file.path)) {
+		if(webpackPlugin.addFile(file.path)) {
 			// recompile as we have an asset that we have not seen before
 			webpackPlugin.middleware.invalidate();
 		}
 
 		// read blocks until bundle is done
 		webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
-			if (err) {
+			if(err) {
 				throw err;
 			}
 
