@@ -25,7 +25,7 @@
   },
   "scripts": {
     "pretest": "npm run lint && npm run beautify-lint",
-    "lint": "eslint lib",
+    "lint": "eslint example index.js mocha-env-loader.js",
     "beautify-lint": "beautify-lint *.js"
   },
   "license": "MIT",
