@@ -137,6 +137,8 @@ Without the `webpackBlocker` middleware karma will serve files from before
 the code change. With the `webpackBlocker` middleware the loader will not serve
 the files until the code has finished recompiling.
 
+Note that the `beforeMiddleware` option is only supported in karma with version >1.0.
+
 ## License
 
 Copyright 2014-2015 Tobias Koppers
