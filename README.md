@@ -36,6 +36,12 @@ module.exports = function(config) {
 			// webpack configuration
 		},
 
+		// optional middleware that blocks tests from running until code
+		// recompiles
+		beforeMiddleware: [
+			'webpackBlocker'
+		],
+
 		webpackMiddleware: {
 			// webpack-dev-middleware configuration
 			// i. e.
@@ -115,6 +121,21 @@ Webpack configuration.
 ### webpackMiddleware
 
 Configuration for webpack-dev-middleware.
+
+### beforeMiddleware
+
+`beforeMiddleware` is a webpack option that allows injecting middleware before
+karama's own middleware are run. This loader provides a `webpackBlocker`
+middleware that will block tests from running until code recompiles. That is,
+given this scenario:
+
+1. Have a browser open on the karma debug page (http://localhost:9876/debug.html)
+2. Make a code change
+3. Refresh
+
+Without the `webpackBlocker` middleware karma will serve files from before
+the code change. With the `webpackBlocker` middleware the loader will not serve
+the files until the code has finished recompiling.
 
 ## License
 
