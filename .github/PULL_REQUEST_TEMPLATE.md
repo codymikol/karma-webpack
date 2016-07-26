@@ -1,8 +1,5 @@
 **Please check if the PR fulfills these requirements**
-<!--
-Uncomment this when tests/ci are setup
 - [ ] Tests for the changes have been added (for bug fixes / features)
--->
 - [ ] Docs have been added / updated (for bug fixes / features)
 
 
@@ -12,10 +9,7 @@ Uncomment this when tests/ci are setup
 - [ ] Code style update (formatting, local variables)
 - [ ] Refactoring (no functional changes, no api changes)
 - [ ] Build related changes
-<!--
-Uncomment this when tests/ci are setup
 - [ ] CI related changes
--->
 - [ ] Other... Please describe:
 
 **What is the current behavior?** (You can also link to an open issue here)
