@@ -9,12 +9,18 @@ var blocked = []
 var isBlocked = false
 
 function Plugin(
-	/* config.webpack */ webpackOptions,
-	/* config.webpackServer */ webpackServerOptions,
-	/* config.webpackMiddleware */ webpackMiddlewareOptions,
-	/* config.basePath */ basePath,
-	/* config.files */ files,
-	/* config.frameworks */ frameworks,
+	/* config.webpack */
+	webpackOptions,
+	/* config.webpackServer */
+	webpackServerOptions,
+	/* config.webpackMiddleware */
+	webpackMiddlewareOptions,
+	/* config.basePath */
+	basePath,
+	/* config.files */
+	files,
+	/* config.frameworks */
+	frameworks,
 	customFileHandlers,
 	emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
@@ -68,7 +74,7 @@ function Plugin(
 		compiler.plugin(name, function(_, callback) {
 			isBlocked = true;
 
-			if (callback) {
+			if(callback) {
 				callback();
 			}
 		})
@@ -99,7 +105,7 @@ function Plugin(
 		}
 
 		isBlocked = false
-		for (var i = 0; i < blocked.length; i++) {
+		for(var i = 0; i < blocked.length; i++) {
 			blocked[i]();
 		}
 		blocked = []
@@ -209,7 +215,7 @@ function createPreprocesor( /* config.basePath */ basePath, webpackPlugin) {
 
 function createWebpackBlocker() {
 	return function(request, response, next) {
-		if (isBlocked) {
+		if(isBlocked) {
 			blocked.push(next)
 		} else {
 			next()
