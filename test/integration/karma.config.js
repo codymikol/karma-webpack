@@ -24,7 +24,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/index.js'
+      'test/**/*.test.js'
     ],
 
 
@@ -102,7 +102,7 @@ module.exports = function(config) {
       require('karma-mocha'),
       require('karma-spec-reporter'),
       require('karma-chrome-launcher'),
-      require('../../')
+      require('../../dist/karma-webpack')
     ]
   })
 }

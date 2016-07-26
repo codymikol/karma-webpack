@@ -1,4 +1,4 @@
-var assert = require('chai').assert
+import {assert} from 'chai'
 
 describe('Array', function() {
   describe('#indexOf()', function() {
