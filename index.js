@@ -208,7 +208,7 @@ function createPreprocesor( /* config.basePath */ basePath, webpackPlugin) {
 }
 
 function createWebpackBlocker() {
-	return function (request, response, next) {
+	return function(request, response, next) {
 		if (isBlocked) {
 			blocked.push(next)
 		} else {
