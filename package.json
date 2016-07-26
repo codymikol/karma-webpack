@@ -14,19 +14,16 @@
     "webpack-dev-middleware": "^1.0.11"
   },
   "devDependencies": {
-    "beautify-lint": "^1.0.4",
     "coffee-loader": "~0.7.2",
     "eslint": "^3.1.1",
-    "jsbeautify": "^0.3.6",
     "karma": ">=0.13.2 < 1",
     "karma-chrome-launcher": "~0.1.5",
     "karma-mocha": "~0.1.9",
     "karma-spec-reporter": "~0.0.16"
   },
   "scripts": {
-    "pretest": "npm run lint && npm run beautify-lint",
-    "lint": "eslint example index.js mocha-env-loader.js",
-    "beautify-lint": "beautify-lint *.js"
+    "pretest": "npm run lint",
+    "lint": "eslint example index.js mocha-env-loader.js"
   },
   "license": "MIT",
   "homepage": "http://github.com/webpack/karma-webpack",
