@@ -9,12 +9,12 @@ var blocked = []
 var isBlocked = false
 
 function Plugin(
-	webpackOptions, /* config.webpack */
-	webpackServerOptions, /* config.webpackServer */
-	webpackMiddlewareOptions, /* config.webpackMiddleware */
-	basePath, /* config.basePath */
-	files, /* config.files */
-	frameworks, /* config.frameworks */
+	/* config.webpack */ webpackOptions,
+	/* config.webpackServer */ webpackServerOptions,
+	/* config.webpackMiddleware */ webpackMiddlewareOptions,
+	/* config.basePath */ basePath,
+	/* config.files */ files,
+	/* config.frameworks */ frameworks,
 	customFileHandlers,
 	emitter) {
 	webpackOptions = _.clone(webpackOptions) || {};
