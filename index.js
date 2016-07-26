@@ -5,6 +5,9 @@ var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpack = require("webpack");
 var SingleEntryDependency = require("webpack/lib/dependencies/SingleEntryDependency");
 
+var blocked = []
+var isBlocked = false
+
 function Plugin(
 	webpackOptions, /* config.webpack */
 	webpackServerOptions, /* config.webpackServer */
@@ -61,6 +64,16 @@ function Plugin(
 		compiler.plugin("make", this.make.bind(this));
 	}, this);
 
+	["invalid", "watch-run", "run"].forEach(function(name) {
+		compiler.plugin(name, function(_, callback) {
+			isBlocked = true;
+
+			if (callback) {
+				callback();
+			}
+		})
+	})
+
 	compiler.plugin("done", function(stats) {
 		var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats];
 		var assets = [];
@@ -84,6 +97,12 @@ function Plugin(
 				cb();
 			});
 		}
+
+		isBlocked = false
+		for (var i = 0; i < blocked.length; i++) {
+			blocked[i]();
+		}
+		blocked = []
 	}.bind(this));
 	compiler.plugin("invalid", function() {
 		if(!this.waiting) this.waiting = [];
@@ -188,7 +207,18 @@ function createPreprocesor( /* config.basePath */ basePath, webpackPlugin) {
 	};
 }
 
+function createWebpackBlocker() {
+	return function (request, response, next) {
+		if (isBlocked) {
+			blocked.push(next)
+		} else {
+			next()
+		}
+	}
+}
+
 module.exports = {
 	"webpackPlugin": ["type", Plugin],
-	"preprocessor:webpack": ["factory", createPreprocesor]
+	"preprocessor:webpack": ["factory", createPreprocesor],
+	"middleware:webpackBlocker": ["factory", createWebpackBlocker]
 };
