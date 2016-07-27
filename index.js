@@ -69,7 +69,11 @@ function Plugin(
 			isBlocked = true;
 
 			if (callback) {
-				callback();
+				try {
+					callback();
+				} catch (err) {
+					// do nothing
+				}
 			}
 		})
 	})
