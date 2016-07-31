@@ -14,16 +14,43 @@
     "webpack-dev-middleware": "^1.0.11"
   },
   "devDependencies": {
-    "coffee-loader": "~0.7.2",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-register": "^6.11.6",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "cross-env": "^2.0.0",
     "eslint": "^3.1.1",
-    "karma": ">=0.13.2 < 1",
-    "karma-chrome-launcher": "~0.1.5",
-    "karma-mocha": "~0.1.9",
-    "karma-spec-reporter": "~0.0.16"
+    "eslint-plugin-babel": "^3.3.0",
+    "istanbul": "^0.4.4",
+    "karma": "^1.x",
+    "karma-chrome-launcher": "~1.0.1",
+    "karma-mocha": "~1.1.1",
+    "karma-spec-reporter": "~0.0.22",
+    "mocha": "^2.5.3"
   },
   "scripts": {
+    "lint": "eslint test index.js mocha-env-loader.js",
     "pretest": "npm run lint",
-    "lint": "eslint example index.js mocha-env-loader.js"
+    "test": "npm run test.unit",
+    "test.unit": "mocha --harmony --full-trace --check-leaks test/unit",
+    "test.integration": "karma start --single-run",
+    "travis": "npm run test.unit && npm run test.integration"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ],
+    "ignore": "**/*.test.js",
+    "env": {
+      "development": {
+        "sourceMaps": "inline"
+      }
+    }
   },
   "license": "MIT",
   "homepage": "http://github.com/webpack/karma-webpack",
