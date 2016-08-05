@@ -14,7 +14,8 @@
     "test.integration": "npm run build && karma start --single-run",
     "travis": "npm run test.unit && npm run test.integration",
     "generate.changelog": "node scripts/release/generate-changelog.js",
-    "build": "webpack"
+    "build:dev": "webpack",
+    "build:dist": "NODE_ENV='production' webpack"
   },
   "repository": {
     "type": "git",
