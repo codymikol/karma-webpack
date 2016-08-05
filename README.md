@@ -70,11 +70,7 @@ module.exports = function(config) {
       // webpack-dev-middleware configuration
       // i. e.
       stats: 'errors-only'
-    },
-
-    plugins: [
-      require("karma-webpack")
-    ]
+    }
   });
 };
 ```
