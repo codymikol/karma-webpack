@@ -13,4 +13,4 @@
 
 *The NPM Portion*
 * `npm login` to the user with rights to publish to NPM
-* `npm run publish.version` which executes a `dist` build and publishes using the tag created above.
+* `npm run publish.version` which executes the build and publishes using the tag created above.
