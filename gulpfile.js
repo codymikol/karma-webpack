@@ -28,9 +28,7 @@ gulp.task('lint', function(done) {
  */
 gulp.task('build', function(done) {
   gulp.src('src/**/*.js')
-    .pipe(babel({
-      presets: ['es2015', 'stage-2']
-    }))
+    .pipe(babel())
     .pipe(gulp.dest('lib'))
   done()
 })
@@ -44,9 +42,7 @@ gulp.task('watch', function() {
   gulp.watch('src/**/*.js')
     .on('change', function(path) {
       gulp.src(path)
-        .pipe(babel({
-          presets: ['es2015', 'stage-2']
-        }))
+        .pipe(babel())
         .pipe(gulp.dest('lib'))
       util.log(`File "${path}" rebuilt`)
     })
