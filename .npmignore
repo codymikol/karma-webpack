@@ -1,2 +1,13 @@
-example/
+example
+scripts
+src
+test
+.github
 .gitattributes
+.babelrc
+.editorconfig
+.eslintignore
+.eslintrc
+.travis.yml
+CONTRIBUTING.md
+webpack.config.babel.js
