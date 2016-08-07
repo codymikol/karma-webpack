@@ -5,8 +5,21 @@ os:
   - osx
 node_js:
   - node
-  - "6"
   - "5"
   - "4"
-
-script: npm test
+env:
+  - export WEBPACK_VERSION="2.1.0-beta"
+  - export WEBPACK_VERSION="1.13.0"
+matrix:
+  fast_finish: true
+before_install:
+  - nvm --version
+  - node --version
+  - npm --version
+before_script:
+  - 'if [ "$WEBPACK_VERSION" ]; then npm install webpack@^$WEBPACK_VERSION; fi'
+script:
+  - npm run build
+  - npm test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

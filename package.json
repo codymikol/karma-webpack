@@ -28,7 +28,7 @@
     "url": "https://github.com/webpack/karma-webpack.git"
   },
   "peerDependencies": {
-    "webpack": "^1.4.0 || ^2 || ^2.1.0-beta"
+    "webpack": "^1.1.0 || ^2 || ^2.1.0-beta"
   },
   "dependencies": {
     "async": "~0.9.0",
@@ -66,8 +66,7 @@
     "karma-chrome-launcher": "~1.0.1",
     "karma-mocha": "~1.1.1",
     "karma-spec-reporter": "~0.0.22",
-    "mocha": "^2.5.3",
-    "webpack": "^2.1.0-beta.20"
+    "mocha": "^2.5.3"
   },
   "config": {
     "commitizen": {
