@@ -22,6 +22,3 @@ set -ex
 
 # Publishing the defined tag to npm
 npm publish --access public --tag ${NPM_TAG}
-
-# Logs out of npm when publish is complete.
-npm logout
