@@ -5,25 +5,30 @@
   "description": "Use webpack with karma",
   "license": "MIT",
   "homepage": "http://github.com/webpack/karma-webpack",
-  "main": "dist/karma-webpack.js",
   "scripts": {
-    "lint": "eslint test src",
+    "gulp": "gulp",
+    "lint": "gulp lint",
+    "clean": "gulp clean",
     "pretest": "npm run lint",
     "test": "npm run test.unit",
     "test.unit": "mocha --compilers js:babel-register --full-trace --check-leaks test/unit",
     "test.integration": "npm run build && karma start --single-run",
     "travis": "npm run test.unit && npm run test.integration",
     "generate.changelog": "node scripts/release/generate-changelog.js",
-    "publish.version": "npm run build:dist && sh scripts/release/npm-publish.sh",
-    "build:dev": "webpack",
-    "build:dist": "cross-env NODE_ENV=production webpack"
+    "publish.version": "npm run build && sh scripts/release/npm-publish.sh",
+    "build:watch": "gulp build.watch",
+    "build": "gulp build"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/karma-webpack.git"
   },
   "peerDependencies": {
-    "webpack": "^1.4.0 || ^2 || ^2.1.0-beta"
+    "webpack": "^1.1.0 || ^2 || ^2.1.0-beta"
   },
   "dependencies": {
     "async": "~0.9.0",
@@ -47,16 +52,21 @@
     "conventional-changelog": "^1.1.0",
     "cross-env": "^2.0.0",
     "cz-conventional-changelog": "^1.1.6",
+    "del": "^2.2.1",
     "eslint": "^3.1.1",
     "eslint-plugin-babel": "^3.3.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.9",
     "istanbul": "^0.4.4",
     "json-loader": "^0.5.4",
     "karma": "^1.x",
     "karma-chrome-launcher": "~1.0.1",
     "karma-mocha": "~1.1.1",
     "karma-spec-reporter": "~0.0.22",
-    "mocha": "^2.5.3",
-    "webpack": "^2.1.0-beta.20"
+    "mocha": "^2.5.3"
   },
   "config": {
     "commitizen": {
