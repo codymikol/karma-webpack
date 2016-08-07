@@ -1,6 +1,8 @@
-var fs = require('fs')
-var addStream = require('add-stream')
-var cl = require('conventional-changelog')
+'use strict' // eslint-disable-line strict
+
+const fs = require('fs')
+const addStream = require('add-stream')
+const cl = require('conventional-changelog')
 
 const inStream = fs.createReadStream('CHANGELOG.md')
 const isForce = process.argv.indexOf('--force') !== -1
@@ -16,16 +18,16 @@ inStream.on('error', function(err) {
   process.exit(1)
 })
 
-let config = {
+const config = {
   preset: 'angular',
   releaseCount: isForce ? 0 : 1
 }
 
-const getOutputStream = () => {
+const getOutputStream = function() {
   return fs.createWriteStream('CHANGELOG.md')
 }
 
-let stream = cl(config)
+const stream = cl(config)
   .on('error', function(err) {
     console.error(`An error occurred while generating the changelog:  ${err}`)
   })
