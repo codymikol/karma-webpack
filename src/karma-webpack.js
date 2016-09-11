@@ -46,7 +46,7 @@ function Plugin(
     // https://github.com/webpack/webpack/issues/645
     webpackOptions.output.path = '/_karma_webpack_/' + indexPath
     webpackOptions.output.publicPath = '/_karma_webpack_/' + publicPath
-    webpackOptions.output.filename = '[name]'
+    webpackOptions.output.filename = '[name].js'
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = 'webpackJsonp' + index
     }
@@ -184,7 +184,7 @@ Plugin.prototype.readFile = function(file, callback) {
   function doRead() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile('/_karma_webpack_/' + idx + '/' + file.replace(/\\/g, '/'), callback)
+        middleware.fileSystem.readFile('/_karma_webpack_/' + idx + '/' + file.replace(/\\/g, '/') + '.js', callback)
       }, function(err, contents) {
         if (err) {
           return callback(err)
@@ -200,7 +200,7 @@ Plugin.prototype.readFile = function(file, callback) {
         callback(null, Buffer.concat(contents))
       })
     } else {
-      middleware.fileSystem.readFile('/_karma_webpack_/' + file.replace(/\\/g, '/'), callback)
+      middleware.fileSystem.readFile('/_karma_webpack_/' + file.replace(/\\/g, '/') + '.js', callback)
     }
   }
   if (!this.waiting) {
