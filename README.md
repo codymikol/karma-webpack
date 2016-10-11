@@ -100,10 +100,63 @@ preprocessors: {
 // require all modules ending in "_test" from the
 // current directory and all subdirectories
 var testsContext = require.context(".", true, /_test$/);
-testsContext.keys().forEach(testsContext);
+testsContext.keys().forEach(function(path) {
+    try {
+        testsContext(path);
+    } catch(err) {
+        console.error('[ERROR] WITH SPEC FILE: ', path);
+        console.error(err);
+    }
+});
 ```
 
 Every test file is required using the [require.context](http://webpack.github.io/docs/context.html#require-context) and compiled with webpack into one test bundle.
+
+
+<h3 align="center">How to Run Single Test</h3>
+
+1) In your `karma.conf.js` get the params from the terminal:
+
+```
+var files = (process.env.npm_config_single_file) ? process.env.npm_config_single_file : 'test/test_index.js';
+```
+
+Don't forget that we still want to support the normal `test/test_index.js` process that run all the tests (see "Alternative Usage").
+
+2) In order to run a **single test** you will need to set an option object with all your configuration (**Without** files and preprocessors):
+
+```
+var option = {
+
+  webpack: {
+    // webpack configuration
+  },
+
+  // more configuration......
+};
+
+```
+
+3) Set your files path and preprocessors:
+
+```
+  option.files = [
+      {pattern: files, watch: false}
+  ];
+
+  option.preprocessors = {};
+
+  option.preprocessors[files] = [ 'webpack', 'sourcemap' ];
+
+  // call config.set function
+  config.set(option);
+```
+
+4) Run in the terminal:
+
+```
+npm test --single_file=**/my-specific-file-spec.js
+```
 
 <h2 align="center">Source Maps</h2>
 
