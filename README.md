@@ -173,28 +173,19 @@ the files until the code has finished recompiling.
       <td align="center">
         <img width="150" height="150"
         src="https://avatars.githubusercontent.com/u/8420490?v=3&s=150">
+        </br>
         <a href="https://github.com/d3viant0ne">Joshua Wiens</a>
       </td>
       <td align="center">
         <img width="150" height="150" src="https://avatars.githubusercontent.com/u/1919664?v=3&s=150">
+        </br>
         <a href="https://github.com/goldhand">Will Farley</a>
       </td>
       <td align="center">
         <img width="150" height="150"
         src="https://avatars.githubusercontent.com/u/1307954?v=3&s=150">
+        </br>
         <a href="https://github.com/DanielaValero">Daniela Valero</a>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/122108?v=3&s=150">
-        <a href="https://github.com/jon301">Jonathan Trang</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/3285723?v=3&s=150">
-        <a href="https://github.com/carlos-">Carlos Morales</a>
       </td>
     </tr>
   <tbody>

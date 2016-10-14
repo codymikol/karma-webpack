@@ -4,7 +4,7 @@ os:
   - linux
   - osx
 node_js:
-  - node
+  - "6"
   - "5"
   - "4"
 env:
