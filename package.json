@@ -4,71 +4,72 @@
   "author": "Tobias Koppers @sokra",
   "description": "Use webpack with karma",
   "license": "MIT",
+  "main": "src/index.js",
   "homepage": "http://github.com/webpack/karma-webpack",
-  "scripts": {
-    "gulp": "gulp",
-    "lint": "gulp lint",
-    "clean": "gulp clean",
-    "pretest": "npm run lint",
-    "test": "npm run test.unit",
-    "test.unit": "mocha --compilers js:babel-register --full-trace --check-leaks test/unit",
-    "test.integration": "npm run build && karma start --single-run",
-    "travis": "npm run test.unit && npm run test.integration",
-    "generate.changelog": "node scripts/release/generate-changelog.js",
-    "publish.version": "npm run build && sh scripts/release/npm-publish.sh",
-    "build:watch": "gulp build.watch",
-    "build": "gulp build"
-  },
-  "files": [
-    "lib",
-    "index.js"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack/karma-webpack.git"
+    "url": "http://github.com/webpack/karma-webpack"
+  },
+  "bugs": {
+    "url": "http://github.com/webpack/karma-webpack/issues"
+  },
+  "scripts": {
+    "benchmark": "babel-node benchmark",
+    "benchmark:watch": "nodemon $2 --exec babel-node benchmark",
+    "build": "babel -s true src -d dist",
+    "clean": "shx rm -rf dist",
+    "debug": "nodemon $2 --exec babel-node --debug",
+    "git:add": "git add --all && git status",
+    "git:commit": "npm run git:add && git-cz",
+    "git:push": "git push --follow-tags",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "postrelease": "npm run setenv:dev",
+    "prerelease": "npm run clean && npm run lint:fix && npm run scan:security && npm run setenv:prod && npm run build",
+    "release": "standard-version",
+    "scan:security": "nsp check",
+    "scan:updates": "ncu",
+    "serve": "node dist",
+    "setenv:dev": "npm config set production false",
+    "setenv:prod": "npm config set production true",
+    "start": "nodemon $2 --exec babel-node",
+    "test": "mocha -c -S -R spec 'tests' --compilers js:babel-register --check-leaks",
+    "test:export": "mocha -S -R mochawesome 'tests' --compilers js:babel-register --reporter-options reportDir=reports --check-leaks",
+    "test:watch": "mocha -w -c -S -R spec 'tests' --compilers js:babel-register --check-leaks"
+  },
+  "devDependencies": {
+    "babel-cli": "6.16.0",
+    "babel-node-debug": "2.0.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-babili": "0.0.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "6.16.0",
+    "babel-preset-stage-2": "^6.17.0",
+    "babel-register": "6.16.3",
+    "babili": "0.0.7",
+    "benchmark": "2.1.1",
+    "chai": "3.5.0",
+    "commitizen": "2.8.6",
+    "conventional-changelog-cli": "1.2.0",
+    "eslint": "3.7.1",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-promise": "3.0.0",
+    "eslint-plugin-standard": "2.0.1",
+    "mocha": "3.1.2",
+    "mochawesome": "1.5.3",
+    "nodemon": "1.11.0",
+    "npm-check-updates": "2.8.5",
+    "nsp": "2.6.2",
+    "shx": "0.1.4",
+    "standard-changelog": "0.0.1",
+    "standard-version": "3.0.0"
+  },
+  "dependencies": {
+    "loader-utils": "^0.2.16",
+    "source-map": "^0.5.6",
+    "webpack-dev-middleware": "^1.8.4"
   },
   "peerDependencies": {
     "webpack": "^1.1.0 || ^2 || ^2.1.0-beta"
-  },
-  "dependencies": {
-    "async": "~0.9.0",
-    "loader-utils": "^0.2.5",
-    "lodash": "^3.8.0",
-    "source-map": "^0.1.41",
-    "webpack-dev-middleware": "^1.0.11"
-  },
-  "devDependencies": {
-    "add-stream": "^1.0.0",
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.11.4",
-    "babel-plugin-transform-runtime": "^6.12.0",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-stage-2": "^6.11.0",
-    "babel-register": "^6.11.6",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
-    "conventional-changelog": "^1.1.0",
-    "cross-env": "^2.0.0",
-    "cz-conventional-changelog": "^1.1.6",
-    "del": "^2.2.1",
-    "eslint": "^3.1.1",
-    "eslint-plugin-babel": "^3.3.0",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1",
-    "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.9",
-    "istanbul": "^0.4.4",
-    "karma": "^1.x",
-    "karma-chrome-launcher": "~1.0.1",
-    "karma-mocha": "~1.1.1",
-    "karma-spec-reporter": "~0.0.22",
-    "mocha": "^2.5.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
