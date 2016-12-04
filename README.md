@@ -79,7 +79,7 @@ module.exports = function(config) {
 
 This configuration is more performant, but you cannot run single test anymore (only the complete suite).
 
-The above configuration generates a webpack bundle for each test. For many testcases this can result in many big files. The alterative configuration creates a single bundle with all testcases.
+The above configuration generates a webpack bundle for each test. For many testcases this can result in many big files. The alternative configuration creates a single bundle with all testcases.
 
 ``` javascript
 files: [
