@@ -16,11 +16,29 @@ the [webpack Gitter][webpackgitter] and include both your webpack, karma & karma
 **If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
 
 ### Setup
+You can decide wether you want to use yarn or npm to setup karma-webpack. Below you will find the setup instructions of both. 
 
+#### Using Yarn
 ```bash
 git clone https://github.com/webpack/karma-webpack.git
 cd karma-webpack
-npm install
+npm install -g yarn
+yarn install
+yarn link
+yarn link webpack
+```
+
+To run the entire test suite use:
+
+```bash
+yarn test
+```
+
+#### Using npm
+```bash
+git clone https://github.com/webpack/karma-webpack.git
+cd karma-webpack
+npm i
 ```
 
 To run the entire test suite use:
@@ -28,6 +46,7 @@ To run the entire test suite use:
 ```bash
 npm test
 ```
+
 
 ### Submitting Changes
 
