@@ -212,6 +212,10 @@ the files until the code has finished recompiling.
 
 ***Note that the `beforeMiddleware` option is only supported in karma with version >1.0.***
 
+<h2 align="center">Unsupported Plugins</h2>
+
+Karma Webpack does not support the `CommonChunksPlugin`, the `ExtractTextPlugin`, or the `DllPlugin`. 
+
 <h2 align="center">Maintainers</h2>
 
 <table>
