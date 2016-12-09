@@ -30,6 +30,7 @@
   </a>
   <h1>Karma Webpack</h1>
   <p>Use webpack to preprocess files in karma<p>
+  <p><b>Note:</b> At the moment we are doing a complete rewrite of karma-webpack. The code behind the current version is on the branch [v1](https://github.com/webpack/karma-webpack/tree/v1) in this repo. We will continue maintaining it in the mean time. This means, if you are willing to open a pull request for the version 1, double check that when you open the PR, the target branch is v1 instead of master.</p>
 </div>
 
 <h2 align="center">Install</h2>
