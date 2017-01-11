@@ -1,3 +1,20 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/webpack/karma-webpack/compare/v1.8.1...v2.0.0) (2017-01-11)
+
+
+### Bug Fixes
+
+* **config:** webpack rc4 schema enforcment (fixes [#193](https://github.com/webpack/karma-webpack/issues/193)) ([2723439](https://github.com/webpack/karma-webpack/commit/2723439))
+
+
+### BREAKING CHANGES
+
+* config: Remove entry:{} from test configurations
+
+When updating to `"webpack": "2.2.0-rc.4"` & `"karma-webpack": "1.8.2"` you have to pull the `entry` property if it's set to an empty object so it defaults to a function within karma-webpack
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/webpack/karma-webpack/compare/v1.7.0...v1.8.0) (2016-08-07)
 
