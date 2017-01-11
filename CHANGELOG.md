@@ -1,3 +1,8 @@
+<a name="1.8.2"></a>
+## [1.8.2](https://github.com/webpack/karma-webpack/compare/v1.8.1...v1.8.2) (2017-01-11)
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/webpack/karma-webpack/compare/v1.7.0...v1.8.0) (2016-08-07)
 

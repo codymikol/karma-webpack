@@ -1,6 +1,6 @@
 {
   "name": "karma-webpack",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "author": "Tobias Koppers @sokra",
   "description": "Use webpack with karma",
   "license": "MIT",
