@@ -14,9 +14,11 @@
     "test.unit": "mocha --compilers js:babel-register --full-trace --check-leaks test/unit",
     "test.integration": "npm run build && karma start --single-run",
     "travis": "npm run test.unit && npm run test.integration",
-    "generate.changelog": "node scripts/release/generate-changelog.js",
-    "publish.version": "npm run build && sh scripts/release/npm-publish.sh",
+    "release": "standard-version",
+    "release:tag:v1": "git push --follow-tags origin v1",
+    "release:publish": "npm run build:release && npm publish --access public --tag",
     "build:watch": "gulp build.watch",
+    "build:release": "gulp",
     "build": "gulp build"
   },
   "files": [
@@ -38,7 +40,6 @@
     "webpack-dev-middleware": "^1.0.11"
   },
   "devDependencies": {
-    "add-stream": "^1.0.0",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.11.4",
     "babel-plugin-transform-runtime": "^6.12.0",
@@ -48,9 +49,6 @@
     "babel-register": "^6.11.6",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
-    "conventional-changelog": "^1.1.0",
-    "cross-env": "^2.0.0",
-    "cz-conventional-changelog": "^1.1.6",
     "del": "^2.2.1",
     "eslint": "^3.1.1",
     "eslint-plugin-babel": "^3.3.0",
@@ -64,11 +62,7 @@
     "karma-chrome-launcher": "~1.0.1",
     "karma-mocha": "~1.1.1",
     "karma-spec-reporter": "~0.0.22",
-    "mocha": "^2.5.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "mocha": "^2.5.3",
+    "standard-version": "^4.0.0"
   }
 }
