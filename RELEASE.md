@@ -25,13 +25,13 @@ _This will ..._
 npm run release -- --prerelease <alpha || beta || rc>
 ```
 
-_this does the above but tags the version `1.0.1-alpha.0`, `1.0.1-beta.0`, `1.0.1-rc.0`_
+_this does the above but tags the version `2.0.1-alpha.0`, `2.0.1-beta.0`, `2.0.1-rc.0`_
 
 #### Push new tag to GitHub
 
 ```bash
 # npm run script
-npm run release:tag:v1
+npm run release:tag:v2
 ```
 
 _this pushes the newly created tag to github_
