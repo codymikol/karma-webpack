@@ -9,7 +9,7 @@ node_js:
   - "6"
   - "4"
 env:
-  - export WEBPACK_VERSION="2.2.0-rc.4"
+  - export WEBPACK_VERSION="2.2.0-rc.5"
   - export WEBPACK_VERSION="1.14.0"
 matrix:
   fast_finish: true
