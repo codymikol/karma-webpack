@@ -11,7 +11,6 @@ env:
 matrix:
   fast_finish: true
 before_install:
-  - yarn --version
   - nvm --version
   - node --version
   - npm --version
