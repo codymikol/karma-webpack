@@ -11,15 +11,16 @@ env:
 matrix:
   fast_finish: true
 before_install:
+  - yarn --version
   - nvm --version
   - node --version
   - npm --version
 before_script:
-  - 'if [ "$WEBPACK_VERSION" ]; then npm install webpack@^$WEBPACK_VERSION; fi'
+  - 'if [ "$WEBPACK_VERSION" ]; then yarn install webpack@^$WEBPACK_VERSION; fi'
 script:
-  - npm run build
-  - npm run lint
-  - npm run scan:security
-  - npm test
+  - yarn run build
+  - yarn run lint
+  - yarn run scan:security
+  - yarn test
 after_success:
   - bash <(curl -s https://codecov.io/bash)
