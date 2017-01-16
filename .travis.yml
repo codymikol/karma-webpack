@@ -2,14 +2,12 @@ sudo: false
 language: node_js
 os:
   - linux
-  - osx
 node_js:
   - "6"
-  - "5"
   - "4"
 env:
-  - export WEBPACK_VERSION="2.1.0-beta"
-  - export WEBPACK_VERSION="1.13.0"
+  - export WEBPACK_VERSION="2.2.0-rc.5"
+  - export WEBPACK_VERSION="1.14.0"
 matrix:
   fast_finish: true
 before_install:
@@ -17,9 +15,11 @@ before_install:
   - node --version
   - npm --version
 before_script:
-  - 'if [ "$WEBPACK_VERSION" ]; then npm install webpack@^$WEBPACK_VERSION; fi'
+  - 'if [ "$WEBPACK_VERSION" ]; then yarn add webpack@^$WEBPACK_VERSION; fi'
 script:
-  - npm run build
-  - npm test
+  - yarn run build
+  - yarn run lint
+  - yarn run scan:security
+  - yarn test
 after_success:
   - bash <(curl -s https://codecov.io/bash)
