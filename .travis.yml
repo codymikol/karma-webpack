@@ -15,11 +15,11 @@ before_install:
   - node --version
   - npm --version
 before_script:
-  - 'if [ "$WEBPACK_VERSION" ]; then yarn add webpack@^$WEBPACK_VERSION; fi'
+  - 'if [ "$WEBPACK_VERSION" ]; then npm install webpack@^$WEBPACK_VERSION; fi'
 script:
-  - yarn run build
-  - yarn run lint
-  - yarn run scan:security
-  - yarn test
+  - npm run build
+  - npm run lint
+  - npm run scan:security
+  - npm test
 after_success:
   - bash <(curl -s https://codecov.io/bash)
