@@ -15,7 +15,7 @@ before_install:
   - node --version
   - npm --version
 before_script:
-  - 'if [ "$WEBPACK_VERSION" ]; then yarn install webpack@^$WEBPACK_VERSION; fi'
+  - 'if [ "$WEBPACK_VERSION" ]; then yarn add webpack@^$WEBPACK_VERSION; fi'
 script:
   - yarn run build
   - yarn run lint
