@@ -2,15 +2,12 @@ sudo: false
 language: node_js
 os:
   - linux
-  - osx
 # Test against Webpack supported NodeJS Versions ( >= 4.7 && !5.x, 6.x, 7.x)
 node_js:
   - node
   - "6"
-  - "4"
 env:
-  - export WEBPACK_VERSION="2.2.0-rc.6"
-  - export WEBPACK_VERSION="1.14.0"
+  - export WEBPACK_VERSION="2.2.0"
 matrix:
   fast_finish: true
 before_install:
