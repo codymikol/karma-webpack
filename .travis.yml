@@ -1,15 +1,25 @@
 sudo: false
 language: node_js
-os:
-  - linux
-# Test against Webpack supported NodeJS Versions ( >= 4.7 && !5.x, 6.x, 7.x)
-node_js:
-  - node
-  - "6"
+branches:
+  only:
+    - v2
 env:
   - export WEBPACK_VERSION="2.2.0"
 matrix:
   fast_finish: true
+  include:
+    - os: linux
+      node_js: "7"
+      env: WEBPACK_VERSION="2.2.0" JOB_PART=lint
+    - os: linux
+      node_js: "6"
+      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+    - os: linux
+      node_js: "4.7"
+      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+    - os: linux
+      node_js: "7"
+      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
 before_install:
   - nvm --version
   - node --version
@@ -17,7 +27,6 @@ before_install:
 before_script:
   - 'if [ "$WEBPACK_VERSION" ]; then npm install webpack@^$WEBPACK_VERSION; fi'
 script:
-  - npm run build
-  - npm test
+  - npm run travis:$JOB_PART
 after_success:
   - bash <(curl -s https://codecov.io/bash)

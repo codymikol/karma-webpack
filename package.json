@@ -14,6 +14,8 @@
     "test.unit": "mocha --compilers js:babel-register --full-trace --check-leaks test/unit",
     "test.integration": "npm run build && karma start --single-run",
     "travis": "npm run test.unit && npm run test.integration",
+    "travis:test": "npm run test.unit",
+    "travis:lint": "npm run lint",
     "release": "standard-version",
     "release:tag:v2": "git push --follow-tags origin v2",
     "release:publish": "npm run build:release && npm publish --access public --tag",
