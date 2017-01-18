@@ -30,7 +30,7 @@ function Plugin(
     // Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
     // https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
     if (!webpackOptions.entry) {
-      webpackOptions.entry = function(){
+      webpackOptions.entry = function() {
         return {}
       }
     };
@@ -206,7 +206,16 @@ Plugin.prototype.readFile = function(file, callback) {
     }
   }
   if (!this.waiting) {
-    doRead()
+    try {
+      doRead()
+    } catch (e) {
+      // If this is an error from `readFileSync` method, wait for the next tick. Credit #69 @mewdriller
+      if (e.message.substring(0, 20) === "Path doesn't exist '") { // eslint-disable-line quotes
+        this.waiting = [process.nextTick.bind(process, this.readFile.bind(this, file, callback))]
+      } else {
+        throw e
+      }
+    }
   } else {
     // Retry to read once a build is finished
     // do it on process.nextTick to catch changes while building
