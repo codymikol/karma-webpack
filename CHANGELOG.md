@@ -34,10 +34,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### BREAKING CHANGES
+- config: Remove entry:{} from test configurations
 
-* config: Remove entry:{} from test configurations
+When updating to `"webpack": "2.2.0-rc.4"` & `"karma-webpack": "2.0.0"` you have to remove the `entry` property if it's set to an empty object so it defaults to a function within karma-webpack.
 
-When updating to `"webpack": "2.2.0-rc.4"` & `"karma-webpack": "1.8.2"` you have to pull the `entry` property if it's set to an empty object so it defaults to a function within karma-webpack
+As part of the schema enforcement, in you webpack configuration you can't pass `webpackConfig.entry` and empty object. Historically this has been a common practice in many test configs.
+
+You can on the other hand pass `webpackConfig.entry` a function. So in the case where people were using `entry: {}` they simply need to remove it. For those that don't need / have an entry target in their config, removing it allows karma-webpack to use it's default which under the hood assigns a function that returns `entry: {}` to `webpackConfig.entry`.
 
 
 <a name="1.8.1"></a>
