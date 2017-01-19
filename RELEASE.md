@@ -31,7 +31,7 @@ _this does the above but tags the version `2.0.1-alpha.0`, `2.0.1-beta.0`, `2.0.
 
 ```bash
 # npm run script
-npm run release:tag:v2
+npm run release:tag:master
 ```
 
 _this pushes the newly created tag to github_
