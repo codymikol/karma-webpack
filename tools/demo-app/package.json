@@ -1,0 +1,23 @@
+{
+  "name": "karma-webpack-demo",
+  "version": "0.0.1",
+  "description": "Karma Webpack test, demo & issue reproduction application",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "jasmine": "^2.5.3",
+    "karma": "^1.4.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-webpack": "^2.0.1",
+    "webpack": "^2.2.0"
+  }
+}
