@@ -27,7 +27,6 @@
     "release:tag": "git push --follow-tags origin master",
     "release:publish": "npm publish --access public",
     "scan:security": "nsp check",
-    "scan:updates": "ncu",
     "serve": "node dist",
     "setenv:dev": "npm config set production false",
     "setenv:prod": "npm config set production true",
@@ -76,7 +75,6 @@
     "mocha": "3.2.0",
     "mochawesome": "2.0.2",
     "nodemon": "1.11.0",
-    "npm-check-updates": "2.8.9",
     "nsp": "2.6.2",
     "shx": "0.2.2",
     "standard-version": "4.0.0"
