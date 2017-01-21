@@ -2,7 +2,7 @@ sudo: false
 language: node_js
 branches:
   only:
-    - v2
+    - master
 matrix:
   fast_finish: true
   include:
@@ -18,6 +18,9 @@ matrix:
     - os: linux
       node_js: "7"
       env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+    - os: linux
+      node_js: "7"
+      env: WEBPACK_VERSION="2.2.0" JOB_PART=benchmark
 before_install:
   - nvm --version
   - node --version
