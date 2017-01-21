@@ -35,9 +35,9 @@
     "test:unit": "mocha -c -S -R spec 'tests/unit' --compilers js:babel-register --check-leaks",
     "test:unit:export": "mocha -S -R mochawesome 'tests/unit' --compilers js:babel-register --reporter-options reportDir=reports --check-leaks",
     "test:watch": "mocha -w -c -S -R spec 'tests/unit' --compilers js:babel-register --check-leaks",
-    "travis:test": "npm run test",
-    "travis:benchmark": "npm run benchmark",
-    "travis:lint": "npm run lint && npm run scan:security"
+    "travis:test": "yarn run test",
+    "travis:benchmark": "yarn run benchmark",
+    "travis:lint": "yarn run lint && yarn run scan:security"
   },
   "files": [
     "dist/"
