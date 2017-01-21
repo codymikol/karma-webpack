@@ -1,13 +1,14 @@
 {
   "root": true,
   "parserOptions": {
-    "ecmaVersion": "7",
+    "ecmaVersion": 2016,
     "sourceType": "module",
     "ecmaFeatures": {
       "impliedStrict": true,
       "experimentalObjectRestSpread": true
     },
   },
+  "plugins": ["promise", "standard", "babel"],
   "env": {
     "es6": true,
     "node": true,
@@ -132,7 +133,7 @@
       }
     }],
     "quotes": [2, "single"],
-    "semi": [2, "never"],
+    "semi": [2, "always"],
     "no-extra-semi": 0
   }
 }

@@ -1,3 +1,5 @@
 node_modules
 coverage
-lib
+reports
+dist
+npm-debug.log
