@@ -17,8 +17,10 @@ _This will ..._
 2. updates _CHANGELOG.md_ for the currnet version
 3. commits _package.json_ and _CHANGELOG.md_
 4. tags a new release
+5. pushes the new tag to github
+6. publishes the new version to npm
 
-#### Pre-Release tag
+#### Pre-Release tags
 
 ```bash
 # npm run script
@@ -26,26 +28,3 @@ npm run release -- --prerelease <alpha || beta || rc>
 ```
 
 _this does the above but tags the version `2.0.1-alpha.0`, `2.0.1-beta.0`, `2.0.1-rc.0`_
-
-#### Push new tag to GitHub
-
-```bash
-# npm run script
-npm run release:tag:master
-```
-
-_this pushes the newly created tag to github_
-
-#### Publish to NPM
-
-```bash
-# npm run script
-npm login
-```
-
-```bash
-# npm run script
-npm run release:publish
-```
-
-_this runs the build ( with clean & linting ) and publishes karma-webpack to npm using the latest github tag (created above)_
