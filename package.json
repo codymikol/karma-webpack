@@ -5,13 +5,13 @@
   "description": "Use webpack with karma",
   "license": "MIT",
   "main": "dist/index.js",
-  "homepage": "http://github.com/webpack/karma-webpack",
+  "homepage": "https://github.com/webpack-contrib/karma-webpack",
   "repository": {
     "type": "git",
-    "url": "http://github.com/webpack/karma-webpack"
+    "url": "https://github.com/webpack-contrib/karma-webpack"
   },
   "bugs": {
-    "url": "http://github.com/webpack/karma-webpack/issues"
+    "url": "https://github.com/webpack-contrib/karma-webpack/issues"
   },
   "scripts": {
     "benchmark": "babel-node tests/benchmark",
