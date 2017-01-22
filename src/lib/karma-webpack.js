@@ -33,11 +33,11 @@ function Plugin(
       webpackOptions.entry = function() {
         return {};
       };
-    };
+    }
 
     if (!webpackOptions.output) {
       webpackOptions.output = {};
-    };
+    }
 
     // When using an array, even of length 1, we want to include the index value for the build.
     // This is due to the way that the dev server exposes commonPath for build output.
@@ -190,11 +190,11 @@ Plugin.prototype.readFile = function(file, callback) {
       }, function(err, contents) {
         if (err) {
           return callback(err);
-        };
+        }
         contents = contents.reduce(function(arr, x) {
           if (!arr) {
             return [x];
-          };
+          }
           arr.push(new Buffer('\n'), x);
 
           return arr;
