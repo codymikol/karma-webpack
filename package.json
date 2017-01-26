@@ -18,7 +18,7 @@
     "travis:lint": "npm run lint",
     "release": "standard-version",
     "release:tag:v2": "git push --follow-tags origin v2",
-    "release:publish": "npm run build:release && npm publish --access public --tag",
+    "release:publish": "npm run build:release && npm publish --access public",
     "build:watch": "gulp build.watch",
     "build:release": "gulp",
     "build": "gulp build"
