@@ -29,7 +29,8 @@ function Plugin(
 
     // Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
     // https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
-    if (!webpackOptions.entry) {
+    if (!webpackOptions.entry ||
+        (_.isObject(webpackOptions.entry) && !Object.keys(webpackOptions.entry).length)) {
       webpackOptions.entry = function() {
         return {}
       }
