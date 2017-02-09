@@ -113,7 +113,7 @@ You can use the `karma-sourcemap-loader` to get the source maps generated for yo
 npm install --save-dev karma-sourcemap-loader
 ```
 
-And then add it to your preprocessors
+And then add it to the preprocessors in your Karma config...
 
 ``` javascript
 preprocessors: {
@@ -121,7 +121,16 @@ preprocessors: {
 }
 ```
 
-And tell webpack to generate sourcemaps
+...add it to the plugins...
+
+```javascript
+    plugins: [
+      // ...
+      require('karma-sourcemap-loader')
+    ]
+```
+
+...and tell webpack to generate sourcemaps
 
 ``` javascript
 webpack: {
