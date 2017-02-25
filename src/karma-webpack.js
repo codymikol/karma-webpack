@@ -16,7 +16,8 @@ function Plugin(
 	/* config.files */ files,
 	/* config.frameworks */ frameworks,
 	customFileHandlers,
-	emitter) {
+	emitter
+) {
   webpackOptions = _.clone(webpackOptions) || {}
   webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {}
 
