@@ -62,15 +62,15 @@ function Plugin(
   this.basePath = basePath
   this.waiting = []
 
-  var compiler;
+  var compiler
   try {
-    compiler = webpack(webpackOptions);
+    compiler = webpack(webpackOptions)
   } catch (e) {
-    console.error(e.stack || e);
+    console.error(e.stack || e)
     if (e.details) {
-      console.error(e.details);
+      console.error(e.details)
     }
-    throw e;
+    throw e
   }
 
   var applyPlugins = compiler.compilers || [compiler]
