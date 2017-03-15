@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/webpack/karma-webpack/compare/v2.0.1...v2.0.3) (2017-03-15)
+
+
+### Bug Fixes
+
+* **readFile:** handle path doesn't exist error ([#208](https://github.com/webpack/karma-webpack/issues/208)) ([907ed72](https://github.com/webpack/karma-webpack/commit/907ed72))
+* don't swallow configuration errors ([#232](https://github.com/webpack/karma-webpack/issues/232)) ([4216f13](https://github.com/webpack/karma-webpack/commit/4216f13))
+* readFile on windows ([#226](https://github.com/webpack/karma-webpack/issues/226)) ([cad9f8b](https://github.com/webpack/karma-webpack/commit/cad9f8b))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/webpack/karma-webpack/compare/v2.0.1...v2.0.2) (2017-01-19)
 
