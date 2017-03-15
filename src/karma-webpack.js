@@ -16,7 +16,8 @@ function Plugin(
 	/* config.files */ files,
 	/* config.frameworks */ frameworks,
 	customFileHandlers,
-	emitter) {
+	emitter
+) {
   webpackOptions = _.clone(webpackOptions) || {}
   webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {}
 
@@ -193,7 +194,7 @@ Plugin.prototype.readFile = function(file, callback) {
   var middleware = this.middleware
   var optionsCount = this.optionsCount
 
-  function doRead() {
+  var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
         middleware.fileSystem.readFile('/_karma_webpack_/' + idx + '/' + file.replace(/\\/g, '/'), callback)
@@ -212,20 +213,27 @@ Plugin.prototype.readFile = function(file, callback) {
         callback(null, Buffer.concat(contents))
       })
     } else {
-      middleware.fileSystem.readFile('/_karma_webpack_/' + file.replace(/\\/g, '/'), callback)
-    }
-  }
-  if (!this.waiting) {
-    try {
-      doRead()
-    } catch (e) {
-      // If this is an error from `readFileSync` method, wait for the next tick. Credit #69 @mewdriller
-      if (e.message.substring(0, 20) === "Path doesn't exist '") { // eslint-disable-line quotes
-        this.waiting = [process.nextTick.bind(process, this.readFile.bind(this, file, callback))]
-      } else {
-        throw e
+      try {
+        var fileContents = middleware.fileSystem.readFileSync('/_karma_webpack_/' + file.replace(/\\/g, '/'))
+
+        callback(undefined, fileContents)
+      } catch (e) {
+        // If this is an error from `readFileSync` method, wait for the next tick.
+        // Credit #69 @mewdriller
+        if (e.code === 'ENOENT') {
+          // eslint-disable-line quotes
+          this.waiting = [process.nextTick.bind(process, this.readFile.bind(this, file, callback))]
+
+          // throw otherwise
+        } else {
+          callback(e)
+        }
       }
     }
+  }.bind(this)
+
+  if (!this.waiting) {
+    doRead()
   } else {
     // Retry to read once a build is finished
     // do it on process.nextTick to catch changes while building
