@@ -1,18 +1,3 @@
-[npm]: https://img.shields.io/npm/v/karma-webpack.svg
-[npm-url]: https://npmjs.com/package/karma-webpack
-
-[deps]: https://david-dm.org/webpack/karma-webpack.svg
-[deps-url]: https://david-dm.org/webpack/karma-webpack
-
-[chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
-[chat-url]: https://gitter.im/webpack/webpack
-
-[test]: http://img.shields.io/travis/webpack/karma-webpack.svg
-[test-url]: https://travis-ci.org/webpack/karma-webpack
-
-[cover]: https://codecov.io/gh/webpack/karma-webpack/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack/karma-webpack
-
 [![npm][npm]][npm-url]
 [![deps][deps]][deps-url]
 [![test][test]][test-url]
@@ -166,60 +151,43 @@ the files until the code has finished recompiling.
     <tr>
       <td align="center">
         <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/4650931?v=3&s=150">
+        src="https://avatars3.githubusercontent.com/u/166921?v=3&s=150">
         </br>
-        <a href="https://github.com/MikaAK">Mika Kalathil</a>
+        <a href="https://github.com/bebraw">Juho Vepsäläinen</a>
       </td>
       <td align="center">
         <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/8420490?v=3&s=150">
+        src="https://avatars2.githubusercontent.com/u/8420490?v=3&s=150">
+        </br>
         <a href="https://github.com/d3viant0ne">Joshua Wiens</a>
       </td>
       <td align="center">
-        <img width="150" height="150" src="https://avatars.githubusercontent.com/u/1919664?v=3&s=150">
-        <a href="https://github.com/goldhand">Will Farley</a>
+        <img width="150" height="150"
+        src="https://avatars3.githubusercontent.com/u/533616?v=3&s=150">
+        </br>
+        <a href="https://github.com/SpaceK33z">Kees Kluskens</a>
       </td>
       <td align="center">
         <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/1307954?v=3&s=150">
-        <a href="https://github.com/DanielaValero">Daniela Valero</a>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/122108?v=3&s=150">
-        <a href="https://github.com/jon301">Jonathan Trang</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/3285723?v=3&s=150">
-        <a href="https://github.com/carlos-">Carlos Morales</a>
+        src="https://avatars3.githubusercontent.com/u/3408176?v=3&s=150">
+        </br>
+        <a href="https://github.com/TheLarkInn">Sean Larkin</a>
       </td>
     </tr>
   <tbody>
 </table>
 
-<h2 align="center">LICENSE</h2>
+[npm]: https://img.shields.io/npm/v/karma-webpack.svg
+[npm-url]: https://npmjs.com/package/karma-webpack
 
-> The MIT License (MIT)
+[deps]: https://david-dm.org/webpack/karma-webpack.svg
+[deps-url]: https://david-dm.org/webpack/karma-webpack
 
-> Copyright (c) 2014 - 2016 Tobias Koppers
+[chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
+[chat-url]: https://gitter.im/webpack/webpack
 
-> Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+[test]: http://img.shields.io/travis/webpack/karma-webpack.svg
+[test-url]: https://travis-ci.org/webpack/karma-webpack
 
-> The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+[cover]: https://codecov.io/gh/webpack/karma-webpack/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack/karma-webpack

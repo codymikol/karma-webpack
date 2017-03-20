@@ -1,70 +1,78 @@
 {
   "name": "karma-webpack",
   "version": "2.0.3",
-  "author": "Tobias Koppers @sokra",
+  "author": "Tobias Koppers (@sokra)",
   "description": "Use webpack with karma",
   "license": "MIT",
-  "homepage": "http://github.com/webpack/karma-webpack",
+  "homepage": "http://github.com/webpack-defaults/karma-webpack",
   "scripts": {
-    "gulp": "gulp",
-    "lint": "gulp lint",
-    "clean": "gulp clean",
-    "pretest": "npm run lint",
-    "test": "npm run test.unit",
-    "test.unit": "mocha --compilers js:babel-register --full-trace --check-leaks test/unit",
-    "test.integration": "npm run build && karma start --single-run",
-    "travis": "npm run test.unit && npm run test.integration",
-    "travis:test": "npm run test.unit",
-    "travis:lint": "npm run lint",
-    "release": "standard-version",
-    "release:tag:v2": "git push --follow-tags origin v2",
-    "release:publish": "npm run build:release && npm publish --access public",
-    "build:watch": "gulp build.watch",
-    "build:release": "gulp",
-    "build": "gulp build"
+    "start": "yarn run serve:dev src",
+    "build": "cross-env NODE_ENV=production babel -s true src -d dist --ignore 'src/**/*.test.js'",
+    "clean:dist": "del-cli dist",
+    "lint": "eslint --cache src test",
+    "lint-staged": "lint-staged",
+    "prebuild": "yarn run clean:dist",
+    "prepublish": "yarn run build",
+    "release": "yarn run standard-version",
+    "security": "nsp check",
+    "serve:dev": "nodemon $2 --exec babel-node",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
+    "travis:coverage": "yarn run test:coverage",
+    "travis:lint": "yarn run lint && yarn run security",
+    "travis:test": "yarn run test",
+    "webpack-defaults": "webpack-defaults"
   },
   "files": [
-    "lib",
-    "index.js"
+    "dist"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack/karma-webpack.git"
+    "url": "https://github.com/webpack-defaults/karma-webpack.git"
   },
   "peerDependencies": {
-    "webpack": "^1.1.0 || ^2 || ^2.1.0-beta.0 || ^2.2.0-rc.0"
+    "webpack": "^2.0.0"
   },
   "dependencies": {
-    "async": "~0.9.0",
-    "loader-utils": "^0.2.5",
-    "lodash": "^3.8.0",
-    "source-map": "^0.1.41",
-    "webpack-dev-middleware": "^1.0.11"
+    "async": "~2.1.5",
+    "chalk": "^1.1.3",
+    "loader-utils": "^1.1.0",
+    "lodash": "^4.17.4",
+    "source-map": "^0.5.6",
+    "webpack-dev-middleware": "^1.10.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.11.4",
-    "babel-plugin-transform-runtime": "^6.12.0",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-stage-2": "^6.11.0",
-    "babel-register": "^6.11.6",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
-    "del": "^2.2.1",
-    "eslint": "^3.1.1",
-    "eslint-plugin-babel": "^3.3.0",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1",
-    "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.9",
-    "istanbul": "^0.4.4",
+    "babel-cli": "^6.24.0",
+    "babel-jest": "^19.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.2.2",
+    "cross-env": "^3.2.4",
+    "del-cli": "^0.2.1",
+    "eslint": "^3.18.0",
+    "eslint-config-webpack": "^1.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "jest": "^19.0.2",
     "karma": "^1.x",
     "karma-chrome-launcher": "~1.0.1",
-    "karma-mocha": "~1.1.1",
     "karma-spec-reporter": "~0.0.22",
-    "mocha": "^2.5.3",
-    "standard-version": "^4.0.0"
+    "lint-staged": "^3.4.0",
+    "nodemon": "^1.11.0",
+    "nsp": "^2.6.3",
+    "pre-commit": "^1.2.2",
+    "standard-version": "^4.0.0",
+    "webpack-defaults": "^0.4.2"
+  },
+  "engines": {
+    "node": ">=4.3 <5.0.0 || >=5.10"
+  },
+  "main": "dist/cjs.js",
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
