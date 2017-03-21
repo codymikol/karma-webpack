@@ -64,6 +64,7 @@ function Plugin(
   this.waiting = []
 
   var compiler
+
   try {
     compiler = webpack(webpackOptions)
   } catch (e) {
@@ -125,6 +126,15 @@ function Plugin(
       blocked[i]()
     }
     blocked = []
+
+    stats.compilation.warnings.forEach(warn => {
+      warn.file ? console.warn(`WARNING in ./${path.relative('', warn.file)}`) :
+        console.warn(warn.message || warn)
+    })
+
+    if (stats.compilation.errors.length > 0) {
+      throw new Error(stats.compilation.errors.map((err) => err.message || err))
+    }
   }.bind(this))
   compiler.plugin('invalid', function() {
     if (!this.waiting) {
@@ -175,7 +185,10 @@ Plugin.prototype.make = function(compilation, callback) {
 
     var dep = new SingleEntryDependency(entry)
 
-    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function() {
+    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function(err) {
+      if (err) {
+        return callback(err)
+      }
       // If the module fails because of an File not found error, remove the test file
       if (dep.module && dep.module.error &&
         dep.module.error.error &&
