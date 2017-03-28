@@ -125,6 +125,16 @@ function Plugin(
       blocked[i]()
     }
     blocked = []
+
+    if (stats.hasErrors() && stats.compilation.errors.length) {
+      stats.stats = [{
+        toJson: () => {
+          return this
+        },
+        assets: []
+      }]
+      throw new Error(stats.compilation.errors.map((err) => err.message || err))
+    }
   }.bind(this))
   compiler.plugin('invalid', function() {
     if (!this.waiting) {
@@ -175,7 +185,10 @@ Plugin.prototype.make = function(compilation, callback) {
 
     var dep = new SingleEntryDependency(entry)
 
-    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function() {
+    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function(err) {
+      if (err) {
+        return callback(err)
+      }
       // If the module fails because of an File not found error, remove the test file
       if (dep.module && dep.module.error &&
         dep.module.error.error &&
