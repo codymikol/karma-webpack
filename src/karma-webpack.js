@@ -15,6 +15,7 @@ function Plugin(
 	/* config.basePath */ basePath,
 	/* config.files */ files,
 	/* config.frameworks */ frameworks,
+	/* config.singleRun */ singleRun,
 	customFileHandlers,
 	emitter
 ) {
@@ -26,7 +27,7 @@ function Plugin(
 
   applyOptions.forEach(function(webpackOptions, index) {
     // The webpack tier owns the watch behavior so we want to force it in the config
-    webpackOptions.watch = true
+    webpackOptions.watch = !singleRun
 
     // Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
     // https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
