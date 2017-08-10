@@ -12,7 +12,7 @@ describe('Plugin', function() {
           cb(new Error('test error'))
         }
       }
-      var Plugin = new webpackPlugin[1]({}, {}, {}, '', [], [], [], emitterMock)
+      var Plugin = new webpackPlugin[1]({}, {}, {}, '', [], [], true, [], emitterMock)
 
       Plugin.addFile('test.js')
       Plugin.make(compilationMock, function(err) {
