@@ -175,7 +175,7 @@ Plugin.prototype.make = function(compilation, callback) {
 
     var dep = new SingleEntryDependency(entry)
 
-    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function() {
+    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function(err) {
       // If the module fails because of an File not found error, remove the test file
       if (dep.module && dep.module.error &&
         dep.module.error.error &&
@@ -185,7 +185,7 @@ Plugin.prototype.make = function(compilation, callback) {
         })
         this.middleware.invalidate()
       }
-      callback()
+      callback(err)
     }.bind(this))
   }.bind(this), callback)
 }
