@@ -62,6 +62,8 @@ function Plugin(
   this.files = []
   this.basePath = basePath
   this.waiting = []
+	this.hotFiles = []
+	this.failedFiles = []
 
   var compiler
   try {
@@ -94,6 +96,36 @@ function Plugin(
   })
 
   compiler.plugin('done', function(stats) {
+		function isBuilt(module) { return module.rawRequest && module.built; }
+		function getId(module) { return module.rawRequest; }
+		function setTrue(acc, key) { acc[key] = true; return acc; }
+
+		var affectedFiles = stats.compilation.modules
+		  .filter(isBuilt)
+			.map(getId)
+			.reduce(setTrue, {})
+		var seen = {};
+
+		function findAffected(module) {
+			if (seen[module.rawRequest]) return;
+			seen[module.rawRequest] = true;
+
+			if (affectedFiles[module.rawRequest]) return;
+			if (!module.dependencies) return;
+			if (!module.rawRequest) return;
+
+			module.dependencies.forEach(function (dependency) {
+				if (!dependency.module) return;
+
+				findAffected(dependency.module);
+				if (affectedFiles[dependency.module.rawRequest]) {
+					affectedFiles[module.rawRequest] = true;
+				}
+			});
+		}
+		stats.compilation.modules.forEach(findAffected);
+		this.hotFiles = Object.keys(affectedFiles);
+
     var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats]
     var assets = []
     var noAssets = false
@@ -144,6 +176,14 @@ function Plugin(
       })
     }
   })
+
+	emitter.on("run_complete", function(args) {
+		if (args.getResults().failed) {
+			[].push.apply(this.failedFiles, this.hotFiles);
+		} else {
+			this.failedFiles = [];
+		}
+	}.bind(this));
 
   emitter.on('exit', function(done) {
     middleware.close()
@@ -216,7 +256,16 @@ Plugin.prototype.readFile = function(file, callback) {
       try {
         var fileContents = middleware.fileSystem.readFileSync('/_karma_webpack_/' + file.replace(/\\/g, '/'))
 
-        callback(undefined, fileContents)
+				function getSourceMap(content) {
+					function parseSourceMap(sourceMapContent) {
+						var sourceMap = JSON.parse(sourceMapContent);
+						callback(undefined, content, sourceMap);
+					}
+
+					const sourceMapContent = middleware.fileSystem.readFileSync("/_karma_webpack_/" + file.replace(/\\/g, "/") + ".map");
+					parseSourceMap(sourceMapContent)
+				}
+        getSourceMap(fileContents)
       } catch (e) {
         // If this is an error from `readFileSync` method, wait for the next tick.
         // Credit #69 @mewdriller
@@ -249,12 +298,19 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
     }
 
     // read blocks until bundle is done
-    webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
+    webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content, sourceMap) {
       if (err) {
         throw err
       }
 
-      done(err, content && content.toString())
+			file.sourceMap = sourceMap
+
+			function addManifest(content) {
+				var hotFiles = JSON.stringify(webpackPlugin.hotFiles.concat(webpackPlugin.failedFiles));
+			  return content.replace(/__karmaWebpackManifest__\s*=\s*\[\s*\]/gm, "__karmaWebpackManifest__=" + hotFiles)
+			}
+
+      done(err, content && addManifest(content.toString()))
     })
   }
 }
