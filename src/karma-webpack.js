@@ -244,13 +244,13 @@ Plugin.prototype.readFile = function(file, callback) {
 
 function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
   return function(content, file, done) {
-    if (webpackPlugin.addFile(file.path)) {
+    if (webpackPlugin.addFile(file.originalPath)) {
       // recompile as we have an asset that we have not seen before
       webpackPlugin.middleware.invalidate()
     }
 
     // read blocks until bundle is done
-    webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
+    webpackPlugin.readFile(path.relative(basePath, file.originalPath), function(err, content) {
       if (err) {
         throw err
       }
