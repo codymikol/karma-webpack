@@ -2,22 +2,22 @@ sudo: false
 language: node_js
 branches:
   only:
-    - v2
+    - master
 matrix:
   fast_finish: true
   include:
     - os: linux
-      node_js: "7"
-      env: WEBPACK_VERSION="2.2.0" JOB_PART=lint
+      node_js: "8"
+      env: WEBPACK_VERSION="3.6.0" JOB_PART=lint
     - os: linux
       node_js: "6"
-      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+      env: WEBPACK_VERSION="3.6.0" JOB_PART=test
     - os: linux
       node_js: "4.7"
-      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+      env: WEBPACK_VERSION="3.6.0" JOB_PART=test
     - os: linux
-      node_js: "7"
-      env: WEBPACK_VERSION="2.2.0" JOB_PART=test
+      node_js: "8"
+      env: WEBPACK_VERSION="3.6.0" JOB_PART=test
 before_install:
   - nvm --version
   - node --version
