@@ -1,17 +1,17 @@
 [npm]: https://img.shields.io/npm/v/karma-webpack.svg
 [npm-url]: https://npmjs.com/package/karma-webpack
 
-[deps]: https://david-dm.org/webpack/karma-webpack.svg
-[deps-url]: https://david-dm.org/webpack/karma-webpack
+[deps]: https://david-dm.org/webpack-contrib/karma-webpack.svg
+[deps-url]: https://david-dm.org/webpack-contrib/karma-webpack
 
 [chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
 [chat-url]: https://gitter.im/webpack/webpack
 
-[test]: http://img.shields.io/travis/webpack/karma-webpack.svg
-[test-url]: https://travis-ci.org/webpack/karma-webpack
+[test]: http://img.shields.io/travis/webpack-contrib/karma-webpack.svg
+[test-url]: https://travis-ci.org/webpack-contrib/karma-webpack
 
-[cover]: https://codecov.io/gh/webpack/karma-webpack/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack/karma-webpack
+[cover]: https://codecov.io/gh/webpack-contrib/karma-webpack/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack-contrib/karma-webpack
 
 [![npm][npm]][npm-url]
 [![deps][deps]][deps-url]
