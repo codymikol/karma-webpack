@@ -103,7 +103,7 @@ var testsContext = require.context(".", true, /_test$/);
 testsContext.keys().forEach(testsContext);
 ```
 
-Every test file is required using the [require.context](http://webpack.github.io/docs/context.html#require-context) and compiled with webpack into one test bundle.
+Every test file is required using the [require.context](https://webpack.js.org/guides/dependency-management/#require-context) and compiled with webpack into one test bundle.
 
 <h2 align="center">Source Maps</h2>
 
