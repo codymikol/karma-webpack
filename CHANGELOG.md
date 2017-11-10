@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/webpack/karma-webpack/compare/v2.0.5...v2.0.6) (2017-11-10)
+
+
+### Bug Fixes
+
+* work with sourcemaps when mocha is wrapped ([#237](https://github.com/webpack/karma-webpack/issues/237)) ([#238](https://github.com/webpack/karma-webpack/issues/238)) ([c952bcd](https://github.com/webpack/karma-webpack/commit/c952bcd))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/webpack/karma-webpack/compare/v2.0.4...v2.0.5) (2017-10-08)
 
