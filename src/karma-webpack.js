@@ -175,7 +175,7 @@ Plugin.prototype.make = function(compilation, callback) {
 
     var dep = new SingleEntryDependency(entry)
 
-    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function() {
+    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function(err) {
       // If the module fails because of an File not found error, remove the test file
       if (dep.module && dep.module.error &&
         dep.module.error.error &&
@@ -185,7 +185,7 @@ Plugin.prototype.make = function(compilation, callback) {
         })
         this.middleware.invalidate()
       }
-      callback()
+      callback(err)
     }.bind(this))
   }.bind(this), callback)
 }
@@ -243,13 +243,13 @@ Plugin.prototype.readFile = function(file, callback) {
 
 function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
   return function(content, file, done) {
-    if (webpackPlugin.addFile(file.path)) {
+    if (webpackPlugin.addFile(file.originalPath)) {
       // recompile as we have an asset that we have not seen before
       webpackPlugin.middleware.invalidate()
     }
 
     // read blocks until bundle is done
-    webpackPlugin.readFile(path.relative(basePath, file.path), function(err, content) {
+    webpackPlugin.readFile(path.relative(basePath, file.originalPath), function(err, content) {
       if (err) {
         throw err
       }
