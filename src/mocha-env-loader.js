@@ -1,6 +1,8 @@
-//var path = require('path')
-var SourceNode = require('source-map').SourceNode
+var sourceMap = require('source-map')
 var loaderUtils = require('loader-utils')
+
+var SourceNode = sourceMap.SourceNode
+var SourceMapConsumer = sourceMap.SourceMapConsumer
 
 module.exports = function(content, map) {
   this.cacheable()
@@ -9,11 +11,11 @@ module.exports = function(content, map) {
   var id = this.options.name
 
   if (!id) {
-    this.callback(null, content, map)
+    return this.callback(null, content, map)
   }
 
   if (map) {
-    sourceNode = SourceNode.fromSourceWithMap(content, map)
+    sourceNode = SourceNode.fromStringWithSourceMap(content, new SourceMapConsumer(map))
   } else {
     var fileName = loaderUtils.getRemainingRequest(this)
 
