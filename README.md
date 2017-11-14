@@ -102,7 +102,7 @@ preprocessors: {
 var testsContext = require.context(".", true, /_test$/);
 testsContext.keys().forEach(testsContext);
 ```
-If you want to have an easy way of determining what file the test in that failed.
+If you want to have an easy way of determining what file in which the test failed.
 
 ```js
 
