@@ -102,6 +102,19 @@ preprocessors: {
 var testsContext = require.context(".", true, /_test$/);
 testsContext.keys().forEach(testsContext);
 ```
+If you want to have an easy way of determining what file the test in that failed.
+
+```js
+
+(tc => tc.keys().forEach(key => {
+    describe(`running file ${key}`, function () {
+        tc(key);
+    });
+}))(require.context(".", true, /_test\.jsx?$/));
+
+
+```
+
 
 Every test file is required using the [require.context](https://webpack.js.org/guides/dependency-management/#require-context) and compiled with webpack into one test bundle.
 
