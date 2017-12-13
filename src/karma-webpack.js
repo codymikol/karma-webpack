@@ -1,3 +1,4 @@
+var os = require('os')
 var _ = require('lodash')
 var path = require('path')
 var async = require('async')
@@ -47,8 +48,8 @@ function Plugin(
 
     // Must have the common _karma_webpack_ prefix on path here to avoid
     // https://github.com/webpack/webpack/issues/645
-    webpackOptions.output.path = '/_karma_webpack_/' + indexPath
-    webpackOptions.output.publicPath = '/_karma_webpack_/' + publicPath
+    webpackOptions.output.path = path.join(os.tmpdir(), '_karma_webpack_', indexPath)
+    webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath)
     webpackOptions.output.filename = '[name]'
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = 'webpackJsonp' + index
@@ -132,11 +133,11 @@ function Plugin(
     }
   }.bind(this))
 
-  webpackMiddlewareOptions.publicPath = '/_karma_webpack_/'
+  webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_')
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
 
   customFileHandlers.push({
-    urlRegex: /^\/_karma_webpack_\/.*/,
+    urlRegex: new RegExp('^' + os.tmpdir() + '\/_karma_webpack_\/.*/'),
     handler: function(req, res) {
       middleware(req, res, function() {
         res.statusCode = 404
@@ -197,7 +198,7 @@ Plugin.prototype.readFile = function(file, callback) {
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile('/_karma_webpack_/' + idx + '/' + file.replace(/\\/g, '/'), callback)
+        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', idx, file.replace(/\\/g, '/')), callback)
       }, function(err, contents) {
         if (err) {
           return callback(err)
@@ -214,7 +215,7 @@ Plugin.prototype.readFile = function(file, callback) {
       })
     } else {
       try {
-        var fileContents = middleware.fileSystem.readFileSync('/_karma_webpack_/' + file.replace(/\\/g, '/'))
+        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', file.replace(/\\/g, '/')))
 
         callback(undefined, fileContents)
       } catch (e) {
