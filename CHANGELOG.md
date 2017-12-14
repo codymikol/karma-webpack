@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.8"></a>
+## [2.0.8](https://github.com/webpack/karma-webpack/compare/v2.0.7...v2.0.8) (2017-12-14)
+
+
+### Bug Fixes
+
+* use `os.tmpdir()` to safely store `_karma_webpack_` ([#279](https://github.com/webpack/karma-webpack/issues/279)) ([0616dda](https://github.com/webpack/karma-webpack/commit/0616dda))
+
+
+
+<a name="2.0.7"></a>
+## [2.0.7](https://github.com/webpack/karma-webpack/compare/v2.0.6...v2.0.7) (2017-12-14)
+
+
+`DEPRECATED due to publishing issue`
+
+
+
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/webpack/karma-webpack/compare/v2.0.5...v2.0.6) (2017-11-10)
+
+
+### Bug Fixes
+
+* work with sourcemaps when mocha is wrapped ([#237](https://github.com/webpack/karma-webpack/issues/237)) ([#238](https://github.com/webpack/karma-webpack/issues/238)) ([c952bcd](https://github.com/webpack/karma-webpack/commit/c952bcd))
+
+
+
+<a name="2.0.5"></a>
+## [2.0.5](https://github.com/webpack/karma-webpack/compare/v2.0.4...v2.0.5) (2017-10-08)
+
+
+### Bug Fixes
+
+* pass on error to callback for better error messages ([#262](https://github.com/webpack/karma-webpack/issues/262)) ([466581f](https://github.com/webpack/karma-webpack/commit/466581f))
+* use `file.originalPath` instead of `file.path` ([#218](https://github.com/webpack/karma-webpack/issues/218)) ([0d075b0](https://github.com/webpack/karma-webpack/commit/0d075b0))
+
+
+
 <a name="2.0.4"></a>
 ## [2.0.4](https://github.com/webpack/karma-webpack/compare/v2.0.3...v2.0.4) (2017-07-07)
 
