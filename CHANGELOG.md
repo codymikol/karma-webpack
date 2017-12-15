@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.9"></a>
+## [2.0.9](https://github.com/webpack/karma-webpack/compare/v2.0.8...v2.0.9) (2017-12-14)
+
+
+### Bug Fixes
+
+* ensure webpack paths include a trailing slash ([#285](https://github.com/webpack/karma-webpack/issues/285)) ([be2b0e8](https://github.com/webpack/karma-webpack/commit/be2b0e8)), closes [#284](https://github.com/webpack/karma-webpack/issues/284)
+
+
+
 <a name="2.0.8"></a>
 ## [2.0.8](https://github.com/webpack/karma-webpack/compare/v2.0.7...v2.0.8) (2017-12-14)
 

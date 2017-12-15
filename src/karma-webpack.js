@@ -49,8 +49,8 @@ function Plugin(
 
     // Must have the common _karma_webpack_ prefix on path here to avoid
     // https://github.com/webpack/webpack/issues/645
-    webpackOptions.output.path = path.join(os.tmpdir(), '_karma_webpack_', indexPath)
-    webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath)
+    webpackOptions.output.path = path.join(os.tmpdir(), '_karma_webpack_', indexPath, '/')
+    webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath, '/')
     webpackOptions.output.filename = '[name]'
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = 'webpackJsonp' + index
@@ -134,7 +134,7 @@ function Plugin(
     }
   }.bind(this))
 
-  webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_')
+  webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_', '/')
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
 
   customFileHandlers.push({
