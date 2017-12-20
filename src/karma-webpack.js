@@ -9,6 +9,11 @@ var SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDepende
 var blocked = []
 var isBlocked = false
 
+var escapeForRegExp = function(str) {
+  // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
+}
+
 function Plugin(
 	/* config.webpack */ webpackOptions,
 	/* config.webpackServer */ webpackServerOptions,
@@ -138,7 +143,7 @@ function Plugin(
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
 
   customFileHandlers.push({
-    urlRegex: new RegExp('^' + os.tmpdir() + '\/_karma_webpack_\/.*/'),
+    urlRegex: new RegExp('^' + escapeForRegExp(webpackMiddlewareOptions.publicPath) + '.*'),
     handler: function(req, res) {
       middleware(req, res, function() {
         res.statusCode = 404
