@@ -138,7 +138,7 @@ function Plugin(
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
 
   customFileHandlers.push({
-    urlRegex: new RegExp('^' + os.tmpdir() + '\/_karma_webpack_\/.*/'),
+    urlRegex: new RegExp('^' + os.tmpdir() + '\/_karma_webpack_\/.*/?'),
     handler: function(req, res) {
       middleware(req, res, function() {
         res.statusCode = 404
