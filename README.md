@@ -1,19 +1,5 @@
-[npm]: https://img.shields.io/npm/v/karma-webpack.svg
-[npm-url]: https://npmjs.com/package/karma-webpack
-
-[deps]: https://david-dm.org/webpack-contrib/karma-webpack.svg
-[deps-url]: https://david-dm.org/webpack-contrib/karma-webpack
-
-[chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
-[chat-url]: https://gitter.im/webpack/webpack
-
-[test]: http://img.shields.io/travis/webpack-contrib/karma-webpack.svg
-[test-url]: https://travis-ci.org/webpack-contrib/karma-webpack
-
-[cover]: https://codecov.io/gh/webpack-contrib/karma-webpack/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack-contrib/karma-webpack
-
 [![npm][npm]][npm-url]
+[![node][node]][node-url]
 [![deps][deps]][deps-url]
 [![test][test]][test-url]
 [![coverage][cover]][cover-url]
@@ -21,12 +7,12 @@
 
 <div align="center">
   <a href='https://github.com/karma-runner/karma'>
-    <img width="200" height="200" vspace="20" hspace="25"
+    <img width="180" height="180"
       src="https://worldvectorlogo.com/logos/karma.svg">
   </a>
   <a href="https://github.com/webpack/webpack">
-    <img width="200" height="200" vspace="40" hspace="25"
-      src="https://worldvectorlogo.com/logos/webpack.svg">
+    <img width="200" height="200"
+      src="https://cdn.rawgit.com/webpack/media/e7485eb2/logo/icon.svg">
   </a>
   <h1>Karma Webpack</h1>
   <p>Use webpack to preprocess files in karma<p>
@@ -40,22 +26,22 @@ npm i -D karma-webpack
 
 <h2 align="center">Usage</h2>
 
-``` javascript
-// Karma configuration
-module.exports = function(config) {
+**karma.conf.js**
+```js
+module.exports = (config) => {
   config.set({
     // ... normal karma configuration
     files: [
       // all files ending in "_test"
-      {pattern: 'test/*_test.js', watched: false},
-      {pattern: 'test/**/*_test.js', watched: false}
+      { pattern: 'test/*_test.js', watched: false },
+      { pattern: 'test/**/*_test.js', watched: false }
       // each file acts as entry point for the webpack configuration
     ],
 
     preprocessors: {
       // add webpack as preprocessor
-      'test/*_test.js': ['webpack'],
-      'test/**/*_test.js': ['webpack']
+      'test/*_test.js': [ 'webpack' ],
+      'test/**/*_test.js': [ 'webpack' ]
     },
 
     webpack: {
@@ -71,59 +57,62 @@ module.exports = function(config) {
       // i. e.
       stats: 'errors-only'
     }
-  });
-};
+  })
+}
 ```
 
-<h3 align="center">Alternative Usage</h3>
+### `Alternative Usage`
 
 This configuration is more performant, but you cannot run single test anymore (only the complete suite).
 
-The above configuration generates a webpack bundle for each test. For many testcases this can result in many big files. The alterative configuration creates a single bundle with all testcases.
+The above configuration generates a `webpack` bundle for each test. For many test cases this can result in many big files. The alternative configuration creates a single bundle with all test cases.
 
-``` javascript
+**karma.conf.js**
+```js
 files: [
   // only specify one entry point
   // and require all tests in there
-  'test/test_index.js'
+  'test/index_test.js'
 ],
 
 preprocessors: {
   // add webpack as preprocessor
-  'test/test_index.js': ['webpack']
+  'test/index_test.js': [ 'webpack' ]
 },
 ```
 
-``` javascript
-// test/test_index.js
-
+**test/index_test.js**
+```js
 // require all modules ending in "_test" from the
 // current directory and all subdirectories
-var testsContext = require.context(".", true, /_test$/);
-testsContext.keys().forEach(testsContext);
+const testsContext = require.context(".", true, /_test$/)
+
+testsContext.keys().forEach(testsContext)
 ```
 
 Every test file is required using the [require.context](https://webpack.js.org/guides/dependency-management/#require-context) and compiled with webpack into one test bundle.
 
-<h2 align="center">Source Maps</h2>
+### `Source Maps`
 
 You can use the `karma-sourcemap-loader` to get the source maps generated for your test bundle.
 
-```
-npm install --save-dev karma-sourcemap-loader
+```bash
+npm i -D karma-sourcemap-loader
 ```
 
-And then add it to your preprocessors
+And then add it to your preprocessors.
 
-``` javascript
+**karma.conf.js**
+```js
 preprocessors: {
-  'test/test_index.js': ['webpack', 'sourcemap']
+  'test/test_index.js': [ 'webpack', 'sourcemap' ]
 }
 ```
 
-And tell webpack to generate sourcemaps
+And tell `webpack` to generate sourcemaps.
 
-``` javascript
+**webpack.config.js**
+```js
 webpack: {
   // ...
   devtool: 'inline-source-map'
@@ -132,22 +121,28 @@ webpack: {
 
 <h2 align="center">Options</h2>
 
-This is the full list of options you can specify in your Karma config.
+This is the full list of options you can specify in your `karma.conf.js`
+
+|Name|Type|Default|Description|
+|:--:|:--:|:-----:|:----------|
+|[**`webpack`**](#webpack)|`{Object}`|`{}`|Pass `webpack.config.js` to `karma`|
+|[**`webpackMiddleware`**](#webpackmiddleware)|`{Object}`|`{}`|Pass `webpack-dev-middleware` configuration to `karma`|
+|[**`beforeMiddleware`**](#beforemiddleware)|`{Object}`|`{}`|Pass custom middleware configuration to `karma`, **before** any `karma` middleware runs|
 
 ### `webpack`
 
-Webpack configuration.
+`webpack` configuration (`webpack.config.js`).
 
 ### `webpackMiddleware`
 
-Configuration for webpack-dev-middleware.
+Configuration for `webpack-dev-middleware`.
 
 ### `beforeMiddleware`
 
-`beforeMiddleware` is a webpack option that allows injecting middleware before
-karma's own middleware are run. This loader provides a `webpackBlocker`
+`beforeMiddleware` is a `webpack` option that allows injecting middleware before
+karma's own middleware runs. This loader provides a `webpackBlocker`
 middleware that will block tests from running until code recompiles. That is,
-given this scenario:
+given this scenario
 
 1. Have a browser open on the karma debug page (http://localhost:9876/debug.html)
 2. Make a code change
@@ -157,7 +152,7 @@ Without the `webpackBlocker` middleware karma will serve files from before
 the code change. With the `webpackBlocker` middleware the loader will not serve
 the files until the code has finished recompiling.
 
-***Note that the `beforeMiddleware` option is only supported in karma with version >1.0.***
+> **⚠️ The `beforeMiddleware` option is only supported in `karma >= v1.0.0`**
 
 <h2 align="center">Maintainers</h2>
 
@@ -200,26 +195,21 @@ the files until the code has finished recompiling.
   <tbody>
 </table>
 
-<h2 align="center">LICENSE</h2>
 
-> The MIT License (MIT)
+[npm]: https://img.shields.io/npm/v/karma-webpack.svg
+[npm-url]: https://npmjs.com/package/karma-webpack
 
-> Copyright (c) 2014 - 2016 Tobias Koppers
+[node]: https://img.shields.io/node/v/karma-webpack.svg
+[node-url]: https://nodejs.org
 
-> Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+[deps]: https://david-dm.org/webpack-contrib/karma-webpack.svg
+[deps-url]: https://david-dm.org/webpack-contrib/karma-webpack
 
-> The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+[chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
+[chat-url]: https://gitter.im/webpack/webpack
 
-> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+[test]: http://img.shields.io/travis/webpack-contrib/karma-webpack.svg
+[test-url]: https://travis-ci.org/webpack-contrib/karma-webpack
+
+[cover]: https://codecov.io/gh/webpack-contrib/karma-webpack/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack-contrib/karma-webpack
