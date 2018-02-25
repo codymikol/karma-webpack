@@ -199,7 +199,7 @@ Plugin.prototype.readFile = function(file, callback) {
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', idx, file.replace(/\\/g, '/')), callback)
+        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), file.replace(/\\/g, '/')), callback)
       }, function(err, contents) {
         if (err) {
           return callback(err)
