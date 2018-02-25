@@ -1,6 +1,6 @@
 {
   "name": "karma-webpack",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "author": "Tobias Koppers @sokra",
   "description": "Use webpack with karma",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "lib"
   ],
   "scripts": {
-    "start": "nom run build -- -w",
+    "start": "npm run build -- -w",
     "lint": "eslint --cache src test",
     "clean": "del-cli lib",
     "build": "cross-env NODE_ENV=production babel src -d lib --ignore 'src/**/*.test.js' --copy-files",

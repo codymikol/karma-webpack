@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.10"></a>
+## [2.0.10](https://github.com/webpac-contrib/karma-webpack/compare/v2.0.9...v2.0.10) (2018-02-25)
+
+
+### Bug Fixes
+
+* **karma-webpack:** correctly coalesce `idx` (`{Number}`) in filepaths ([#287](https://github.com/webpac-contrib/karma-webpack/issues/287)) ([5fa2409](https://github.com/webpac-contrib/karma-webpack/commit/5fa2409))
+* correctly escape `{Regex}` in custom file handler ([#293](https://github.com/webpac-contrib/karma-webpack/issues/293)) ([906ed52](https://github.com/webpac-contrib/karma-webpack/commit/906ed52))
+* disable `webpack` rebuilds on karma `--single-run` ([41d1912](https://github.com/webpac-contrib/karma-webpack/commit/41d1912))
+* **package:** add `webpack >= v4.0.0` (`peerDependencies`) ([#301](https://github.com/webpac-contrib/karma-webpack/issues/301)) ([99ddad8](https://github.com/webpac-contrib/karma-webpack/commit/99ddad8))
+
+
+
 <a name="2.0.9"></a>
 ## [2.0.9](https://github.com/webpack/karma-webpack/compare/v2.0.8...v2.0.9) (2017-12-14)
 
