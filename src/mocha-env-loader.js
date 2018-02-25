@@ -21,7 +21,7 @@ module.exports = function(content, map) {
 
     sourceNode = new SourceNode(null, null, null)
     content.split('\n').forEach(function(line, idx) {
-      sourceNode.add(new SourceNode(idx + 1, 0, fileName, line + '\n'))
+      sourceNode.add(new SourceNode(idx + 1, 0, fileName, `${line}\n`))
     })
     sourceNode.setSourceContent(fileName, content)
   }
@@ -29,7 +29,7 @@ module.exports = function(content, map) {
   var concatSrc = new SourceNode()
 
   concatSrc.add([
-    'describe(' + JSON.stringify(id) + ', function() {\n', sourceNode, '\n});'
+    `describe(${JSON.stringify(id)}, function() {\n`, sourceNode, '\n});'
   ])
 
   var result = concatSrc.toStringWithSourceMap()
