@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.11"></a>
+## [2.0.11](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.10...v2.0.11) (2018-02-25)
+
+
+### Bug Fixes
+
+* **package:** add `main` field ([#306](https://github.com/webpack-contrib/karma-webpack/issues/306)) ([4f5ba3b](https://github.com/webpack-contrib/karma-webpack/commit/4f5ba3b))
+* **package:** repository URL typo ([#304](https://github.com/webpack-contrib/karma-webpack/issues/304)) ([2338510](https://github.com/webpack-contrib/karma-webpack/commit/2338510))
+
+
+
 <a name="2.0.10"></a>
 ## [2.0.10](https://github.com/webpac-contrib/karma-webpack/compare/v2.0.9...v2.0.10) (2018-02-25)
 
