@@ -19,7 +19,7 @@
     "release": "standard-version",
     "release:publish": "npm run build:release && npm publish --access public",
     "build:watch": "gulp build.watch",
-    "build:release": "gulp",
+    "build:release": "BABEL_ENV=production gulp",
     "build": "gulp build"
   },
   "files": [
