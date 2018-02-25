@@ -1,3 +1,9 @@
+/* eslint-disable
+  max-len,
+  no-console,
+  func-style,
+*/
+
 var os = require('os')
 var _ = require('lodash')
 var path = require('path')
@@ -15,15 +21,15 @@ var escapeRegExp = function(str) {
 }
 
 function Plugin(
-	/* config.webpack */ webpackOptions,
-	/* config.webpackServer */ webpackServerOptions,
-	/* config.webpackMiddleware */ webpackMiddlewareOptions,
-	/* config.basePath */ basePath,
-	/* config.files */ files,
-	/* config.frameworks */ frameworks,
-	/* config.singleRun */ singleRun,
-	customFileHandlers,
-	emitter
+  /* config.webpack */ webpackOptions,
+  /* config.webpackServer */ webpackServerOptions,
+  /* config.webpackMiddleware */ webpackMiddlewareOptions,
+  /* config.basePath */ basePath,
+  /* config.files */ files,
+  /* config.frameworks */ frameworks,
+  /* config.singleRun */ singleRun,
+  customFileHandlers,
+  emitter
 ) {
   webpackOptions = _.clone(webpackOptions) || {}
   webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {}
@@ -49,8 +55,8 @@ function Plugin(
 
     // When using an array, even of length 1, we want to include the index value for the build.
     // This is due to the way that the dev server exposes commonPath for build output.
-    var indexPath = includeIndex ? index + '/' : ''
-    var publicPath = indexPath !== '' ? indexPath + '/' : ''
+    var indexPath = includeIndex ? `${index}/` : ''
+    var publicPath = indexPath !== '' ? `${indexPath}/` : ''
 
     // Must have the common _karma_webpack_ prefix on path here to avoid
     // https://github.com/webpack/webpack/issues/645
@@ -58,7 +64,7 @@ function Plugin(
     webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath, '/')
     webpackOptions.output.filename = '[name]'
     if (includeIndex) {
-      webpackOptions.output.jsonpFunction = 'webpackJsonp' + index
+      webpackOptions.output.jsonpFunction = `webpackJsonp${index}`
     }
     webpackOptions.output.chunkFilename = '[id].bundle.js'
   })
@@ -71,6 +77,7 @@ function Plugin(
   this.waiting = []
 
   var compiler
+
   try {
     compiler = webpack(webpackOptions)
   } catch (e) {
@@ -108,7 +115,7 @@ function Plugin(
     applyStats.forEach(function(stats) {
       stats = stats.toJson()
 
-      assets.push.apply(assets, stats.assets)
+      assets.push(...stats.assets)
       if (stats.assets.length === 0) {
         noAssets = true
       }
@@ -143,8 +150,8 @@ function Plugin(
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
 
   customFileHandlers.push({
-    urlRegex: new RegExp('^' + escapeRegExp(webpackMiddlewareOptions.publicPath) + '.*'),
-    handler: function(req, res) {
+    urlRegex: new RegExp(`^${escapeRegExp(webpackMiddlewareOptions.publicPath)}.*`),
+    handler(req, res) {
       middleware(req, res, function() {
         res.statusCode = 404
         res.end('Not found')
@@ -177,7 +184,7 @@ Plugin.prototype.make = function(compilation, callback) {
     var entry = file
 
     if (this.wrapMocha) {
-      entry = require.resolve('./mocha-env-loader') + '!' + entry
+      entry = `${require.resolve('./mocha-env-loader')}!${entry}`
     }
 
     var dep = new SingleEntryDependency(entry)
