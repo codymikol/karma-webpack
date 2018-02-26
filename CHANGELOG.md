@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.12"></a>
+## [2.0.12](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.11...v2.0.12) (2018-02-26)
+
+
+### Bug Fixes
+
+* **package:** add `babel-runtime` (`devDependencies`) ([#310](https://github.com/webpack-contrib/karma-webpack/issues/310)) ([6d5fa1c](https://github.com/webpack-contrib/karma-webpack/commit/6d5fa1c))
+* **package:** downgrade `source-map` v0.7.0...0.5.6 ([#309](https://github.com/webpack-contrib/karma-webpack/issues/309)) ([070e04e](https://github.com/webpack-contrib/karma-webpack/commit/070e04e))
+
+
+
 <a name="2.0.11"></a>
 ## [2.0.11](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.10...v2.0.11) (2018-02-25)
 
