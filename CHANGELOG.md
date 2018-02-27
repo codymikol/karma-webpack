@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.13"></a>
+## [2.0.13](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.12...v2.0.13) (2018-02-27)
+
+
+### Bug Fixes
+
+* **package:** use `babel-runtime` is a `dependency` (`dependencies`) ([#312](https://github.com/webpack-contrib/karma-webpack/issues/312)) ([c45cdf3](https://github.com/webpack-contrib/karma-webpack/commit/c45cdf3))
+
+
+
 <a name="2.0.12"></a>
 ## [2.0.12](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.11...v2.0.12) (2018-02-26)
 
