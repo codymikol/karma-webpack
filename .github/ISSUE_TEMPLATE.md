@@ -1,7 +1,7 @@
 ## **BEFORE YOU SUBMIT** please read the following:
 <!--
 If you have a support request or question please submit them to
-[StackOverflow](http://stackoverflow.com/questions/tagged/webpack) using the tag
+[StackOverflow](https://stackoverflow.com/questions/tagged/webpack) using the tag
 `[webpack]` or
 the [webpack Gitter](https://gitter.im/webpack/webpack). Future support requests will be closed.
 -->
