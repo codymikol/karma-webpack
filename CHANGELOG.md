@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.13...v3.0.0) (2018-03-19)
+
+
+### Chores
+
+* **package:** update `webpack-dev-middleware` v1.12.0...2.0.6 (`dependencies`) ([#318](https://github.com/webpack-contrib/karma-webpack/issues/318)) ([0c78eaf](https://github.com/webpack-contrib/karma-webpack/commit/0c78eaf))
+
+
+### BREAKING CHANGES
+
+* **package:** requires `webpack >= v2.0.0`
+* **package:** requires `node >= 6.9.0`
+
+
+
 <a name="2.0.13"></a>
 ## [2.0.13](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.12...v2.0.13) (2018-02-27)
 
