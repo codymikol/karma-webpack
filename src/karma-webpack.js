@@ -77,6 +77,7 @@ function Plugin(
   this.waiting = []
 
   var compiler
+  var plugin = {name: 'KarmaWebpack'}
 
   try {
     compiler = webpack(webpackOptions)
@@ -91,23 +92,37 @@ function Plugin(
   var applyPlugins = compiler.compilers || [compiler]
 
   applyPlugins.forEach(function(compiler) {
-    compiler.plugin('this-compilation', function(compilation, params) {
+    var thisCompilationFn = function(compilation, params) {
       compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
-    })
-    compiler.plugin('make', this.make.bind(this))
+    }
+    var makeFn = this.make.bind(this)
+
+    if (compiler.hooks) {
+      compiler.hooks.thisCompilation.tap(plugin, thisCompilationFn)
+      compiler.hooks.make.tapAsync(plugin, makeFn)
+    } else {
+      compiler.plugin('this-compilation', thisCompilationFn)
+      compiler.plugin('make', makeFn)
+    }
   }, this);
 
-  ['invalid', 'watch-run', 'run'].forEach(function(name) {
-    compiler.plugin(name, function(_, callback) {
+  ['invalid', 'watchRun', 'run'].forEach(function(name) {
+    var fn = function(_, callback) {
       isBlocked = true
 
       if (typeof callback === 'function') {
         callback()
       }
-    })
+    }
+
+    if (compiler.hooks) {
+      compiler.hooks[name].tap(plugin, fn)
+    } else {
+      compiler.plugin(_.kebabCase(name), fn)
+    }
   })
 
-  compiler.plugin('done', function(stats) {
+  var doneFn = function(stats) {
     var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats]
     var assets = []
     var noAssets = false
@@ -139,12 +154,20 @@ function Plugin(
       blocked[i]()
     }
     blocked = []
-  }.bind(this))
-  compiler.plugin('invalid', function() {
+  }.bind(this)
+  var invalidFn = function() {
     if (!this.waiting) {
       this.waiting = []
     }
-  }.bind(this))
+  }.bind(this)
+
+  if (compiler.hooks) {
+    compiler.hooks.done.tap(plugin, doneFn)
+    compiler.hooks.invalid.tap(plugin, invalidFn)
+  } else {
+    compiler.plugin('done', doneFn)
+    compiler.plugin('invalid', invalidFn)
+  }
 
   webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_', '/')
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
