@@ -112,8 +112,8 @@ function Plugin(
     var assets = []
     var noAssets = false
 
-    applyStats.forEach(function(stats) {
-      stats = stats.toJson()
+    applyStats.forEach(function(stats, index) {
+      stats = stats.toJson(applyOptions[index].stats)
 
       assets.push(...stats.assets)
       if (stats.assets.length === 0) {
