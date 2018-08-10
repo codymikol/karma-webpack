@@ -62,11 +62,15 @@ function Plugin(
     // https://github.com/webpack/webpack/issues/645
     webpackOptions.output.path = path.join(os.tmpdir(), '_karma_webpack_', indexPath, '/')
     webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath, '/')
-    webpackOptions.output.filename = '[name]'
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`
     }
-    webpackOptions.output.chunkFilename = '[id].bundle.js'
+    if (!webpackOptions.output.filename) {
+      webpackOptions.output.filename = '[name].js'
+    }
+    if (!webpackOptions.output.chunkFilename) {
+      webpackOptions.output.chunkFilename = '[id].bundle.js'
+    }
   })
 
   this.emitter = emitter
