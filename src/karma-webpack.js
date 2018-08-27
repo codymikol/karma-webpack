@@ -79,7 +79,7 @@ function Plugin(
       '/'
     );
     webpackOptions.output.publicPath = path.join(
-      os.tmpdir(),
+      '/',
       '_karma_webpack_',
       publicPath,
       '/'
@@ -209,7 +209,7 @@ function Plugin(
   compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
   webpackMiddlewareOptions.publicPath = path.join(
-    os.tmpdir(),
+    '/',
     '_karma_webpack_',
     '/'
   );
