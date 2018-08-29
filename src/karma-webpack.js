@@ -20,6 +20,14 @@ var escapeRegExp = function(str) {
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
 }
 
+function invalidate(middleware) {
+  if (middleware.context.watching) {
+    return middleware.context.watching.invalidate()
+  }
+
+  return middleware.invalidate()
+}
+
 function Plugin(
   /* config.webpack */ webpackOptions,
   /* config.webpackServer */ webpackServerOptions,
@@ -71,6 +79,13 @@ function Plugin(
     if (!webpackOptions.output.chunkFilename) {
       webpackOptions.output.chunkFilename = '[id].bundle.js'
     }
+
+    // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
+    // Otherwise it hangs at 'Compiled successfully'
+    if (webpackOptions.optimization) {
+      webpackOptions.optimization.splitChunks = false
+      webpackOptions.optimization.runtimeChunk = false
+    }
   })
 
   this.emitter = emitter
@@ -79,6 +94,7 @@ function Plugin(
   this.files = []
   this.basePath = basePath
   this.waiting = []
+  this.plugin = {name: 'KarmaWebpack'}
 
   var compiler
 
@@ -95,23 +111,56 @@ function Plugin(
   var applyPlugins = compiler.compilers || [compiler]
 
   applyPlugins.forEach(function(compiler) {
-    compiler.plugin('this-compilation', function(compilation, params) {
-      compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
-    })
-    compiler.plugin('make', this.make.bind(this))
-  }, this);
+    if (compiler.hooks) {
+      compiler.hooks
+        .thisCompilation
+        .tap(this.plugin, (compilation, params) => {
+          compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
+        })
+      compiler.hooks
+        .make
+        .tapAsync(this.plugin, this.make.bind(this))
+    } else {
+      compiler.plugin('this-compilation', function(compilation, params) {
+        compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
+      })
+      compiler.plugin('make', this.make.bind(this))
+    }
+  }, this)
 
-  ['invalid', 'watch-run', 'run'].forEach(function(name) {
-    compiler.plugin(name, function(_, callback) {
-      isBlocked = true
+  function handler(callback) {
+    isBlocked = true
 
-      if (typeof callback === 'function') {
-        callback()
+    if (typeof callback === 'function') {
+      callback(null)
+    }
+  }
+
+  var hooks = ['invalid', 'watch-run', 'run']
+
+  if (compiler.hooks) {
+    hooks = [
+      {method: 'sync', name: 'invalid'},
+      {method: 'async', name: 'watchRun'},
+      {method: 'async', name: 'run'}
+    ]
+  }
+
+  hooks.forEach(function(hook) {
+    if (compiler.hooks) {
+      if (hook.method === 'sync') {
+        compiler.hooks[hook.name].tap(this.plugin, () => handler())
+      } else {
+        compiler.hooks[hook.name].tapAsync(this.plugin, (_, callback) => handler(callback))
       }
-    })
-  })
+    } else {
+      compiler.plugin(hook, function(_, callback) {
+        handler(callback)
+      })
+    }
+  }, this)
 
-  compiler.plugin('done', function(stats) {
+  function done(stats) {
     var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats]
     var assets = []
     var noAssets = false
@@ -143,12 +192,21 @@ function Plugin(
       blocked[i]()
     }
     blocked = []
-  }.bind(this))
-  compiler.plugin('invalid', function() {
+  }
+
+  function invalid() {
     if (!this.waiting) {
       this.waiting = []
     }
-  }.bind(this))
+  }
+
+  if (compiler.hooks) {
+    compiler.hooks.done.tap(this.plugin, done.bind(this))
+    compiler.hooks.invalid.tap(this.plugin, invalid.bind(this))
+  } else {
+    compiler.plugin('done', done.bind(this))
+    compiler.plugin('invalid', invalid.bind(this))
+  }
 
   webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_', '/')
   var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
@@ -201,7 +259,7 @@ Plugin.prototype.make = function(compilation, callback) {
         this.files = this.files.filter(function(f) {
           return file !== f
         })
-        this.middleware.invalidate()
+        invalidate(this.middleware)
       }
       callback(err)
     }.bind(this))
@@ -263,7 +321,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
   return function(content, file, done) {
     if (webpackPlugin.addFile(file.originalPath)) {
       // recompile as we have an asset that we have not seen before
-      webpackPlugin.middleware.invalidate()
+      invalidate(webpackPlugin.middleware)
     }
 
     // read blocks until bundle is done
