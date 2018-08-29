@@ -73,11 +73,20 @@ function Plugin(
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`
     }
+
     if (!webpackOptions.output.filename) {
       webpackOptions.output.filename = '[name].js'
     }
+
     if (!webpackOptions.output.chunkFilename) {
       webpackOptions.output.chunkFilename = '[id].bundle.js'
+    }
+
+    // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
+    // Otherwise it hangs at 'Compiled successfully'
+    if (webpackOptions.optimization) {
+      webpackOptions.optimization.splitChunks = false
+      webpackOptions.optimization.runtimeChunk = false
     }
   })
 
