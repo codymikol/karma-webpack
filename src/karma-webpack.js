@@ -75,6 +75,13 @@ function Plugin(
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`
     }
     webpackOptions.output.chunkFilename = '[id].bundle.js'
+
+    // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
+    // Otherwise it hangs at 'Compiled successfully'
+    if (webpackOptions.optimization) {
+      webpackOptions.optimization.splitChunks = false
+      webpackOptions.optimization.runtimeChunk = false
+    }
   })
 
   this.emitter = emitter
