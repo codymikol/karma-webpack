@@ -228,9 +228,12 @@ Plugin.prototype.notifyKarmaAboutChanges = function() {
 
 Plugin.prototype.addFile = function(entry) {
   if (this.files.indexOf(entry) >= 0) {
-    return;
+    return false;
   }
+
   this.files.push(entry);
+
+  return true;
 };
 
 Plugin.prototype.make = function(compilation, callback) {
