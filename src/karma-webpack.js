@@ -4,28 +4,29 @@
   func-style,
 */
 
-var os = require('os')
-var _ = require('lodash')
-var path = require('path')
-var async = require('async')
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpack = require('webpack')
-var SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency')
+const os = require('os');
+const path = require('path');
 
-var blocked = []
-var isBlocked = false
+const _ = require('lodash');
+const async = require('async');
+const webpack = require('webpack');
+const WebpackDevMiddleware = require('webpack-dev-middleware');
+const SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
 
-var escapeRegExp = function(str) {
+let blocked = [];
+let isBlocked = false;
+
+const escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
-}
+  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+};
 
 function invalidate(middleware) {
   if (middleware.context.watching) {
-    return middleware.context.watching.invalidate()
+    return middleware.context.watching.invalidate();
   }
 
-  return middleware.invalidate()
+  return middleware.invalidate();
 }
 
 function Plugin(
@@ -39,310 +40,372 @@ function Plugin(
   customFileHandlers,
   emitter
 ) {
-  webpackOptions = _.clone(webpackOptions) || {}
-  webpackMiddlewareOptions = _.clone(webpackMiddlewareOptions || webpackServerOptions) || {}
+  webpackOptions = _.clone(webpackOptions) || {};
+  webpackMiddlewareOptions =
+    _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
-  var applyOptions = Array.isArray(webpackOptions) ? webpackOptions : [webpackOptions]
-  var includeIndex = applyOptions.length > 1
+  const applyOptions = Array.isArray(webpackOptions)
+    ? webpackOptions
+    : [webpackOptions];
+  const includeIndex = applyOptions.length > 1;
 
-  applyOptions.forEach(function(webpackOptions, index) {
+  applyOptions.forEach((webpackOptions, index) => {
     // The webpack tier owns the watch behavior so we want to force it in the config
-    webpackOptions.watch = !singleRun
+    webpackOptions.watch = !singleRun;
 
     // Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
     // https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
     if (!webpackOptions.entry) {
       webpackOptions.entry = function() {
-        return {}
-      }
-    };
+        return {};
+      };
+    }
 
     if (!webpackOptions.output) {
-      webpackOptions.output = {}
-    };
+      webpackOptions.output = {};
+    }
 
     // When using an array, even of length 1, we want to include the index value for the build.
     // This is due to the way that the dev server exposes commonPath for build output.
-    var indexPath = includeIndex ? `${index}/` : ''
-    var publicPath = indexPath !== '' ? `${indexPath}/` : ''
+    const indexPath = includeIndex ? `${index}/` : '';
+    const publicPath = indexPath !== '' ? `${indexPath}/` : '';
 
     // Must have the common _karma_webpack_ prefix on path here to avoid
     // https://github.com/webpack/webpack/issues/645
-    webpackOptions.output.path = path.join(os.tmpdir(), '_karma_webpack_', indexPath, '/')
-    webpackOptions.output.publicPath = path.join(os.tmpdir(), '_karma_webpack_', publicPath, '/')
-    webpackOptions.output.filename = '[name]'
+    webpackOptions.output.path = path.join(
+      os.tmpdir(),
+      '_karma_webpack_',
+      indexPath,
+      '/'
+    );
+    webpackOptions.output.publicPath = path.join(
+      os.tmpdir(),
+      '_karma_webpack_',
+      publicPath,
+      '/'
+    );
+    webpackOptions.output.filename = '[name]';
     if (includeIndex) {
-      webpackOptions.output.jsonpFunction = `webpackJsonp${index}`
+      webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
     }
-    webpackOptions.output.chunkFilename = '[id].bundle.js'
+    webpackOptions.output.chunkFilename = '[id].bundle.js';
 
     // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
     // Otherwise it hangs at 'Compiled successfully'
     if (webpackOptions.optimization) {
-      webpackOptions.optimization.splitChunks = false
-      webpackOptions.optimization.runtimeChunk = false
+      webpackOptions.optimization.splitChunks = false;
+      webpackOptions.optimization.runtimeChunk = false;
     }
-  })
+  });
 
-  this.emitter = emitter
-  this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex
-  this.optionsCount = applyOptions.length
-  this.files = []
-  this.basePath = basePath
-  this.waiting = []
-  this.plugin = {name: 'KarmaWebpack'}
+  this.emitter = emitter;
+  this.wrapMocha = frameworks.indexOf('mocha') >= 0 && includeIndex;
+  this.optionsCount = applyOptions.length;
+  this.files = [];
+  this.basePath = basePath;
+  this.waiting = [];
+  this.plugin = { name: 'KarmaWebpack' };
 
-  var compiler
+  let compiler;
 
   try {
-    compiler = webpack(webpackOptions)
+    compiler = webpack(webpackOptions);
   } catch (e) {
-    console.error(e.stack || e)
+    console.error(e.stack || e);
     if (e.details) {
-      console.error(e.details)
+      console.error(e.details);
     }
-    throw e
+    throw e;
   }
 
-  var applyPlugins = compiler.compilers || [compiler]
+  const applyPlugins = compiler.compilers || [compiler];
 
   applyPlugins.forEach(function(compiler) {
     if (compiler.hooks) {
-      compiler.hooks
-        .thisCompilation
-        .tap(this.plugin, (compilation, params) => {
-          compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
-        })
-      compiler.hooks
-        .make
-        .tapAsync(this.plugin, this.make.bind(this))
+      compiler.hooks.thisCompilation.tap(this.plugin, (compilation, params) => {
+        compilation.dependencyFactories.set(
+          SingleEntryDependency,
+          params.normalModuleFactory
+        );
+      });
+      compiler.hooks.make.tapAsync(this.plugin, this.make.bind(this));
     } else {
-      compiler.plugin('this-compilation', function(compilation, params) {
-        compilation.dependencyFactories.set(SingleEntryDependency, params.normalModuleFactory)
-      })
-      compiler.plugin('make', this.make.bind(this))
+      compiler.plugin('this-compilation', (compilation, params) => {
+        compilation.dependencyFactories.set(
+          SingleEntryDependency,
+          params.normalModuleFactory
+        );
+      });
+      compiler.plugin('make', this.make.bind(this));
     }
-  }, this)
+  }, this);
 
   function handler(callback) {
-    isBlocked = true
+    isBlocked = true;
 
     if (typeof callback === 'function') {
-      callback(null)
+      callback(null);
     }
   }
 
-  var hooks = ['invalid', 'watch-run', 'run']
+  let hooks = ['invalid', 'watch-run', 'run'];
 
   if (compiler.hooks) {
     hooks = [
-      {method: 'sync', name: 'invalid'},
-      {method: 'async', name: 'watchRun'},
-      {method: 'async', name: 'run'}
-    ]
+      { method: 'sync', name: 'invalid' },
+      { method: 'async', name: 'watchRun' },
+      { method: 'async', name: 'run' },
+    ];
   }
 
   hooks.forEach(function(hook) {
     if (compiler.hooks) {
       if (hook.method === 'sync') {
-        compiler.hooks[hook.name].tap(this.plugin, () => handler())
+        compiler.hooks[hook.name].tap(this.plugin, () => handler());
       } else {
-        compiler.hooks[hook.name].tapAsync(this.plugin, (_, callback) => handler(callback))
+        compiler.hooks[hook.name].tapAsync(this.plugin, (_, callback) =>
+          handler(callback)
+        );
       }
     } else {
-      compiler.plugin(hook, function(_, callback) {
-        handler(callback)
-      })
+      compiler.plugin(hook, (_, callback) => {
+        handler(callback);
+      });
     }
-  }, this)
+  }, this);
 
   function done(stats) {
-    var applyStats = Array.isArray(stats.stats) ? stats.stats : [stats]
-    var assets = []
-    var noAssets = false
+    const applyStats = Array.isArray(stats.stats) ? stats.stats : [stats];
+    const assets = [];
+    let noAssets = false;
 
-    applyStats.forEach(function(stats) {
-      stats = stats.toJson()
+    applyStats.forEach((stats) => {
+      stats = stats.toJson();
 
-      assets.push(...stats.assets)
+      assets.push(...stats.assets);
       if (stats.assets.length === 0) {
-        noAssets = true
+        noAssets = true;
       }
-    })
+    });
 
     if (!this.waiting || this.waiting.length === 0) {
-      this.notifyKarmaAboutChanges()
+      this.notifyKarmaAboutChanges();
     }
 
     if (this.waiting && !noAssets) {
-      var w = this.waiting
+      const w = this.waiting;
 
-      this.waiting = null
-      w.forEach(function(cb) {
-        cb()
-      })
+      this.waiting = null;
+      w.forEach((cb) => {
+        cb();
+      });
     }
 
-    isBlocked = false
-    for (var i = 0; i < blocked.length; i++) {
-      blocked[i]()
+    isBlocked = false;
+    for (let i = 0; i < blocked.length; i++) {
+      blocked[i]();
     }
-    blocked = []
+    blocked = [];
   }
 
   function invalid() {
     if (!this.waiting) {
-      this.waiting = []
+      this.waiting = [];
     }
   }
 
   if (compiler.hooks) {
-    compiler.hooks.done.tap(this.plugin, done.bind(this))
-    compiler.hooks.invalid.tap(this.plugin, invalid.bind(this))
+    compiler.hooks.done.tap(this.plugin, done.bind(this));
+    compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
   } else {
-    compiler.plugin('done', done.bind(this))
-    compiler.plugin('invalid', invalid.bind(this))
+    compiler.plugin('done', done.bind(this));
+    compiler.plugin('invalid', invalid.bind(this));
   }
 
-  webpackMiddlewareOptions.publicPath = path.join(os.tmpdir(), '_karma_webpack_', '/')
-  var middleware = this.middleware = new webpackDevMiddleware(compiler, webpackMiddlewareOptions)
+  webpackMiddlewareOptions.publicPath = path.join(
+    os.tmpdir(),
+    '_karma_webpack_',
+    '/'
+  );
+  const middleware = new WebpackDevMiddleware(
+    compiler,
+    webpackMiddlewareOptions
+  );
+  this.middleware = middleware;
 
   customFileHandlers.push({
-    urlRegex: new RegExp(`^${escapeRegExp(webpackMiddlewareOptions.publicPath)}.*`),
+    urlRegex: new RegExp(
+      `^${escapeRegExp(webpackMiddlewareOptions.publicPath)}.*`
+    ),
     handler(req, res) {
-      middleware(req, res, function() {
-        res.statusCode = 404
-        res.end('Not found')
-      })
-    }
-  })
+      middleware(req, res, () => {
+        res.statusCode = 404;
+        res.end('Not found');
+      });
+    },
+  });
 
-  emitter.on('exit', function(done) {
-    middleware.close()
-    done()
-  })
+  emitter.on('exit', (done) => {
+    middleware.close();
+    done();
+  });
 }
 
 Plugin.prototype.notifyKarmaAboutChanges = function() {
   // Force a rebuild
-  this.emitter.refreshFiles()
-}
+  this.emitter.refreshFiles();
+};
 
 Plugin.prototype.addFile = function(entry) {
   if (this.files.indexOf(entry) >= 0) {
-    return
+    return;
   }
-  this.files.push(entry)
-
-  return true
-}
+  this.files.push(entry);
+};
 
 Plugin.prototype.make = function(compilation, callback) {
-  async.forEach(this.files.slice(), function(file, callback) {
-    var entry = file
+  async.forEach(
+    this.files.slice(),
+    (file, callback) => {
+      let entry = file;
 
-    if (this.wrapMocha) {
-      entry = `${require.resolve('./mocha-env-loader')}!${entry}`
-    }
-
-    var dep = new SingleEntryDependency(entry)
-
-    compilation.addEntry('', dep, path.relative(this.basePath, file).replace(/\\/g, '/'), function(err) {
-      // If the module fails because of an File not found error, remove the test file
-      if (dep.module && dep.module.error &&
-        dep.module.error.error &&
-        dep.module.error.error.code === 'ENOENT') {
-        this.files = this.files.filter(function(f) {
-          return file !== f
-        })
-        invalidate(this.middleware)
+      if (this.wrapMocha) {
+        entry = `${require.resolve('./mocha-env-loader')}!${entry}`;
       }
-      callback(err)
-    }.bind(this))
-  }.bind(this), callback)
-}
+
+      const dep = new SingleEntryDependency(entry);
+
+      compilation.addEntry(
+        '',
+        dep,
+        path.relative(this.basePath, file).replace(/\\/g, '/'),
+        (err) => {
+          // If the module fails because of an File not found error, remove the test file
+          if (
+            dep.module &&
+            dep.module.error &&
+            dep.module.error.error &&
+            dep.module.error.error.code === 'ENOENT'
+          ) {
+            this.files = this.files.filter((f) => file !== f);
+            invalidate(this.middleware);
+          }
+          callback(err);
+        }
+      );
+    },
+    callback
+  );
+};
 
 Plugin.prototype.readFile = function(file, callback) {
-  var middleware = this.middleware
-  var optionsCount = this.optionsCount
+  const middleware = this.middleware;
+  const optionsCount = this.optionsCount;
 
-  var doRead = function() {
+  const doRead = function() {
     if (optionsCount > 1) {
-      async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), file.replace(/\\/g, '/')), callback)
-      }, function(err, contents) {
-        if (err) {
-          return callback(err)
-        };
-        contents = contents.reduce(function(arr, x) {
-          if (!arr) {
-            return [x]
-          };
-          arr.push(new Buffer('\n'), x)
+      async.times(
+        optionsCount,
+        (idx, callback) => {
+          middleware.fileSystem.readFile(
+            path.join(
+              os.tmpdir(),
+              '_karma_webpack_',
+              String(idx),
+              file.replace(/\\/g, '/')
+            ),
+            callback
+          );
+        },
+        (err, contents) => {
+          if (err) {
+            return callback(err);
+          }
 
-          return arr
-        }, null)
-        callback(null, Buffer.concat(contents))
-      })
+          contents = contents.reduce((arr, x) => {
+            if (!arr) {
+              return [x];
+            }
+
+            arr.push(new Buffer('\n'), x);
+
+            return arr;
+          }, null);
+
+          return callback(null, Buffer.concat(contents));
+        }
+      );
     } else {
       try {
-        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', file.replace(/\\/g, '/')))
+        const fileContents = middleware.fileSystem.readFileSync(
+          path.join(os.tmpdir(), '_karma_webpack_', file.replace(/\\/g, '/'))
+        );
 
-        callback(undefined, fileContents)
+        callback(null, fileContents);
       } catch (e) {
         // If this is an error from `readFileSync` method, wait for the next tick.
         // Credit #69 @mewdriller
         if (e.code === 'ENOENT') {
           // eslint-disable-line quotes
-          this.waiting = [process.nextTick.bind(process, this.readFile.bind(this, file, callback))]
+          this.waiting = [
+            process.nextTick.bind(
+              process,
+              this.readFile.bind(this, file, callback)
+            ),
+          ];
 
           // throw otherwise
         } else {
-          callback(e)
+          callback(e);
         }
       }
     }
-  }.bind(this)
+  }.bind(this);
 
   if (!this.waiting) {
-    doRead()
+    doRead();
   } else {
     // Retry to read once a build is finished
     // do it on process.nextTick to catch changes while building
-    this.waiting.push(process.nextTick.bind(process, this.readFile.bind(this, file, callback)))
+    this.waiting.push(
+      process.nextTick.bind(process, this.readFile.bind(this, file, callback))
+    );
   }
-}
+};
 
 function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
   return function(content, file, done) {
     if (webpackPlugin.addFile(file.originalPath)) {
       // recompile as we have an asset that we have not seen before
-      invalidate(webpackPlugin.middleware)
+      invalidate(webpackPlugin.middleware);
     }
 
     // read blocks until bundle is done
-    webpackPlugin.readFile(path.relative(basePath, file.originalPath), function(err, content) {
-      if (err) {
-        throw err
-      }
+    webpackPlugin.readFile(
+      path.relative(basePath, file.originalPath),
+      (err, content) => {
+        if (err) {
+          throw err;
+        }
 
-      done(err, content && content.toString())
-    })
-  }
+        done(err, content && content.toString());
+      }
+    );
+  };
 }
 
 function createWebpackBlocker() {
   return function(request, response, next) {
     if (isBlocked) {
-      blocked.push(next)
+      blocked.push(next);
     } else {
-      next()
+      next();
     }
-  }
+  };
 }
 
 module.exports = {
   webpackPlugin: ['type', Plugin],
   'preprocessor:webpack': ['factory', createPreprocesor],
-  'middleware:webpackBlocker': ['factory', createWebpackBlocker]
-}
+  'middleware:webpackBlocker': ['factory', createWebpackBlocker],
+};
