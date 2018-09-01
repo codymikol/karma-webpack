@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.0"></a>
+# [4.0.0-rc.0](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.0...v4.0.0-rc.0) (2018-09-01)
+
+
+### Bug Fixes
+
+* **karma-webpack:** `compilation` hangs when adding a file ([#345](https://github.com/webpack-contrib/karma-webpack/issues/345)) ([ddf161d](https://github.com/webpack-contrib/karma-webpack/commit/ddf161d))
+* **karma-webpack:** allow `filename` and `chunkFilename` to be overridden (`config.output`) ([#336](https://github.com/webpack-contrib/karma-webpack/issues/336)) ([c256d87](https://github.com/webpack-contrib/karma-webpack/commit/c256d87))
+* **karma-webpack:** disable `optimization` by default (`webpack >= v4.0.0`) ([#325](https://github.com/webpack-contrib/karma-webpack/issues/325)) ([51bdcaa](https://github.com/webpack-contrib/karma-webpack/commit/51bdcaa))
+* **mocha-env-loader:** add `webpack >= v4.0.0` support ([#341](https://github.com/webpack-contrib/karma-webpack/issues/341)) ([39ff49c](https://github.com/webpack-contrib/karma-webpack/commit/39ff49c))
+
+
+### Chores
+
+* **package:** update `webpack-dev-middleware` v2.0.6...3.0.1 (`dependencies`) ([1741bca](https://github.com/webpack-contrib/karma-webpack/commit/1741bca))
+
+
+### Code Refactoring
+
+* **karma-webpack:** upgrade plugin system (`tapable`) ([f275d40](https://github.com/webpack-contrib/karma-webpack/commit/f275d40))
+
+
+### BREAKING CHANGES
+
+* **package:** requires `webpack >= v4.0.0`
+* **karma-webpack:** requires `webpack >= v4.0.0`
+
+
+
 <a name="4.0.0-beta.0"></a>
 # [4.0.0-beta.0](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.0...v4.0.0-beta.0) (2018-03-19)
 
