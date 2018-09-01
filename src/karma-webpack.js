@@ -90,11 +90,11 @@ function Plugin(
     }
 
     if (!webpackOptions.output.filename) {
-      webpackOptions.output.filename = '[name].js'
+      webpackOptions.output.filename = '[name]';
     }
 
     if (!webpackOptions.output.chunkFilename) {
-      webpackOptions.output.chunkFilename = '[id].bundle.js'
+      webpackOptions.output.chunkFilename = '[id].bundle.js';
     }
 
     // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
