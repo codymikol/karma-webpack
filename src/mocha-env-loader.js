@@ -5,8 +5,9 @@ const SourceNode = sourceMap.SourceNode;
 const SourceMapConsumer = sourceMap.SourceMapConsumer;
 
 module.exports = function(content, map) {
+  const options = Object.assign({}, loaderUtils.getOptions(this));
+  const id = options.name;
   let sourceNode;
-  const id = this.options.name;
 
   if (!id) {
     return this.callback(null, content, map);
