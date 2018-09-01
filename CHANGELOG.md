@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.0...v3.0.1) (2018-09-01)
+
+
+### Bug Fixes
+
+* **karma-webpack:** allow `filename` and `chunkFilename` to be overridden (`config.output`) ([#336](https://github.com/webpack-contrib/karma-webpack/issues/336)) ([c256d87](https://github.com/webpack-contrib/karma-webpack/commit/c256d87))
+* **package:** incorrect `peerDependency` on `webpack >= v4.0.0` (`peerDependencies`) ([c1c0ee2](https://github.com/webpack-contrib/karma-webpack/commit/c1c0ee2))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/webpack-contrib/karma-webpack/compare/v2.0.13...v3.0.0) (2018-03-19)
 
