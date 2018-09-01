@@ -1,14 +1,10 @@
-'use strict';
-
 const sourceMap = require('source-map');
 const loaderUtils = require('loader-utils');
 
 const SourceNode = sourceMap.SourceNode;
 const SourceMapConsumer = sourceMap.SourceMapConsumer;
 
-module.exports = function (content, map) {
-  this.cacheable();
-
+module.exports = function(content, map) {
   let sourceNode;
   const id = this.options.name;
 
@@ -17,7 +13,10 @@ module.exports = function (content, map) {
   }
 
   if (map) {
-    sourceNode = SourceNode.fromStringWithSourceMap(content, new SourceMapConsumer(map));
+    sourceNode = SourceNode.fromStringWithSourceMap(
+      content,
+      new SourceMapConsumer(map)
+    );
   } else {
     const fileName = loaderUtils.getRemainingRequest(this);
 
@@ -31,10 +30,12 @@ module.exports = function (content, map) {
   const concatSrc = new SourceNode();
 
   concatSrc.add([
-    `describe(${JSON.stringify(id)}, function() {\n`, sourceNode, '\n});'
+    `describe(${JSON.stringify(id)}, function() {\n`,
+    sourceNode,
+    '\n});',
   ]);
 
   const result = concatSrc.toStringWithSourceMap();
 
-  this.callback(null, result.code, result.map.toString());
+  return this.callback(null, result.code, result.map.toString());
 };

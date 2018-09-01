@@ -5,3 +5,16 @@ coverage
 node_modules
 
 .idea
+logs
+*.log
+npm-debug.log*
+/coverage
+/dist
+/local
+/reports
+/node_modules
+.DS_Store
+Thumbs.db
+.vscode
+*.sublime-project
+*.sublime-workspace
