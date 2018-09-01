@@ -270,7 +270,7 @@ Plugin.prototype.make = function(compilation, callback) {
       let entry = file;
 
       if (this.wrapMocha) {
-        entry = `${require.resolve('./mocha-env-loader')}!${entry}`;
+        entry = `${require.resolve('./mocha-env-loader')}?name=${compilation.name}!${entry}`;
       }
 
       const dep = new SingleEntryDependency(entry);
