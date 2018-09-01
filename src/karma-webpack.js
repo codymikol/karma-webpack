@@ -128,23 +128,13 @@ function Plugin(
   const applyPlugins = compiler.compilers || [compiler];
 
   applyPlugins.forEach(function(compiler) {
-    if (compiler.hooks) {
-      compiler.hooks.thisCompilation.tap(this.plugin, (compilation, params) => {
-        compilation.dependencyFactories.set(
-          SingleEntryDependency,
-          params.normalModuleFactory
-        );
-      });
-      compiler.hooks.make.tapAsync(this.plugin, this.make.bind(this));
-    } else {
-      compiler.plugin('this-compilation', (compilation, params) => {
-        compilation.dependencyFactories.set(
-          SingleEntryDependency,
-          params.normalModuleFactory
-        );
-      });
-      compiler.plugin('make', this.make.bind(this));
-    }
+    compiler.hooks.thisCompilation.tap(this.plugin, (compilation, params) => {
+      compilation.dependencyFactories.set(
+        SingleEntryDependency,
+        params.normalModuleFactory
+      );
+    });
+    compiler.hooks.make.tapAsync(this.plugin, this.make.bind(this));
   }, this);
 
   function handler(callback) {
@@ -155,31 +145,9 @@ function Plugin(
     }
   }
 
-  let hooks = ['invalid', 'watch-run', 'run'];
-
-  if (compiler.hooks) {
-    hooks = [
-      { method: 'sync', name: 'invalid' },
-      { method: 'async', name: 'watchRun' },
-      { method: 'async', name: 'run' },
-    ];
-  }
-
-  hooks.forEach(function(hook) {
-    if (compiler.hooks) {
-      if (hook.method === 'sync') {
-        compiler.hooks[hook.name].tap(this.plugin, () => handler());
-      } else {
-        compiler.hooks[hook.name].tapAsync(this.plugin, (_, callback) =>
-          handler(callback)
-        );
-      }
-    } else {
-      compiler.plugin(hook, (_, callback) => {
-        handler(callback);
-      });
-    }
-  }, this);
+  compiler.hooks.invalid.tap(this.plugin, () => handler());
+  compiler.hooks.watchRun.tap(this.plugin, () => handler());
+  compiler.hooks.run.tapAsync(this.plugin, (_, callback) => handler(callback));
 
   function done(stats) {
     const applyStats = Array.isArray(stats.stats) ? stats.stats : [stats];
@@ -221,13 +189,8 @@ function Plugin(
     }
   }
 
-  if (compiler.hooks) {
-    compiler.hooks.done.tap(this.plugin, done.bind(this));
-    compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
-  } else {
-    compiler.plugin('done', done.bind(this));
-    compiler.plugin('invalid', invalid.bind(this));
-  }
+  compiler.hooks.done.tap(this.plugin, done.bind(this));
+  compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
   webpackMiddlewareOptions.publicPath = path.join(
     os.tmpdir(),
@@ -277,7 +240,9 @@ Plugin.prototype.make = function(compilation, callback) {
       let entry = file;
 
       if (this.wrapMocha) {
-        entry = `${require.resolve('./mocha-env-loader')}?name=${compilation.name}!${entry}`;
+        entry = `${require.resolve('./mocha-env-loader')}?name=${
+          compilation.name
+        }!${entry}`;
       }
 
       const dep = new SingleEntryDependency(entry);
