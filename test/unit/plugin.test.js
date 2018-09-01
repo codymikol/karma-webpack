@@ -1,24 +1,26 @@
-import {assert} from 'chai'
-import {webpackPlugin} from '../../src/karma-webpack'
+'use strict';
 
-describe('Plugin', function() {
-  describe('#make()', function() {
-    it('should pass through error from compilation', function(done) {
-      var emitterMock = {
+const { assert } = require('chai');
+const { webpackPlugin } = require('../../src/karma-webpack');
+
+describe('Plugin', () => {
+  describe('#make()', () => {
+    it('should pass through error from compilation', (done) => {
+      const emitterMock = {
         on() {}
-      }
-      var compilationMock = {
+      };
+      const compilationMock = {
         addEntry(name, dep, file, cb) {
-          cb(new Error('test error'))
+          cb(new Error('test error'));
         }
-      }
-      var Plugin = new webpackPlugin[1]({}, {}, {}, '', [], [], true, [], emitterMock)
+      };
+      const Plugin = new webpackPlugin[1]({}, {}, {}, '', [], [], true, [], emitterMock);
 
-      Plugin.addFile('test.js')
-      Plugin.make(compilationMock, function(err) {
-        assert.equal(err.message, 'test error')
-        done()
-      })
-    })
-  })
-})
+      Plugin.addFile('test.js');
+      Plugin.make(compilationMock, (err) => {
+        assert.equal(err.message, 'test error');
+        done();
+      });
+    });
+  });
+});
