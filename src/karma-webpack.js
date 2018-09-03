@@ -79,8 +79,8 @@ function Plugin(
   this.files = []
   this.basePath = basePath
   this.waiting = []
-  this.entryFilesMap = {}
-  this.outputFilesMap = {}
+  this.entries = {}
+  this.outputs = {}
 
   var compiler
 
@@ -121,14 +121,14 @@ function Plugin(
     applyStats.forEach(function(stats) {
       stats = stats.toJson()
 
-      this.outputFilesMap = {}
-      var assetKeys = Object.keys(stats.assetsByChunkName)
-      for (let i = 0; i < assetKeys.length; i++) {
-        var entryName = assetKeys[i]
-        if (Object.prototype.hasOwnProperty.call(this.entryFilesMap, entryName)) {
-          var entryPath = this.entryFilesMap[entryName]
-          var outputPath = stats.assetsByChunkName[entryName]
-          this.outputFilesMap[entryPath] = outputPath
+      this.outputs = {}
+      var entries = Object.keys(stats.assetsByChunkName)
+      for (let i = 0; i < entries.length; i++) {
+        var entry = entries[i]
+        if (Object.prototype.hasOwnProperty.call(this.entries, entry)) {
+          var entryPath = this.entries[entry]
+          var outputPath = stats.assetsByChunkName[entry]
+          this.outputs[entryPath] = outputPath
         }
       }
 
@@ -197,7 +197,7 @@ Plugin.prototype.addFile = function(entry) {
 }
 
 Plugin.prototype.make = function(compilation, callback) {
-  this.entryFilesMap = {}
+  this.entries = {}
 
   async.forEach(this.files.slice(), function(file, callback) {
     var entry = file
@@ -211,7 +211,7 @@ Plugin.prototype.make = function(compilation, callback) {
     var filename = path.relative(this.basePath, file).replace(/\\/g, '/')
     var name = path.join(path.dirname(filename), path.basename(filename, path.extname(filename)))
 
-    this.entryFilesMap[name] = filename
+    this.entries[name] = filename
 
     compilation.addEntry('', dep, name, function(err) {
       // If the module fails because of an File not found error, remove the test file
@@ -235,7 +235,7 @@ Plugin.prototype.readFile = function(file, callback) {
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputFilesMap[file]), callback)
+        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file]), callback)
       }.bind(this), function(err, contents) {
         if (err) {
           return callback(err)
@@ -252,7 +252,7 @@ Plugin.prototype.readFile = function(file, callback) {
       })
     } else {
       try {
-        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputFilesMap[file]))
+        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file]))
 
         callback(undefined, fileContents)
       } catch (e) {
@@ -294,7 +294,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
         throw err
       }
 
-      var outputPath = webpackPlugin.outputFilesMap[filename]
+      var outputPath = webpackPlugin.outputs[filename]
       file.path = path.join(basePath, outputPath)
 
       done(err, content && content.toString())
