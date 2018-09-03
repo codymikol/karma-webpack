@@ -125,7 +125,7 @@ function Plugin(
       var entries = Object.keys(stats.assetsByChunkName)
       for (let i = 0; i < entries.length; i++) {
         var entry = entries[i]
-        if (Object.prototype.hasOwnProperty.call(this.entries, entry)) {
+        if ({}.hasOwnProperty.call(this.entries, entry)) {
           var entryPath = this.entries[entry]
           var outputPath = stats.assetsByChunkName[entry]
           this.outputs[entryPath] = outputPath
