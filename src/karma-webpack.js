@@ -90,11 +90,11 @@ function Plugin(
     }
 
     if (!webpackOptions.output.filename) {
-      webpackOptions.output.filename = '[name].js'
+      webpackOptions.output.filename = '[name].js';
     }
 
     if (!webpackOptions.output.chunkFilename) {
-      webpackOptions.output.chunkFilename = '[id].bundle.js'
+      webpackOptions.output.chunkFilename = '[id].bundle.js';
     }
 
     // For webpack 4+, optimization.splitChunks and optimization.runtimeChunk must be false.
@@ -111,6 +111,8 @@ function Plugin(
   this.files = [];
   this.basePath = basePath;
   this.waiting = [];
+  this.entryFilesMap = new Map();
+  this.outputFilesMap = new Map();
   this.plugin = { name: 'KarmaWebpack' };
 
   let compiler;
@@ -156,6 +158,20 @@ function Plugin(
 
     applyStats.forEach((stats) => {
       stats = stats.toJson();
+
+      this.outputFilesMap.clear();
+
+      const assetKeys = Object.keys(stats.assetsByChunkName);
+      for (let i = 0; i < assetKeys.length; i++) {
+        const entryName = assetKeys[i];
+
+        if (this.entryFilesMap.has(entryName)) {
+          const entryPath = this.entryFilesMap.get(entryName);
+          const outputPath = stats.assetsByChunkName[entryName];
+
+          this.outputFilesMap.set(entryPath, outputPath);
+        }
+      }
 
       assets.push(...stats.assets);
       if (stats.assets.length === 0) {
@@ -237,6 +253,8 @@ Plugin.prototype.addFile = function(entry) {
 };
 
 Plugin.prototype.make = function(compilation, callback) {
+  this.entryFilesMap.clear();
+
   async.forEach(
     this.files.slice(),
     (file, callback) => {
@@ -250,24 +268,27 @@ Plugin.prototype.make = function(compilation, callback) {
 
       const dep = new SingleEntryDependency(entry);
 
-      compilation.addEntry(
-        '',
-        dep,
-        path.relative(this.basePath, file).replace(/\\/g, '/'),
-        (err) => {
-          // If the module fails because of an File not found error, remove the test file
-          if (
-            dep.module &&
-            dep.module.error &&
-            dep.module.error.error &&
-            dep.module.error.error.code === 'ENOENT'
-          ) {
-            this.files = this.files.filter((f) => file !== f);
-            invalidate(this.middleware);
-          }
-          callback(err);
-        }
+      const filename = path.relative(this.basePath, file).replace(/\\/g, '/');
+      const name = path.join(
+        path.dirname(filename),
+        path.basename(filename, path.extname(filename))
       );
+
+      this.entryFilesMap.set(name, filename);
+
+      compilation.addEntry('', dep, name, (err) => {
+        // If the module fails because of an File not found error, remove the test file
+        if (
+          dep.module &&
+          dep.module.error &&
+          dep.module.error.error &&
+          dep.module.error.error.code === 'ENOENT'
+        ) {
+          this.files = this.files.filter((f) => file !== f);
+          invalidate(this.middleware);
+        }
+        callback(err);
+      });
     },
     callback
   );
@@ -313,7 +334,11 @@ Plugin.prototype.readFile = function(file, callback) {
     } else {
       try {
         const fileContents = middleware.fileSystem.readFileSync(
-          path.join(os.tmpdir(), '_karma_webpack_', file.replace(/\\/g, '/'))
+          path.join(
+            os.tmpdir(),
+            '_karma_webpack_',
+            this.outputFilesMap.get(file)
+          )
         );
 
         callback(null, fileContents);
@@ -355,17 +380,18 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       invalidate(webpackPlugin.middleware);
     }
 
+    const filename = path.relative(basePath, file.originalPath);
     // read blocks until bundle is done
-    webpackPlugin.readFile(
-      path.relative(basePath, file.originalPath),
-      (err, content) => {
-        if (err) {
-          throw err;
-        }
-
-        done(err, content && content.toString());
+    webpackPlugin.readFile(filename, (err, content) => {
+      if (err) {
+        throw err;
       }
-    );
+
+      const outputPath = webpackPlugin.outputFilesMap.get(filename);
+      file.path = path.join(basePath, outputPath);
+
+      done(err, content && content.toString());
+    });
   };
 }
 
