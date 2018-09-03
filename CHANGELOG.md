@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.1...v3.0.2) (2018-09-03)
+
+
+### Bug Fixes
+
+* **karma-webpack:** correctly map `entries` to outputted `assets` (`config.output`) ([#348](https://github.com/webpack-contrib/karma-webpack/issues/348)) ([d2f5a53](https://github.com/webpack-contrib/karma-webpack/commit/d2f5a53))
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.0...v3.0.1) (2018-09-01)
 
