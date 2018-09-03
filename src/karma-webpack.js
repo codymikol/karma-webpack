@@ -308,7 +308,7 @@ Plugin.prototype.readFile = function(file, callback) {
               os.tmpdir(),
               '_karma_webpack_',
               String(idx),
-              this.outputs.get(file)
+              this.outputs.get(file.replace(/\\/g, '/'))
             ),
             callback
           );
@@ -334,7 +334,11 @@ Plugin.prototype.readFile = function(file, callback) {
     } else {
       try {
         const fileContents = middleware.fileSystem.readFileSync(
-          path.join(os.tmpdir(), '_karma_webpack_', this.outputs.get(file))
+          path.join(
+            os.tmpdir(),
+            '_karma_webpack_',
+            this.outputs.get(file.replace(/\\/g, '/'))
+          )
         );
 
         callback(null, fileContents);
@@ -382,9 +386,6 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       if (err) {
         throw err;
       }
-
-      const outputPath = webpackPlugin.outputs.get(filename);
-      file.path = path.join(basePath, outputPath);
 
       done(err, content && content.toString());
     });
