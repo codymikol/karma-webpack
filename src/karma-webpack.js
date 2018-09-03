@@ -111,8 +111,8 @@ function Plugin(
   this.files = [];
   this.basePath = basePath;
   this.waiting = [];
-  this.entryFilesMap = new Map();
-  this.outputFilesMap = new Map();
+  this.entries = new Map();
+  this.outputs = new Map();
   this.plugin = { name: 'KarmaWebpack' };
 
   let compiler;
@@ -159,17 +159,17 @@ function Plugin(
     applyStats.forEach((stats) => {
       stats = stats.toJson();
 
-      this.outputFilesMap.clear();
+      this.outputs.clear();
 
-      const assetKeys = Object.keys(stats.assetsByChunkName);
-      for (let i = 0; i < assetKeys.length; i++) {
-        const entryName = assetKeys[i];
+      const entries = Object.keys(stats.assetsByChunkName);
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
 
-        if (this.entryFilesMap.has(entryName)) {
-          const entryPath = this.entryFilesMap.get(entryName);
-          const outputPath = stats.assetsByChunkName[entryName];
+        if (this.entries.has(entry)) {
+          const entryPath = this.entries.get(entry);
+          const outputPath = stats.assetsByChunkName[entry];
 
-          this.outputFilesMap.set(entryPath, outputPath);
+          this.outputs.set(entryPath, outputPath);
         }
       }
 
@@ -253,7 +253,7 @@ Plugin.prototype.addFile = function(entry) {
 };
 
 Plugin.prototype.make = function(compilation, callback) {
-  this.entryFilesMap.clear();
+  this.entries.clear();
 
   async.forEach(
     this.files.slice(),
@@ -274,7 +274,7 @@ Plugin.prototype.make = function(compilation, callback) {
         path.basename(filename, path.extname(filename))
       );
 
-      this.entryFilesMap.set(name, filename);
+      this.entries.set(name, filename);
 
       compilation.addEntry('', dep, name, (err) => {
         // If the module fails because of an File not found error, remove the test file
@@ -334,11 +334,7 @@ Plugin.prototype.readFile = function(file, callback) {
     } else {
       try {
         const fileContents = middleware.fileSystem.readFileSync(
-          path.join(
-            os.tmpdir(),
-            '_karma_webpack_',
-            this.outputFilesMap.get(file)
-          )
+          path.join(os.tmpdir(), '_karma_webpack_', this.outputs.get(file))
         );
 
         callback(null, fileContents);
@@ -387,7 +383,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
         throw err;
       }
 
-      const outputPath = webpackPlugin.outputFilesMap.get(filename);
+      const outputPath = webpackPlugin.outputs.get(filename);
       file.path = path.join(basePath, outputPath);
 
       done(err, content && content.toString());
