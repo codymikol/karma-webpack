@@ -308,7 +308,7 @@ Plugin.prototype.readFile = function(file, callback) {
               os.tmpdir(),
               '_karma_webpack_',
               String(idx),
-              file.replace(/\\/g, '/')
+              this.outputs.get(file)
             ),
             callback
           );
