@@ -297,7 +297,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       }
 
       var outputPath = webpackPlugin.outputs[normalize(filename)]
-      file.path = path.join(basePath, outputPath)
+      file.path = normalize(path.join(basePath, outputPath))
 
       done(err, content && content.toString())
     })
