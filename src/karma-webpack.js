@@ -15,6 +15,8 @@ var SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDepende
 var blocked = []
 var isBlocked = false
 
+const normalize = (file) => file.replace(/\\/g, '/')
+
 var escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
@@ -208,7 +210,7 @@ Plugin.prototype.make = function(compilation, callback) {
 
     var dep = new SingleEntryDependency(entry)
 
-    var filename = path.relative(this.basePath, file).replace(/\\/g, '/')
+    var filename = normalize(path.relative(this.basePath, file))
     var name = path.join(path.dirname(filename), path.basename(filename, path.extname(filename)))
 
     this.entries[name] = filename
@@ -231,7 +233,7 @@ Plugin.prototype.make = function(compilation, callback) {
 Plugin.prototype.readFile = function(file, callback) {
   var middleware = this.middleware
   var optionsCount = this.optionsCount
-
+  file = normalize(file)
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
@@ -294,7 +296,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
         throw err
       }
 
-      var outputPath = webpackPlugin.outputs[filename]
+      var outputPath = webpackPlugin.outputs[normalize(filename)]
       file.path = path.join(basePath, outputPath)
 
       done(err, content && content.toString())
