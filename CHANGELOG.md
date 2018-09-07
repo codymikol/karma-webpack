@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.2...v3.0.3) (2018-09-07)
+
+
+### Bug Fixes
+
+* **karma-webpack:** normalize paths (`windows`) ([#353](https://github.com/webpack-contrib/karma-webpack/issues/353)) ([b334eb5](https://github.com/webpack-contrib/karma-webpack/commit/b334eb5))
+
+
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/webpack-contrib/karma-webpack/compare/v3.0.1...v3.0.2) (2018-09-03)
 
