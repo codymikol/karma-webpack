@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.2"></a>
+# [4.0.0-rc.2](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2018-09-07)
+
+
+### Bug Fixes
+
+* **karma-webpack:** don't include the `os.tmpdir` (`output.publicPath`) ([#338](https://github.com/webpack-contrib/karma-webpack/issues/338)) ([66f4cd7](https://github.com/webpack-contrib/karma-webpack/commit/66f4cd7))
+* **karma-webpack:** normalize paths (`windows`) ([#351](https://github.com/webpack-contrib/karma-webpack/issues/351)) ([2145ec2](https://github.com/webpack-contrib/karma-webpack/commit/2145ec2))
+* **package:** 64 vulnerabilities (2 low, 62 moderate) (`audit`) ([9816152](https://github.com/webpack-contrib/karma-webpack/commit/9816152))
+
+
+
 <a name="4.0.0-rc.1"></a>
 # [4.0.0-rc.1](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.0...v4.0.0-rc.1) (2018-09-03)
 
