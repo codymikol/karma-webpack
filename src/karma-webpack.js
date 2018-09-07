@@ -16,6 +16,8 @@ const SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDepen
 let blocked = [];
 let isBlocked = false;
 
+const normalize = (file) => file.replace(/\\/g, '/');
+
 const escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
@@ -268,7 +270,9 @@ Plugin.prototype.make = function(compilation, callback) {
 
       const dep = new SingleEntryDependency(entry);
 
-      const filename = path.relative(this.basePath, file).replace(/\\/g, '/');
+      const filename = normalize(
+        path.relative(this.basePath, file).replace(/\\/g, '/')
+      );
       const name = path.join(
         path.dirname(filename),
         path.basename(filename, path.extname(filename))
@@ -297,7 +301,7 @@ Plugin.prototype.make = function(compilation, callback) {
 Plugin.prototype.readFile = function(file, callback) {
   const middleware = this.middleware;
   const optionsCount = this.optionsCount;
-
+  file = normalize(file);
   const doRead = function() {
     if (optionsCount > 1) {
       async.times(
@@ -383,8 +387,10 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
         throw err;
       }
 
-      const outputPath = webpackPlugin.outputs.get(filename);
-      file.path = path.join(basePath, outputPath);
+      const outputPath = webpackPlugin.outputs.get(
+        normalize(filename.replace(/\\/g, '/'))
+      );
+      file.path = normalize(path.join(basePath, outputPath));
 
       done(err, content && content.toString());
     });
