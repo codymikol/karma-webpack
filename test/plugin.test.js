@@ -19,6 +19,7 @@ describe('Plugin', () => {
         [],
         [],
         true,
+        true,
         [],
         emitterMock
       );
