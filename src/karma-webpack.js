@@ -258,7 +258,7 @@ Plugin.prototype.readFile = function(file, callback) {
       })
     } else {
       try {	 
-	var fileContents = ''
+        var fileContents = ''
         if (Array.isArray(this.outputs[file])) {
           fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file][0]));
         } else {
