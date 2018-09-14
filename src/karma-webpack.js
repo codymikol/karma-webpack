@@ -237,7 +237,11 @@ Plugin.prototype.readFile = function(file, callback) {
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file]), callback)
+        if (Array.isArray(this.outputs[file])) {
+          middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file][0]), callback);
+        } else {
+          middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file]), callback);
+        }
       }.bind(this), function(err, contents) {
         if (err) {
           return callback(err)
@@ -253,8 +257,13 @@ Plugin.prototype.readFile = function(file, callback) {
         callback(null, Buffer.concat(contents))
       })
     } else {
-      try {
-        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file]))
+      try {	 
+        var fileContents = ''
+        if (Array.isArray(this.outputs[file])) {
+          fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file][0]));
+        } else {
+          fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file]));
+        }
 
         callback(undefined, fileContents)
       } catch (e) {
@@ -297,7 +306,11 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       }
 
       var outputPath = webpackPlugin.outputs[normalize(filename)]
-      file.path = normalize(path.join(basePath, outputPath))
+      if( Array.isArray(outputPath)){
+        file.path = normalize(path.join(basePath, outputPath[0]));
+      } else {
+        file.path = normalize(path.join(basePath, outputPath));
+      }
 
       done(err, content && content.toString())
     })
