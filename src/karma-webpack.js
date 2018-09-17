@@ -17,6 +17,15 @@ var isBlocked = false
 
 const normalize = (file) => file.replace(/\\/g, '/')
 
+var getJsOutput = (outputPathArray) => {
+  for (var _i = 0; _i < outputPathArray.length; _i++) {
+    if (outputPathArray[_i].indexOf(".js") != -1) {
+      return outputPathArray[_i]
+    }
+  }
+  return null
+}
+
 var escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
@@ -130,6 +139,9 @@ function Plugin(
         if ({}.hasOwnProperty.call(this.entries, entry)) {
           var entryPath = this.entries[entry]
           var outputPath = stats.assetsByChunkName[entry]
+          if (Array.isArray(outputPath))
+            outputPath = getJsOutput(outputPath)
+          if (outputPath != null)
           this.outputs[entryPath] = outputPath
         }
       }
@@ -306,11 +318,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       }
 
       var outputPath = webpackPlugin.outputs[normalize(filename)]
-      if( Array.isArray(outputPath)){
-        file.path = normalize(path.join(basePath, outputPath[0]));
-      } else {
-        file.path = normalize(path.join(basePath, outputPath));
-      }
+      file.path = normalize(path.join(basePath, outputPath))
 
       done(err, content && content.toString())
     })
