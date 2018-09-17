@@ -142,7 +142,7 @@ function Plugin(
           if (Array.isArray(outputPath))
             outputPath = getJsOutput(outputPath)
           if (outputPath != null)
-          this.outputs[entryPath] = outputPath
+            this.outputs[entryPath] = outputPath
         }
       }
 
