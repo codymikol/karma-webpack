@@ -18,6 +18,15 @@ let isBlocked = false;
 
 const normalize = (file) => file.replace(/\\/g, '/');
 
+var getJsOutput = (outputPathArray) => {
+  for (var _i = 0; _i < outputPathArray.length; _i++) {
+    if (outputPathArray[_i].indexOf(".js") != -1) {
+      return outputPathArray[_i]
+    }
+  }
+  return null
+}
+
 const escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
@@ -170,8 +179,11 @@ function Plugin(
         if (this.entries.has(entry)) {
           const entryPath = this.entries.get(entry);
           const outputPath = stats.assetsByChunkName[entry];
-
-          this.outputs.set(entryPath, outputPath);
+          
+          if (Array.isArray(outputPath)) 
+            outputPath = getJsOutput(outputPath);
+          if (outputPath != null)
+            this.outputs.set(entryPath, outputPath);
         }
       }
 
