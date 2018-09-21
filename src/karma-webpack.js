@@ -249,11 +249,7 @@ Plugin.prototype.readFile = function(file, callback) {
   var doRead = function() {
     if (optionsCount > 1) {
       async.times(optionsCount, function(idx, callback) {
-        if (Array.isArray(this.outputs[file])) {
-          middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file][0]), callback);
-        } else {
-          middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file]), callback);
-        }
+        middleware.fileSystem.readFile(path.join(os.tmpdir(), '_karma_webpack_', String(idx), this.outputs[file]), callback)
       }.bind(this), function(err, contents) {
         if (err) {
           return callback(err)
@@ -270,12 +266,7 @@ Plugin.prototype.readFile = function(file, callback) {
       })
     } else {
       try {	 
-        var fileContents = ''
-        if (Array.isArray(this.outputs[file])) {
-          fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file][0]));
-        } else {
-          fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file]));
-        }
+        var fileContents = middleware.fileSystem.readFileSync(path.join(os.tmpdir(), '_karma_webpack_', this.outputs[file]))
 
         callback(undefined, fileContents)
       } catch (e) {
