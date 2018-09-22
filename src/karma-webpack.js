@@ -17,10 +17,13 @@ var isBlocked = false
 
 const normalize = (file) => file.replace(/\\/g, '/')
 
-var getJsOutput = (outputPathArray) => {
-  for (var _i = 0; _i < outputPathArray.length; _i++) {
-    if (outputPathArray[_i].indexOf(".js") != -1) {
-      return outputPathArray[_i]
+var getOutputPath = (outputPath) => {
+  for (var i = 0; i < outputPath.length; i++) {
+    if (
+      outputPath[i].indexOf(".js") !== -1 &&
+      outputPath[i].indexOf(".js.map") === -1
+    ) {
+      return outputPath[i]
     }
   }
   return null
@@ -140,8 +143,8 @@ function Plugin(
           var entryPath = this.entries[entry]
           var outputPath = stats.assetsByChunkName[entry]
           if (Array.isArray(outputPath))
-            outputPath = getJsOutput(outputPath)
-          if (outputPath != null)
+            outputPath = getOutputPath(outputPath)
+          if (outputPath !== null)
             this.outputs[entryPath] = outputPath
         }
       }
