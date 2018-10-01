@@ -8,6 +8,9 @@ const os = require('os');
 const path = require('path');
 
 const _ = require('lodash');
+function clone (obj) {
+  return Object.assign({}, obj);
+}
 const async = require('async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
@@ -42,9 +45,9 @@ function Plugin(
   customFileHandlers,
   emitter
 ) {
-  webpackOptions = _.clone(webpackOptions) || {};
+  webpackOptions = clone(webpackOptions) || {};
   webpackMiddlewareOptions =
-    _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
+    clone(webpackMiddlewareOptions || webpackServerOptions) || {};
 
   const applyOptions = Array.isArray(webpackOptions)
     ? webpackOptions
