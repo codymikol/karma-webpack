@@ -17,16 +17,16 @@ var isBlocked = false
 
 const normalize = (file) => file.replace(/\\/g, '/')
 
-var getOutputPath = (outputPath) => {
+const getOutputPath = (outputPath) => {
   for (var i = 0; i < outputPath.length; i++) {
     if (
       outputPath[i].indexOf(".js") !== -1 &&
       outputPath[i].indexOf(".js.map") === -1
     ) {
-      return outputPath[i]
+      return outputPath[i];
     }
   }
-  return null
+  return null;
 }
 
 var escapeRegExp = function(str) {
@@ -142,10 +142,12 @@ function Plugin(
         if ({}.hasOwnProperty.call(this.entries, entry)) {
           var entryPath = this.entries[entry]
           var outputPath = stats.assetsByChunkName[entry]
-          if (Array.isArray(outputPath))
+          if (Array.isArray(outputPath)) {
             outputPath = getOutputPath(outputPath)
-          if (outputPath !== null)
+          }
+          if (outputPath !== null) {
             this.outputs[entryPath] = outputPath
+          }
         }
       }
 
