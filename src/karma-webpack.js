@@ -181,7 +181,7 @@ function Plugin(
 
         if (this.entries.has(entry)) {
           const entryPath = this.entries.get(entry);
-          const outputPath = stats.assetsByChunkName[entry];
+          let outputPath = stats.assetsByChunkName[entry];
           
           if (Array.isArray(outputPath)) {
             outputPath = getOutputPath(outputPath);
