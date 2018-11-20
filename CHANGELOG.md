@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.3"></a>
+# [4.0.0-rc.3](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2018-11-20)
+
+
+### Bug Fixes
+
+* **karma-webpack:** handle multiple outputs correctly ([#361](https://github.com/webpack-contrib/karma-webpack/issues/361)) ([41edac8](https://github.com/webpack-contrib/karma-webpack/commit/41edac8))
+
+
+
 <a name="4.0.0-rc.2"></a>
 # [4.0.0-rc.2](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2018-09-07)
 
