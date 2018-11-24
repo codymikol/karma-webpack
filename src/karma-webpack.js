@@ -7,7 +7,9 @@
 const os = require('os');
 const path = require('path');
 
-const _ = require('lodash');
+function clone(obj) {
+  return Object.assign({}, obj);
+}
 const async = require('async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
@@ -54,9 +56,10 @@ function Plugin(
   customFileHandlers,
   emitter
 ) {
-  webpackOptions = _.clone(webpackOptions) || {};
-  webpackMiddlewareOptions =
-    _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
+  webpackOptions = clone(webpackOptions);
+  webpackMiddlewareOptions = clone(
+    webpackMiddlewareOptions || webpackServerOptions
+  );
 
   const applyOptions = Array.isArray(webpackOptions)
     ? webpackOptions
@@ -227,11 +230,7 @@ function Plugin(
   compiler.hooks.done.tap(this.plugin, done.bind(this));
   compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
-  webpackMiddlewareOptions.publicPath = path.join(
-    '/',
-    '_karma_webpack_',
-    '/'
-  );
+  webpackMiddlewareOptions.publicPath = path.join('/', '_karma_webpack_', '/');
   const middleware = new WebpackDevMiddleware(
     compiler,
     webpackMiddlewareOptions
