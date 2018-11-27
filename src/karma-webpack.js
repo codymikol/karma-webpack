@@ -95,10 +95,7 @@ function Plugin(
       indexPath,
       '/'
     );
-    webpackOptions.output.publicPath = 
-      '/_karma_webpack_' +
-      publicPath +
-      '/';
+    webpackOptions.output.publicPath = `/_karma_webpack_${publicPath}/`;
 
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
