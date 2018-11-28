@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.4"></a>
+# [4.0.0-rc.4](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2018-11-28)
+
+
+### Bug Fixes
+
+* **karma-webpack:** Fix publicPath to be Windows-compatible ([#373](https://github.com/webpack-contrib/karma-webpack/issues/373)) ([fca13b9](https://github.com/webpack-contrib/karma-webpack/commit/fca13b9)), closes [#362](https://github.com/webpack-contrib/karma-webpack/issues/362)
+* **package:** restore prepare script in package.json so that npm install from github works ([#367](https://github.com/webpack-contrib/karma-webpack/issues/367)) ([3e1f3e4](https://github.com/webpack-contrib/karma-webpack/commit/3e1f3e4))
+
+
+### Features
+
+* **karma-webpack:** unify webpack and  Karma colour config ([#356](https://github.com/webpack-contrib/karma-webpack/issues/356)) ([9559306](https://github.com/webpack-contrib/karma-webpack/commit/9559306)), closes [#332](https://github.com/webpack-contrib/karma-webpack/issues/332)
+
+
+
 <a name="4.0.0-rc.3"></a>
 # [4.0.0-rc.3](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2018-11-20)
 
