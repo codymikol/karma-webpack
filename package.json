@@ -1,6 +1,6 @@
 {
   "name": "karma-webpack",
-  "version": "4.0.0-rc.2",
+  "version": "4.0.0-rc.3",
   "description": "Use webpack with karma",
   "license": "MIT",
   "repository": "webpack-contrib/karma-webpack",
@@ -21,7 +21,7 @@
     "ci:lint:commits": "commitlint --from=${CIRCLE_BRANCH} --to=${CIRCLE_SHA1}",
     "lint-staged": "lint-staged",
     "prebuild": "npm run clean",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "release": "standard-version",
     "release:ci": "conventional-github-releaser -p angular",
     "release:validate": "commitlint --from=$(git describe --tags --abbrev=0) --to=$(git rev-parse HEAD)",
@@ -43,7 +43,6 @@
   "dependencies": {
     "async": "^2.0.0",
     "loader-utils": "^1.1.0",
-    "lodash": "^4.17.10",
     "source-map": "^0.5.6",
     "webpack-dev-middleware": "^3.2.0"
   },

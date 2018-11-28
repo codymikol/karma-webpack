@@ -7,7 +7,9 @@
 const os = require('os');
 const path = require('path');
 
-const _ = require('lodash');
+function clone(obj) {
+  return Object.assign({}, obj);
+}
 const async = require('async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
@@ -17,6 +19,18 @@ let blocked = [];
 let isBlocked = false;
 
 const normalize = (file) => file.replace(/\\/g, '/');
+
+const getOutputPath = (outputPath) => {
+  for (var i = 0; i < outputPath.length; i++) {
+    if (
+      outputPath[i].indexOf(".js") !== -1 &&
+      outputPath[i].indexOf(".js.map") === -1
+    ) {
+      return outputPath[i];
+    }
+  }
+  return null;
+}
 
 const escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
@@ -43,9 +57,10 @@ function Plugin(
   customFileHandlers,
   emitter
 ) {
-  webpackOptions = _.clone(webpackOptions) || {};
-  webpackMiddlewareOptions =
-    _.clone(webpackMiddlewareOptions || webpackServerOptions) || {};
+  webpackOptions = clone(webpackOptions);
+  webpackMiddlewareOptions = clone(
+    webpackMiddlewareOptions || webpackServerOptions
+  );
 
   const applyOptions = Array.isArray(webpackOptions)
     ? webpackOptions
@@ -81,12 +96,7 @@ function Plugin(
       indexPath,
       '/'
     );
-    webpackOptions.output.publicPath = path.join(
-      '/',
-      '_karma_webpack_',
-      publicPath,
-      '/'
-    );
+    webpackOptions.output.publicPath = `/_karma_webpack_${publicPath}/`;
 
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
@@ -170,9 +180,14 @@ function Plugin(
 
         if (this.entries.has(entry)) {
           const entryPath = this.entries.get(entry);
-          const outputPath = stats.assetsByChunkName[entry];
-
-          this.outputs.set(entryPath, outputPath);
+          let outputPath = stats.assetsByChunkName[entry];
+          
+          if (Array.isArray(outputPath)) {
+            outputPath = getOutputPath(outputPath);
+          }
+          if (outputPath !== null) {
+            this.outputs.set(entryPath, outputPath);
+          }
         }
       }
 
@@ -211,7 +226,7 @@ function Plugin(
   compiler.hooks.done.tap(this.plugin, done.bind(this));
   compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
-  webpackMiddlewareOptions.publicPath = path.join('/', '_karma_webpack_', '/');
+  webpackMiddlewareOptions.publicPath = '/_karma_webpack_/';
 
   // Set webpack's color config to value specified in Karma's config for consistency
   webpackMiddlewareOptions.stats = webpackMiddlewareOptions.stats || {};
