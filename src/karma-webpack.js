@@ -95,12 +95,7 @@ function Plugin(
       indexPath,
       '/'
     );
-    webpackOptions.output.publicPath = path.join(
-      '/',
-      '_karma_webpack_',
-      publicPath,
-      '/'
-    );
+    webpackOptions.output.publicPath = `/_karma_webpack_${publicPath}/`;
 
     if (includeIndex) {
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
@@ -230,7 +225,7 @@ function Plugin(
   compiler.hooks.done.tap(this.plugin, done.bind(this));
   compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
-  webpackMiddlewareOptions.publicPath = path.join('/', '_karma_webpack_', '/');
+  webpackMiddlewareOptions.publicPath = '/_karma_webpack_/';
   const middleware = new WebpackDevMiddleware(
     compiler,
     webpackMiddlewareOptions
