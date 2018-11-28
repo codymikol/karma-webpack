@@ -53,6 +53,7 @@ function Plugin(
   /* config.files */ files,
   /* config.frameworks */ frameworks,
   /* config.singleRun */ singleRun,
+  /* config.colors */ colors,
   customFileHandlers,
   emitter
 ) {
@@ -226,6 +227,11 @@ function Plugin(
   compiler.hooks.invalid.tap(this.plugin, invalid.bind(this));
 
   webpackMiddlewareOptions.publicPath = '/_karma_webpack_/';
+
+  // Set webpack's color config to value specified in Karma's config for consistency
+  webpackMiddlewareOptions.stats = webpackMiddlewareOptions.stats || {};
+  webpackMiddlewareOptions.stats.colors = colors;
+
   const middleware = new WebpackDevMiddleware(
     compiler,
     webpackMiddlewareOptions
