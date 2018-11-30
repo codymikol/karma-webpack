@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.5"></a>
+# [4.0.0-rc.5](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.4...v4.0.0-rc.5) (2018-11-30)
+
+
+### Bug Fixes
+
+* **karma-webpack:** Do not unify "colors" property if webpack "stats" is a string ([#376](https://github.com/webpack-contrib/karma-webpack/issues/376)) ([840dea2](https://github.com/webpack-contrib/karma-webpack/commit/840dea2)), closes [#375](https://github.com/webpack-contrib/karma-webpack/issues/375)
+
+
+
 <a name="4.0.0-rc.4"></a>
 # [4.0.0-rc.4](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2018-11-28)
 
