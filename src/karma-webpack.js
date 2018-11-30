@@ -21,16 +21,16 @@ let isBlocked = false;
 const normalize = (file) => file.replace(/\\/g, '/');
 
 const getOutputPath = (outputPath) => {
-  for (var i = 0; i < outputPath.length; i++) {
+  for (let i = 0; i < outputPath.length; i++) {
     if (
-      outputPath[i].indexOf(".js") !== -1 &&
-      outputPath[i].indexOf(".js.map") === -1
+      outputPath[i].indexOf('.js') !== -1 &&
+      outputPath[i].indexOf('.js.map') === -1
     ) {
       return outputPath[i];
     }
   }
   return null;
-}
+};
 
 const escapeRegExp = function(str) {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
@@ -181,7 +181,7 @@ function Plugin(
         if (this.entries.has(entry)) {
           const entryPath = this.entries.get(entry);
           let outputPath = stats.assetsByChunkName[entry];
-          
+
           if (Array.isArray(outputPath)) {
             outputPath = getOutputPath(outputPath);
           }
@@ -229,8 +229,11 @@ function Plugin(
   webpackMiddlewareOptions.publicPath = '/_karma_webpack_/';
 
   // Set webpack's color config to value specified in Karma's config for consistency
-  webpackMiddlewareOptions.stats = webpackMiddlewareOptions.stats || {};
-  webpackMiddlewareOptions.stats.colors = colors;
+  if (typeof webpackMiddlewareOptions.stats !== 'string') {
+    // stats can be either a string or an object
+    webpackMiddlewareOptions.stats = webpackMiddlewareOptions.stats || {};
+    webpackMiddlewareOptions.stats.colors = colors;
+  }
 
   const middleware = new WebpackDevMiddleware(
     compiler,
