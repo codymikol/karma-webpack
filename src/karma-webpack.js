@@ -102,7 +102,9 @@ function Plugin(
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
     }
 
-    if (!webpackOptions.output.filename) {
+    // If filename doesn't contain [name], it is static and needs to be overridden,
+    // since we have multiple entry points
+    if (!webpackOptions.output.filename || !webpackOptions.output.filename.includes('[name]')) {
       webpackOptions.output.filename = '[name].js';
     }
 
