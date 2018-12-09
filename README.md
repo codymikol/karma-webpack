@@ -31,11 +31,13 @@ npm i -D karma-webpack
 module.exports = (config) => {
   config.set({
     // ... normal karma configuration
+
+    // add webpack to your list of frameworks
+    frameworks: ['mocha', 'webpack'],
+
     files: [
-      // all files ending in "_test"
-      { pattern: 'test/*_test.js', watched: false },
-      { pattern: 'test/**/*_test.js', watched: false }
-      // each file acts as entry point for the webpack configuration
+      // all files ending in ".test.js"
+      'test/**/*.test.js',
     ],
 
     preprocessors: {
@@ -46,51 +48,79 @@ module.exports = (config) => {
 
     webpack: {
       // karma watches the test entry points
-      // (you don't need to specify the entry option)
+      // Do NOT specify the entry option
       // webpack watches dependencies
 
       // webpack configuration
     },
-
-    webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only'
-    }
-  })
+  });
 }
 ```
 
-### `Alternative Usage`
+### Default webpack configuration
 
-This configuration is more performant, but you cannot run single test anymore (only the complete suite).
+This configuration will be merged with what gets provided via karma's config.webpack.
 
-The above configuration generates a `webpack` bundle for each test. For many test cases this can result in many big files. The alternative configuration creates a single bundle with all test cases.
-
-**karma.conf.js**
 ```js
-files: [
-  // only specify one entry point
-  // and require all tests in there
-  'test/index_test.js'
-],
+const defaultWebpackOptions = {
+  mode: 'development',
+  output: {
+    filename: '[name].js',
+    path: path.join(os.tmpdir(), '_karma_webpack_'),
+  },
+  stats: {
+    modules: false,
+    colors: true,
+  },
+  watch: false,
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      minSize: 0,
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 1,
+        },
+      },
+    },
+  },
+  plugins: [],
+  // Something like this will be auto added by this.configure()
+  // entry: {
+  //   'foo-one.test.js': 'path/to/test/foo-one.test.js',
+  //   'foo-two.test.js': 'path/to/test/foo-two.test.js',
+  // },
+  // plugins: [
+  //   new KarmaSyncPlugin()
+  // ],
+};
+```
 
-preprocessors: {
-  // add webpack as preprocessor
-  'test/index_test.js': [ 'webpack' ]
+### How it works
+
+This project is a framework and preprocessor for Karma that combines test files and dependencies into 2 shared bundles and 1 chunk per test file. It relies on webpack to generate the bundles/chunks and to keep it updated during autoWatch=true.
+
+The first preproccessor triggers the build of all the bundles/chunks and all following files just return the output of this one build process.
+
+### Webpack typescript support
+
+By default karma-webpack forces *.js files so if you test *.ts files and use webpack to build typescript to javascript it works out of the box.
+
+If you have a different need you can override by settig `webpack.transformPath`
+
+```js
+// this is the by default applied transformPath
+webpack: {
+  transformPath: (filepath) => {
+      // force *.js files by default
+      const info = path.parse(filepath);
+      return `${path.join(info.dir, info.name)}.js`;
+    },
 },
 ```
-
-**test/index_test.js**
-```js
-// require all modules ending in "_test" from the
-// current directory and all subdirectories
-const testsContext = require.context(".", true, /_test$/)
-
-testsContext.keys().forEach(testsContext)
-```
-
-Every test file is required using the [require.context](https://webpack.js.org/guides/dependency-management/#require-context) and compiled with webpack into one test bundle.
 
 ### `Source Maps`
 
@@ -126,33 +156,10 @@ This is the full list of options you can specify in your `karma.conf.js`
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
 |[**`webpack`**](#webpack)|`{Object}`|`{}`|Pass `webpack.config.js` to `karma`|
-|[**`webpackMiddleware`**](#webpackmiddleware)|`{Object}`|`{}`|Pass `webpack-dev-middleware` configuration to `karma`|
-|[**`beforeMiddleware`**](#beforemiddleware)|`{Object}`|`{}`|Pass custom middleware configuration to `karma`, **before** any `karma` middleware runs|
 
 ### `webpack`
 
 `webpack` configuration (`webpack.config.js`).
-
-### `webpackMiddleware`
-
-Configuration for `webpack-dev-middleware`.
-
-### `beforeMiddleware`
-
-`beforeMiddleware` is a `webpack` option that allows injecting middleware before
-karma's own middleware runs. This loader provides a `webpackBlocker`
-middleware that will block tests from running until code recompiles. That is,
-given this scenario
-
-1. Have a browser open on the karma debug page (http://localhost:9876/debug.html)
-2. Make a code change
-3. Refresh
-
-Without the `webpackBlocker` middleware karma will serve files from before
-the code change. With the `webpackBlocker` middleware the loader will not serve
-the files until the code has finished recompiling.
-
-> **⚠️ The `beforeMiddleware` option is only supported in `karma >= v1.0.0`**
 
 <h2 align="center">Maintainers</h2>
 
