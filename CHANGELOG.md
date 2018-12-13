@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-alpha.0"></a>
+# [5.0.0-alpha.0](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.5...v5.0.0-alpha.0) (2018-12-13)
+
+
+### Features
+
+* **karma-webpack:** Add webpack as framework and use shared bundles ([#380](https://github.com/webpack-contrib/karma-webpack/issues/380)) ([2ab7ad5](https://github.com/webpack-contrib/karma-webpack/commit/2ab7ad5)), closes [#379](https://github.com/webpack-contrib/karma-webpack/issues/379)
+
+
+### BREAKING CHANGES
+
+* **karma-webpack:** webpack needs to be added to frameworks
+
+```
+// old:
+frameworks: ['mocha'],
+
+// new:
+frameworks: ['mocha', 'webpack'],
+```
+* **karma-webpack:** old alternative usage is no longer recommended
+* **karma-webpack:** webpack-dev-middleware removed
+* **karma-webpack:** default webpack configuration changed drastically
+
+
+
 <a name="4.0.0-rc.5"></a>
 # [4.0.0-rc.5](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.4...v4.0.0-rc.5) (2018-11-30)
 
