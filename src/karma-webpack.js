@@ -102,11 +102,8 @@ function Plugin(
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
     }
 
-    // If filename doesn't contain [name], it is static and needs to be overridden,
-    // since we have multiple entry points
-    if (!webpackOptions.output.filename || !webpackOptions.output.filename.includes('[name]')) {
-      webpackOptions.output.filename = '[name].js';
-    }
+    // Enforce that the output filename is dynamic and doesn't contain chunkhashes
+    webpackOptions.output.filename = '[name].js';
 
     if (!webpackOptions.output.chunkFilename) {
       webpackOptions.output.chunkFilename = '[id].bundle.js';
