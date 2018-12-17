@@ -102,9 +102,8 @@ function Plugin(
       webpackOptions.output.jsonpFunction = `webpackJsonp${index}`;
     }
 
-    if (!webpackOptions.output.filename) {
-      webpackOptions.output.filename = '[name].js';
-    }
+    // Enforce that the output filename is dynamic and doesn't contain chunkhashes
+    webpackOptions.output.filename = '[name].js';
 
     if (!webpackOptions.output.chunkFilename) {
       webpackOptions.output.chunkFilename = '[id].bundle.js';
