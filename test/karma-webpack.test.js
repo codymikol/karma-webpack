@@ -11,7 +11,7 @@ describe('karma-webpack', () => {
     test('Defaults', () => {
       const controller = new KarmaWebpackController();
       controller.updateWebpackOptions({
-        output: { path: 'foo/' },
+        output: { path: 'foo/' }
       });
       const config = { files: [] };
       fs.closeSync = jest.fn();
@@ -28,14 +28,14 @@ describe('karma-webpack', () => {
           pattern: path.join('foo', 'runtime.js'),
           included: true,
           served: true,
-          watched: false,
+          watched: false
         },
         {
           pattern: path.join('foo', 'commons.js'),
           included: true,
           served: true,
-          watched: false,
-        },
+          watched: false
+        }
       ]);
     });
   });
