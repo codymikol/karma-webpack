@@ -5,7 +5,6 @@ const { registerExtraWebpackFiles } = require('../lib/karma-webpack');
 const { KarmaWebpackController } = require('../lib/KarmaWebpackController.js');
 
 jest.mock('fs');
-jest.mock('KarmaWebpackController');
 
 describe('karma-webpack', () => {
   describe('registerExtraWebpackFiles()', () => {
