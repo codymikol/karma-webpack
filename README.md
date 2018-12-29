@@ -37,7 +37,8 @@ module.exports = (config) => {
 
     files: [
       // all files ending in ".test.js"
-      'test/**/*.test.js',
+      // !!! use watched: false as we use webpacks watch
+      { pattern: 'test/**/*.test.js', watched: false }
     ],
 
     preprocessors: {
