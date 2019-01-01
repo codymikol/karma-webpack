@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-alpha.1"></a>
+# [5.0.0-alpha.1](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2019-01-01)
+
+
+### Bug Fixes
+
+* **karma-webpack:** add dynamic imports to main bundle ([#384](https://github.com/webpack-contrib/karma-webpack/issues/384)) ([288a8c2](https://github.com/webpack-contrib/karma-webpack/commit/288a8c2))
+* **karma-webpack:** disable karma watch; use webpack watch only ([#386](https://github.com/webpack-contrib/karma-webpack/issues/386)) ([1696bfd](https://github.com/webpack-contrib/karma-webpack/commit/1696bfd))
+
+
+
 <a name="5.0.0-alpha.0"></a>
 # [5.0.0-alpha.0](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.5...v5.0.0-alpha.0) (2018-12-13)
 
