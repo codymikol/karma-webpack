@@ -1,6 +1,6 @@
 const {
   KarmaWebpackController,
-  defaultWebpackOptions,
+  defaultWebpackOptions
 } = require('../lib/KarmaWebpackController');
 
 describe('KarmaWebpackController', () => {
@@ -14,8 +14,8 @@ describe('KarmaWebpackController', () => {
     controller.updateWebpackOptions({
       output: {
         path: 'foo',
-        publicPath: 'bar',
-      },
+        publicPath: 'bar'
+      }
     });
     expect(controller.webpackOptions.output.path).toBe('foo');
     expect(controller.webpackOptions.output.publicPath).toBe('bar');
