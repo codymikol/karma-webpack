@@ -7,9 +7,7 @@
 const os = require('os');
 const path = require('path');
 
-function clone(obj) {
-  return Object.assign({}, obj);
-}
+const cloneDeep = require('clone-deep')
 const async = require('async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
@@ -57,8 +55,8 @@ function Plugin(
   customFileHandlers,
   emitter
 ) {
-  webpackOptions = clone(webpackOptions);
-  webpackMiddlewareOptions = clone(
+  webpackOptions = cloneDeep(webpackOptions);
+  webpackMiddlewareOptions = cloneDeep(
     webpackMiddlewareOptions || webpackServerOptions
   );
 
