@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-alpha.3.0](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.2...v5.0.0-alpha.3.0) (2019-03-07)
+
+
+### Bug Fixes
+
+* allow for same filenames to be added ([#401](https://github.com/webpack-contrib/karma-webpack/issues/401)) ([80ce2d8](https://github.com/webpack-contrib/karma-webpack/commit/80ce2d8)), closes [#400](https://github.com/webpack-contrib/karma-webpack/issues/400)
+
+
+
 <a name="5.0.0-alpha.2"></a>
 # [5.0.0-alpha.2](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2019-02-13)
 
