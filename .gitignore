@@ -3,6 +3,7 @@
 lib
 coverage
 node_modules
+package-lock.json
 
 .idea
 logs
