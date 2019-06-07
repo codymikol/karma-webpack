@@ -83,6 +83,10 @@
     "webpack": "^4.17.2"
   },
   "keywords": [
+    "karma",
+    "karma-plugin",
+    "karma-preprocessor",
+    "karma-webpack",
     "webpack"
   ],
   "jest": {
