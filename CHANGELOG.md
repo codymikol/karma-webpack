@@ -1,6 +1,25 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [4.0.0](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.6...v4.0.0) (2019-06-07)
+
+
+### Bug Fixes
+
+* **karma-webpack:** Regression in multi-compiler mode ([#390](https://github.com/webpack-contrib/karma-webpack/issues/390)) ([#391](https://github.com/webpack-contrib/karma-webpack/issues/391)) ([63cfd78](https://github.com/webpack-contrib/karma-webpack/commit/63cfd78))
+
+
+### chore
+
+* **default:** update ([#412](https://github.com/webpack-contrib/karma-webpack/issues/412)) ([74e526f](https://github.com/webpack-contrib/karma-webpack/commit/74e526f))
+
+
+### BREAKING CHANGES
+
+* **default:** minimum required nodejs version is 8.9
+
+
 
 <a name="4.0.0-rc.6"></a>
 # [4.0.0-rc.6](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.5...v4.0.0-rc.6) (2019-01-31)
