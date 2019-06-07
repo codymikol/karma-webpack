@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0...v4.0.1) (2019-06-07)
+
+
+### Bug Fixes
+
+* **package:** point to dist instead of lib ([#417](https://github.com/webpack-contrib/karma-webpack/issues/417)) ([c0a0d47](https://github.com/webpack-contrib/karma-webpack/commit/c0a0d47))
+
+
+
 ## [4.0.0](https://github.com/webpack-contrib/karma-webpack/compare/v4.0.0-rc.6...v4.0.0) (2019-06-07)
 
 
