@@ -58,10 +58,6 @@ jobs:
           name: Submit coverage data to codecov.
           command: bash <(curl -s https://codecov.io/bash)
           when: on_success
-  node6-latest:
-    docker:
-      - image: webpackcontrib/circleci-node6:latest
-    <<: *unit_tests
   node10-latest:
     docker:
       - image: webpackcontrib/circleci-node10:latest
@@ -105,19 +101,11 @@ jobs:
       - run:
           name: Publish to NPM
           command: printf "noop running conventional-github-releaser"
-
-version: 2.0
 workflows:
   version: 2
   validate-publish:
     jobs:
       - dependency_cache
-      - node6-latest:
-          requires:
-            - dependency_cache
-          filters:
-            tags:
-              only: /.*/
       - analysis:
           requires:
             - dependency_cache
@@ -127,21 +115,18 @@ workflows:
       - node8-latest:
           requires:
             - analysis
-            - node6-latest
           filters:
             tags:
               only: /.*/
       - node10-latest:
           requires:
             - analysis
-            - node6-latest
           filters:
             tags:
               only: /.*/
       - node8-canary:
           requires:
             - analysis
-            - node6-latest
           filters:
             tags:
               only: /.*/
