@@ -7,7 +7,7 @@
 const os = require('os');
 const path = require('path');
 
-const cloneDeep = require('clone-deep')
+const cloneDeep = require('clone-deep');
 const async = require('async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
