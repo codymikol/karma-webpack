@@ -1,10 +1,10 @@
 const sourceMap = require('source-map');
 const loaderUtils = require('loader-utils');
 
-const SourceNode = sourceMap.SourceNode;
-const SourceMapConsumer = sourceMap.SourceMapConsumer;
+const { SourceNode } = sourceMap;
+const { SourceMapConsumer } = sourceMap;
 
-module.exports = function(content, map) {
+module.exports = function mochaEnvLoader(content, map) {
   const options = Object.assign({}, loaderUtils.getOptions(this));
   const id = options.name;
   let sourceNode;

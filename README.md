@@ -27,6 +27,7 @@ npm i -D karma-webpack
 <h2 align="center">Usage</h2>
 
 **karma.conf.js**
+
 ```js
 module.exports = (config) => {
   config.set({
@@ -34,31 +35,30 @@ module.exports = (config) => {
     files: [
       // all files ending in "_test"
       { pattern: 'test/*_test.js', watched: false },
-      { pattern: 'test/**/*_test.js', watched: false }
+      { pattern: 'test/**/*_test.js', watched: false },
       // each file acts as entry point for the webpack configuration
     ],
 
     preprocessors: {
       // add webpack as preprocessor
-      'test/*_test.js': [ 'webpack' ],
-      'test/**/*_test.js': [ 'webpack' ]
+      'test/*_test.js': ['webpack'],
+      'test/**/*_test.js': ['webpack'],
     },
 
     webpack: {
       // karma watches the test entry points
       // (you don't need to specify the entry option)
       // webpack watches dependencies
-
       // webpack configuration
     },
 
     webpackMiddleware: {
       // webpack-dev-middleware configuration
       // i. e.
-      stats: 'errors-only'
-    }
-  })
-}
+      stats: 'errors-only',
+    },
+  });
+};
 ```
 
 ### `Alternative Usage`
@@ -68,6 +68,7 @@ This configuration is more performant, but you cannot run single test anymore (o
 The above configuration generates a `webpack` bundle for each test. For many test cases this can result in many big files. The alternative configuration creates a single bundle with all test cases.
 
 **karma.conf.js**
+
 ```js
 files: [
   // only specify one entry point
@@ -82,12 +83,13 @@ preprocessors: {
 ```
 
 **test/index_test.js**
+
 ```js
 // require all modules ending in "_test" from the
 // current directory and all subdirectories
-const testsContext = require.context(".", true, /_test$/)
+const testsContext = require.context('.', true, /_test$/);
 
-testsContext.keys().forEach(testsContext)
+testsContext.keys().forEach(testsContext);
 ```
 
 Every test file is required using the [require.context](https://webpack.js.org/guides/dependency-management/#require-context) and compiled with webpack into one test bundle.
@@ -103,6 +105,7 @@ npm i -D karma-sourcemap-loader
 And then add it to your preprocessors.
 
 **karma.conf.js**
+
 ```js
 preprocessors: {
   'test/test_index.js': [ 'webpack', 'sourcemap' ]
@@ -112,10 +115,11 @@ preprocessors: {
 And tell `webpack` to generate sourcemaps.
 
 **webpack.config.js**
+
 ```js
 webpack: {
   // ...
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map';
 }
 ```
 
@@ -123,11 +127,11 @@ webpack: {
 
 This is the full list of options you can specify in your `karma.conf.js`
 
-|Name|Type|Default|Description|
-|:--:|:--:|:-----:|:----------|
-|[**`webpack`**](#webpack)|`{Object}`|`{}`|Pass `webpack.config.js` to `karma`|
-|[**`webpackMiddleware`**](#webpackmiddleware)|`{Object}`|`{}`|Pass `webpack-dev-middleware` configuration to `karma`|
-|[**`beforeMiddleware`**](#beforemiddleware)|`{Object}`|`{}`|Pass custom middleware configuration to `karma`, **before** any `karma` middleware runs|
+|                     Name                      |    Type    | Default | Description                                                                             |
+| :-------------------------------------------: | :--------: | :-----: | :-------------------------------------------------------------------------------------- |
+|           [**`webpack`**](#webpack)           | `{Object}` |  `{}`   | Pass `webpack.config.js` to `karma`                                                     |
+| [**`webpackMiddleware`**](#webpackmiddleware) | `{Object}` |  `{}`   | Pass `webpack-dev-middleware` configuration to `karma`                                  |
+|  [**`beforeMiddleware`**](#beforemiddleware)  | `{Object}` |  `{}`   | Pass custom middleware configuration to `karma`, **before** any `karma` middleware runs |
 
 ### `webpack`
 
@@ -154,62 +158,15 @@ the files until the code has finished recompiling.
 
 > **⚠️ The `beforeMiddleware` option is only supported in `karma >= v1.0.0`**
 
-<h2 align="center">Maintainers</h2>
-
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/4650931?v=3&s=150">
-        </br>
-        <a href="https://github.com/MikaAK">Mika Kalathil</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/8420490?v=3&s=150">
-        <a href="https://github.com/d3viant0ne">Joshua Wiens</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150" src="https://avatars.githubusercontent.com/u/1919664?v=3&s=150">
-        <a href="https://github.com/goldhand">Will Farley</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/1307954?v=3&s=150">
-        <a href="https://github.com/DanielaValero">Daniela Valero</a>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/122108?v=3&s=150">
-        <a href="https://github.com/jon301">Jonathan Trang</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars.githubusercontent.com/u/3285723?v=3&s=150">
-        <a href="https://github.com/carlos-">Carlos Morales</a>
-      </td>
-    </tr>
-  <tbody>
-</table>
-
-
 [npm]: https://img.shields.io/npm/v/karma-webpack.svg
 [npm-url]: https://npmjs.com/package/karma-webpack
-
 [node]: https://img.shields.io/node/v/karma-webpack.svg
 [node-url]: https://nodejs.org
-
 [deps]: https://david-dm.org/webpack-contrib/karma-webpack.svg
 [deps-url]: https://david-dm.org/webpack-contrib/karma-webpack
-
 [chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
 [chat-url]: https://gitter.im/webpack/webpack
-
 [test]: http://img.shields.io/travis/webpack-contrib/karma-webpack.svg
 [test-url]: https://travis-ci.org/webpack-contrib/karma-webpack
-
 [cover]: https://codecov.io/gh/webpack-contrib/karma-webpack/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack-contrib/karma-webpack
