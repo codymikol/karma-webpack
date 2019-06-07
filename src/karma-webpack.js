@@ -1,14 +1,15 @@
 /* eslint-disable
-  max-len,
+  no-param-reassign,
   no-console,
-  func-style,
+  no-shadow,
+  func-names
 */
 
 const os = require('os');
 const path = require('path');
 
 const cloneDeep = require('clone-deep');
-const async = require('async');
+const async = require('neo-async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
 const SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
@@ -30,7 +31,7 @@ const getOutputPath = (outputPath) => {
   return null;
 };
 
-const escapeRegExp = function(str) {
+const escapeRegExp = (str) => {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 };
@@ -72,7 +73,7 @@ function Plugin(
     // Webpack 2.1.0-beta.7+ will throw in error if both entry and plugins are not specified in options
     // https://github.com/webpack/webpack/commit/b3bc5427969e15fd3663d9a1c57dbd1eb2c94805
     if (!webpackOptions.entry) {
-      webpackOptions.entry = function() {
+      webpackOptions.entry = () => {
         return {};
       };
     }
@@ -274,7 +275,7 @@ Plugin.prototype.addFile = function(entry) {
 Plugin.prototype.make = function(compilation, callback) {
   this.entries.clear();
 
-  async.forEach(
+  async.each(
     this.files.slice(),
     (file, callback) => {
       let entry = file;
@@ -316,8 +317,8 @@ Plugin.prototype.make = function(compilation, callback) {
 };
 
 Plugin.prototype.readFile = function(file, callback) {
-  const middleware = this.middleware;
-  const optionsCount = this.optionsCount;
+  const { middleware } = this;
+  const { optionsCount } = this;
   file = normalize(file);
   const doRead = function() {
     if (optionsCount > 1) {
