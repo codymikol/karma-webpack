@@ -58,7 +58,7 @@ function Plugin(
 ) {
   webpackOptions = cloneDeep(webpackOptions);
   webpackMiddlewareOptions = cloneDeep(
-    webpackMiddlewareOptions || webpackServerOptions
+    webpackMiddlewareOptions || webpackServerOptions || {}
   );
 
   const applyOptions = Array.isArray(webpackOptions)
