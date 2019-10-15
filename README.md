@@ -56,7 +56,11 @@ module.exports = (config) => {
       // webpack watches dependencies
       // webpack configuration
     },
-
+    // optional middleware that blocks tests from running until code	      
+		// recompiles	      
+		beforeMiddleware: [	    
+			'webpackBlocker',
+		],
     webpackMiddleware: {
       // webpack-dev-middleware configuration
       // i. e.
