@@ -213,6 +213,7 @@ function Plugin(
       blocked[i]();
     }
     blocked = [];
+    emitter.emit('webpack_done', applyStats);
   }
 
   function invalid() {
