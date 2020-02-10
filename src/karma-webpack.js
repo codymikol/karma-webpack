@@ -31,6 +31,17 @@ const getOutputPath = (outputPath) => {
   return null;
 };
 
+const getRelativePath = (basePath, file) => {
+  // Check if paths have different roots.
+  const parsedBasePath = path.parse(basePath);
+  const parsedFilePath = path.parse(file);
+  if (parsedBasePath.root !== parsedFilePath.root) {
+    file = basePath[0] + file.substring(1);
+  }
+
+  return path.relative(basePath, file);
+};
+
 const escapeRegExp = (str) => {
   // See details here https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
@@ -289,7 +300,7 @@ Plugin.prototype.make = function(compilation, callback) {
       const dep = new SingleEntryDependency(entry);
 
       const filename = normalize(
-        path.relative(this.basePath, file).replace(/\\/g, '/')
+        getRelativePath(this.basePath, file).replace(/\\/g, '/')
       );
       const name = path.join(
         path.dirname(filename),
@@ -398,7 +409,7 @@ function createPreprocesor(/* config.basePath */ basePath, webpackPlugin) {
       invalidate(webpackPlugin.middleware);
     }
 
-    const filename = path.relative(basePath, file.originalPath);
+    const filename = getRelativePath(basePath, file.originalPath);
     // read blocks until bundle is done
     webpackPlugin.readFile(filename, (err, content) => {
       if (err) {
