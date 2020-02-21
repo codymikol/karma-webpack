@@ -125,6 +125,9 @@ function Plugin(
   this.entries = new Map();
   this.outputs = new Map();
   this.plugin = { name: 'KarmaWebpack' };
+  this.emulateBail = applyOptions.map(
+    (webpackOptions) => webpackOptions.bail || false
+  );
 
   let compiler;
 
@@ -167,7 +170,13 @@ function Plugin(
     const assets = [];
     let noAssets = false;
 
-    applyStats.forEach((stats) => {
+    applyStats.forEach((stats, index) => {
+      if (this.emulateBail[index] && stats.hasErrors()) {
+        this.emitter.dieOnError(
+          'Errors during during webpack compilation, bailing'
+        );
+      }
+
       stats = stats.toJson();
 
       this.outputs.clear();
