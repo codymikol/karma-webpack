@@ -172,9 +172,15 @@ function Plugin(
 
     applyStats.forEach((stats, index) => {
       if (this.emulateBail[index] && stats.hasErrors()) {
-        this.emitter.dieOnError(
-          'Errors during during webpack compilation, bailing'
-        );
+        const karmaConfig = this.emitter.get('config');
+        if (karmaConfig.singleRun) {
+          this.emitter.dieOnError(
+            'Errors during during webpack compilation, bailing'
+          );
+        } else {
+          noAssets = true;
+          return;
+        }
       }
 
       stats = stats.toJson();
