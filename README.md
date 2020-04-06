@@ -124,7 +124,7 @@ And tell `webpack` to generate sourcemaps.
 ```js
 webpack: {
   // ...
-  devtool: 'inline-source-map';
+  'devtool': 'inline-source-map'
 }
 ```
 
