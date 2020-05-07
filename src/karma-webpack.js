@@ -12,7 +12,14 @@ const cloneDeep = require('clone-deep');
 const async = require('neo-async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
-const SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
+
+const isWebpack4 = webpack.version[0] === '4';
+let SingleEntryDependency;
+if (isWebpack4) {
+  SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
+} else {
+  SingleEntryDependency = require('webpack/lib/dependencies/EntryDependency');
+}
 
 let blocked = [];
 let isBlocked = false;
@@ -300,11 +307,12 @@ Plugin.prototype.make = function(compilation, callback) {
 
       compilation.addEntry('', dep, name, (err) => {
         // If the module fails because of an File not found error, remove the test file
+        const module = isWebpack4 ? dep.module : compilation.moduleGraph.getModule(dep);
         if (
-          dep.module &&
-          dep.module.error &&
-          dep.module.error.error &&
-          dep.module.error.error.code === 'ENOENT'
+          module &&
+          module.error &&
+          module.error.error &&
+          module.error.error.code === 'ENOENT'
         ) {
           this.files = this.files.filter((f) => file !== f);
           invalidate(this.middleware);
