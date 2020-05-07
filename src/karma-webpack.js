@@ -2,7 +2,8 @@
   no-param-reassign,
   no-console,
   no-shadow,
-  func-names
+  func-names,
+  import/no-dynamic-require
 */
 
 const os = require('os');
