@@ -14,12 +14,10 @@ const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
 
 const isWebpack4 = webpack.version[0] === '4';
-let SingleEntryDependency;
-if (isWebpack4) {
-  SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
-} else {
-  SingleEntryDependency = require('webpack/lib/dependencies/EntryDependency');
-}
+const dependencyPath = isWebpack4 ?
+  'webpack/lib/dependencies/SingleEntryDependency':
+  'webpack/lib/dependencies/EntryDependency';
+const SingleEntryDependency = require(dependencyPath);
 
 let blocked = [];
 let isBlocked = false;
