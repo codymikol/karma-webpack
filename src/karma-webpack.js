@@ -12,10 +12,14 @@ const cloneDeep = require('clone-deep');
 const async = require('neo-async');
 const webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
+
 const isWebpack4 = webpack.version[0] === '4';
-const SingleEntryDependency = isWebpack4 ?
-  require('webpack/lib/dependencies/SingleEntryDependency') :
-  require('webpack/lib/dependencies/EntryDependency');
+let SingleEntryDependency;
+if (isWebpack4) {
+  SingleEntryDependency = require('webpack/lib/dependencies/SingleEntryDependency');
+} else {
+  SingleEntryDependency = require('webpack/lib/dependencies/EntryDependency');
+}
 
 let blocked = [];
 let isBlocked = false;
