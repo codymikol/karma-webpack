@@ -213,6 +213,10 @@ function Plugin(
       blocked[i]();
     }
     blocked = [];
+
+    if (singleRun) {
+      this.middleware.close();
+    }
   }
 
   function invalid() {
@@ -252,7 +256,9 @@ function Plugin(
   });
 
   emitter.on('exit', (done) => {
-    middleware.close();
+    if (!singleRun) {
+      middleware.close();
+    }
     done();
   });
 }
