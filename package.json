@@ -33,7 +33,7 @@
     "lib"
   ],
   "peerDependencies": {
-    "webpack": "^4.0.0"
+    "webpack": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
     "glob": "^7.1.3",
