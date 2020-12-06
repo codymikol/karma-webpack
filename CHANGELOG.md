@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-alpha.4](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.3.0...v5.0.0-alpha.4) (2020-12-06)
+
+
+### Bug Fixes
+
+* fix compatibility issues for webpack v5 ([8d7366f](https://github.com/ryanclark/karma-webpack/commit/8d7366f3cb747a9493c9f5542b9cb0317ac32d9e)), closes [#452](https://github.com/ryanclark/karma-webpack/issues/452)
+* remove deprecation warning for `.watch()` ([4fe1f60](https://github.com/ryanclark/karma-webpack/commit/4fe1f6093fc6ff25503f1422123b2b3944a4145a))
+
 # [5.0.0-alpha.3.0](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.2...v5.0.0-alpha.3.0) (2019-03-07)
 
 
