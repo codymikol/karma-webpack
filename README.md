@@ -21,6 +21,8 @@
 
 Use webpack to preprocess files in karma.
 
+**If you're looking for webpack v5 support, please check out the `next` branch**
+
 ## Getting Started
 
 To begin, you'll need to install `karma-webpack`:
