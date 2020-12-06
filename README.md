@@ -26,6 +26,8 @@ npm i -D karma-webpack
 
 <h2 align="center">Usage</h2>
 
+**Note: it's very important that you include `webpack` as a framework, otherwise your tests will not run.**
+
 **karma.conf.js**
 ```js
 module.exports = (config) => {
@@ -34,6 +36,11 @@ module.exports = (config) => {
 
     // add webpack to your list of frameworks
     frameworks: ['mocha', 'webpack'],
+    
+    plugins: [
+      'karma-webpack',
+      'karma-mocha',
+    ],
 
     files: [
       // all files ending in ".test.js"
@@ -43,8 +50,7 @@ module.exports = (config) => {
 
     preprocessors: {
       // add webpack as preprocessor
-      'test/*_test.js': [ 'webpack' ],
-      'test/**/*_test.js': [ 'webpack' ]
+      'test/**/*.test.js': [ 'webpack' ]
     },
 
     webpack: {
@@ -150,19 +156,30 @@ webpack: {
 }
 ```
 
-<h2 align="center">Options</h2>
-
-This is the full list of options you can specify in your `karma.conf.js`
-
-|Name|Type|Default|Description|
-|:--:|:--:|:-----:|:----------|
-|[**`webpack`**](#webpack)|`{Object}`|`{}`|Pass `webpack.config.js` to `karma`|
-
-### `webpack`
-
-`webpack` configuration (`webpack.config.js`).
-
 <h2 align="center">Maintainers</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img width="150" height="150"
+        src="https://avatars0.githubusercontent.com/u/7922109?v=4&s=150">
+        <br>
+        <a href="https://github.com/ryanclark">Ryan Clark</a>
+      </td>
+      <td align="center">
+        <img width="150" height="150"
+        src="https://avatars3.githubusercontent.com/u/2045543?v=4&s=150">
+        <br>
+        <a href="https://github.com/AprilArcus">April Arcus</a>
+      </td>
+    </tr>
+  <tbody>
+</table>
+
+<h2 align="center">Previous Maintainers</h2>
+
+Previous maintainers of the `karma-webpack` plugin that have done such amazing work to get it to where it is today.
 
 <table>
   <tbody>
