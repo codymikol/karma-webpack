@@ -21,7 +21,7 @@
 <h2 align="center">Install</h2>
 
 ```bash
-npm i -D karma-webpack
+npm i -D karma-webpack@next
 ```
 
 <h2 align="center">Usage</h2>
