@@ -1,6 +1,6 @@
 {
   "name": "karma-webpack",
-  "version": "5.0.0-alpha.4",
+  "version": "5.0.0-alpha.5",
   "description": "Use webpack with karma",
   "license": "MIT",
   "repository": "webpack-contrib/karma-webpack",

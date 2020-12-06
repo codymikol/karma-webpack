@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-alpha.5](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.4...v5.0.0-alpha.5) (2020-12-06)
+
+
+### Bug Fixes
+
+* change the webpack peer dependency to webpack v5 ([2e0ca74](https://github.com/ryanclark/karma-webpack/commit/2e0ca74c75b173abd5af9f2766b62463252a83e5))
+
 # [5.0.0-alpha.4](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.3.0...v5.0.0-alpha.4) (2020-12-06)
 
 
