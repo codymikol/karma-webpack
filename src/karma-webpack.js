@@ -354,16 +354,18 @@ Plugin.prototype.readFile = function(file, callback) {
         }
       );
     } else {
+      let output = this.outputs.get(file);
+
       try {
         const fileContents = middleware.fileSystem.readFileSync(
-          path.join(os.tmpdir(), '_karma_webpack_', this.outputs.get(file))
+          path.join(os.tmpdir(), '_karma_webpack_', output)
         );
 
         callback(null, fileContents);
       } catch (e) {
         // If this is an error from `readFileSync` method, wait for the next tick.
         // Credit #69 @mewdriller
-        if (e.code === 'ENOENT') {
+        if (e.code === 'ENOENT' || !output) {
           // eslint-disable-line quotes
           this.waiting = [
             process.nextTick.bind(
