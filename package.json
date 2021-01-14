@@ -72,6 +72,7 @@
     "nsp": "^3.2.1",
     "pre-commit": "^1.2.2",
     "prettier": "^1.14.2",
+    "puppeteer": "^5.5.0",
     "standard-version": "^4.4.0",
     "webpack": "^5.10.0"
   },
