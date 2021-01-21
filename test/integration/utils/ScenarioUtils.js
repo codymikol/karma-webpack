@@ -1,26 +1,23 @@
-const { fork } = require('child_process');
-const path = require('path');
-
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-console */
 const karma = require('karma');
 
 const ScenarioUtils = { run };
 
 /**
- * This allows you to run a karma with a given configuration and list of plugins,
- * on completion you will be returned a karma results object.
- *
+ * This allows you to run karma with a given configuration and be returned.
+ * either the results of the run, or an error.
  * @param {karma.ConfigOptions} config - The base karma configuration.
- * @param {Array<String>} plugins - A list of plugins to be required
  * @returns {Promise<karma.TestResults>}
  */
-function run(config, plugins) {
+function run(config) {
   return new Promise((resolve, reject) => {
-    fork(path.resolve(`${__dirname}/KarmaWorker.js`))
-      .on('close', reject)
-      .on('error', reject)
-      .on('message', resolve)
-      .send({ config, plugins });
+    const server = new karma.Server(config, (exitCode) => {
+      if (exitCode !== 0) {
+        reject(new Error(`Karma failed with exit code: ${exitCode}`));
+      }
+    });
+    server.on('run_complete', (browsers, results) => resolve(results));
+    server.start();
   });
 }
 
