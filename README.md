@@ -55,7 +55,7 @@ module.exports = (config) => {
 
     webpack: {
       // karma watches the test entry points
-      // Do NOT specify the entry option
+      // Do NOT specify the entry or output options
       // webpack watches dependencies
 
       // webpack configuration
