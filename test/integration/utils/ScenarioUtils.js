@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const karma = require('karma');
 
 const ScenarioUtils = { run };

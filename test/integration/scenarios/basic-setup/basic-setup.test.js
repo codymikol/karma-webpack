@@ -29,7 +29,7 @@ describe('A basic karma-webpack setup', () => {
     plugins: [karmaWebpack, karmaChromeLauncher, karmaMocha, karmaChai],
     port: 2389,
     logLevel: 'ERROR',
-    singleRun: true,
+    singleRun: true
   };
 
   beforeAll((done) => {
