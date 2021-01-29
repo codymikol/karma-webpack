@@ -1,9 +1,12 @@
 /* eslint-disable prettier/prettier */
+
 import karmaChromeLauncher from 'karma-chrome-launcher';
 import karmaMocha from 'karma-mocha';
 import karmaChai from 'karma-chai';
 
 import ScenarioUtils from '../../utils/ScenarioUtils';
+
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 const path = require('path');
 
