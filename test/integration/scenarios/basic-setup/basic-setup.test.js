@@ -39,13 +39,13 @@ describe('A basic karma-webpack setup', () => {
     ScenarioUtils.run(config)
       .then((res) => {
         scenario = res;
-        done();
       })
-      .catch((err) => {
-        jest.fail('Karma run has failed with an error', err);
-        done();
-      });
+      .finally(() => done());
   }, KARMA_SERVER_TIMEOUT);
+
+  it('should have an exit code of 1 because it contains a failing test', () => {
+    expect(scenario.exitCode).toBe(1);
+  })
 
   it('should have three successful test runs', () => {
     expect(scenario.success).toBe(3);
