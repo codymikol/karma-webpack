@@ -22,7 +22,7 @@ describe('A basic karma-webpack setup', () => {
   const TEST_PATH = path.resolve(__dirname, './index.scenario.js');
 
   const config = {
-    frameworks: ['webpack', 'mocha', 'chai'],
+    frameworks: ['mocha', 'chai'],
     files: [{ pattern: TEST_PATH }],
     preprocessors: { [TEST_PATH]: ['webpack'] },
     webpack: {},
