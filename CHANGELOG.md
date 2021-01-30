@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-alpha.6](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.5...v5.0.0-alpha.6) (2021-01-30)
+
+
+### Bug Fixes
+
+* automatically fix missing webpack framework and report a warning ([ea5dc8e](https://github.com/ryanclark/karma-webpack/commit/ea5dc8ec56ac2752f76e1b1858bf1320ff2ee127))
+* fix an issue where multiple karma-webpack processes could not run in parallel ([ea3dabe](https://github.com/ryanclark/karma-webpack/commit/ea3dabe7f7cd8910b61d2bc462c40fa2a37d5feb))
+* bump hotfix dependencies ([98b3ec9](https://github.com/ryanclark/karma-webpack/commit/98b3ec9c83c336e73465459b7f02d5d1d987ba2c))
+
 # [5.0.0-alpha.5](https://github.com/webpack-contrib/karma-webpack/compare/v5.0.0-alpha.4...v5.0.0-alpha.5) (2020-12-06)
 
 
