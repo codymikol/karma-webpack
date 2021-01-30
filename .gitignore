@@ -17,3 +17,4 @@ Thumbs.db
 .vscode
 *.sublime-project
 *.sublime-workspace
+yarn.lock
