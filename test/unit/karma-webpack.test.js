@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { registerExtraWebpackFiles } = require('../lib/karma-webpack');
+const { registerExtraWebpackFiles } = require('../../lib/karma-webpack');
 
 jest.mock('fs');
 

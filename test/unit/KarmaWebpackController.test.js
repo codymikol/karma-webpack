@@ -1,7 +1,7 @@
 const {
   KarmaWebpackController,
   defaultWebpackOptions,
-} = require('../lib/KarmaWebpackController');
+} = require('../../lib/KarmaWebpackController');
 
 describe('KarmaWebpackController', () => {
   it('applies the default webpackOptions', () => {
