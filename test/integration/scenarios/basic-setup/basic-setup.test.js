@@ -40,6 +40,7 @@ describe('A basic karma-webpack setup', () => {
       .then((res) => {
         scenario = res;
       })
+      .catch((err) => console.error('Integration Scenario Failed: ', err))
       .finally(() => done());
   }, KARMA_SERVER_TIMEOUT);
 
