@@ -1,6 +1,6 @@
 const karma = require('karma');
 
-const ScenarioUtils = { run };
+const Scenario = { run };
 
 /**
  * This allows you to run karma with a given configuration and be returned.
@@ -20,4 +20,4 @@ function run(config) {
   });
 }
 
-export default ScenarioUtils;
+export default Scenario;
