@@ -20,13 +20,11 @@
 
 <h2 align="center">Install</h2>
 
-```bash
-npm i -D karma-webpack@next
-```
+npm `npm i -D karma-webpack@next`
+
+yarn `yarn add -D karma-webpack@next`
 
 <h2 align="center">Usage</h2>
-
-**Note: it's very important that you include `webpack` as a framework, otherwise your tests will not run.**
 
 **karma.conf.js**
 ```js
@@ -34,7 +32,7 @@ module.exports = (config) => {
   config.set({
     // ... normal karma configuration
 
-    // add webpack to your list of frameworks
+    // make sure to include webpack as a framework
     frameworks: ['mocha', 'webpack'],
     
     plugins: [
@@ -95,14 +93,6 @@ const defaultWebpackOptions = {
     },
   },
   plugins: [],
-  // Something like this will be auto added by this.configure()
-  // entry: {
-  //   'foo-one.test.js': 'path/to/test/foo-one.test.js',
-  //   'foo-two.test.js': 'path/to/test/foo-two.test.js',
-  // },
-  // plugins: [
-  //   new KarmaSyncPlugin()
-  // ],
 };
 ```
 
@@ -166,6 +156,12 @@ webpack: {
         src="https://avatars0.githubusercontent.com/u/7922109?v=4&s=150">
         <br>
         <a href="https://github.com/ryanclark">Ryan Clark</a>
+      </td>
+      <td>
+        <img width="150" height="150"
+             src="https://avatars.githubusercontent.com/u/13606342?s=460&u=467cf9a106d2bb474cf627ffd4e0eac80d0b4705&v=4">
+        <br>
+        <a href="http://codymikol.com">Cody Mikol</a>
       </td>
       <td align="center">
         <img width="150" height="150"
