@@ -4,7 +4,7 @@ import karmaChromeLauncher from 'karma-chrome-launcher';
 import karmaMocha from 'karma-mocha';
 import karmaChai from 'karma-chai';
 
-import ScenarioUtils from '../../utils/ScenarioUtils';
+import Scenario from '../../utils/scenario';
 
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
@@ -36,7 +36,7 @@ describe('A basic karma-webpack setup', () => {
   };
 
   beforeAll((done) => {
-    ScenarioUtils.run(config)
+    Scenario.run(config)
       .then((res) => {
         scenario = res;
       })

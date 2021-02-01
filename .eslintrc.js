@@ -1,9 +1,13 @@
 module.exports = {
   root: true,
+  globals: {
+    "jasmine": true,
+  },
   plugins: ['prettier'],
   extends: ['@webpack-contrib/eslint-config-webpack'],
   rules: {
     "consistent-return": "off",
+    "camelcase": "off",
     "no-console": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",

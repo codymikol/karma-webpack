@@ -1,6 +1,4 @@
-const {
-  ensureWebpackFrameworkSet,
-} = require('../../../lib/karma/karmaConfigValidator');
+const { ensureWebpackFrameworkSet } = require('../../../lib/karma/validation');
 
 describe('karmaConfigValidation', () => {
   describe('ensureWebpackFrameworkExists', () => {
