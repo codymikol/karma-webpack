@@ -20,9 +20,9 @@
 
 <h2 align="center">Install</h2>
 
-npm `npm i -D karma-webpack@next`
+npm `npm i -D karma-webpack`
 
-yarn `yarn add -D karma-webpack@next`
+yarn `yarn add -D karma-webpack`
 
 <h2 align="center">Usage</h2>
 
