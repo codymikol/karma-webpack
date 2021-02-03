@@ -17,12 +17,13 @@ const karmaWebpack = require('../../../../lib/index');
 const KARMA_SERVER_TIMEOUT = 30 * 1000;
 
 describe('A basic karma-webpack setup', () => {
+
   let scenario;
 
   const TEST_PATH = path.resolve(__dirname, './index.scenario.js');
 
   const config = {
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'webpack'],
     files: [{ pattern: TEST_PATH }],
     preprocessors: { [TEST_PATH]: ['webpack'] },
     webpack: {},
@@ -36,6 +37,7 @@ describe('A basic karma-webpack setup', () => {
   };
 
   beforeAll((done) => {
+    jest.spyOn(console, 'log').mockImplementation()
     Scenario.run(config)
       .then((res) => {
         scenario = res;
