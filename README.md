@@ -102,23 +102,6 @@ This project is a framework and preprocessor for Karma that combines test files 
 
 The first preproccessor triggers the build of all the bundles/chunks and all following files just return the output of this one build process.
 
-### Webpack typescript support
-
-By default karma-webpack forces *.js files so if you test *.ts files and use webpack to build typescript to javascript it works out of the box.
-
-If you have a different need you can override by settig `webpack.transformPath`
-
-```js
-// this is the by default applied transformPath
-webpack: {
-  transformPath: (filepath) => {
-      // force *.js files by default
-      const info = path.parse(filepath);
-      return `${path.join(info.dir, info.name)}.js`;
-    },
-},
-```
-
 ### `Source Maps`
 
 You can use the `karma-sourcemap-loader` to get the source maps generated for your test bundle.
