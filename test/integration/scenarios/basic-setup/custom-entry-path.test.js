@@ -39,6 +39,8 @@ describe('A basic karma-webpack setup', () => {
   };
 
   beforeAll((done) => {
+    jest.spyOn(console, 'warn').mockImplementation()
+    jest.spyOn(console, 'log').mockImplementation()
     Scenario.run(config)
       .then((res) => {
         scenario = res;
@@ -64,5 +66,13 @@ describe('A basic karma-webpack setup', () => {
   it('should complete with no errors', () => {
     expect(scenario.error).toBe(false);
   });
+
+  it('should call console.warn with the appropriate error', () => {
+    expect(console.warn).toHaveBeenCalledWith(`
+karma-webpack does not currently support custom entries, if this is something you need,
+consider opening an issue.
+ignoring attempt to set the entry option...
+      `)
+  })
 
 });

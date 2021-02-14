@@ -45,6 +45,8 @@ describe('A basic karma-webpack setup', () => {
   };
 
   beforeAll((done) => {
+    jest.spyOn(console, 'warn').mockImplementation()
+    jest.spyOn(console, 'log').mockImplementation()
     Scenario.run(config)
       .then((res) => {
         scenario = res;
