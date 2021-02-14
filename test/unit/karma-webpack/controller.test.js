@@ -1,10 +1,12 @@
+const os = require('os');
+
 const KW_Controller = require('../../../lib/karma-webpack/controller');
 const DefaultWebpackOptionsFactory = require('../../../lib/webpack/defaults');
 
 const defaultWebpackOptions = DefaultWebpackOptionsFactory.create();
 
 describe('KW_Controller', () => {
-  const EXPECTED_DEFAULT_PATH_PREFIX = '/tmp/_karma_webpack_';
+  const EXPECTED_DEFAULT_PATH_PREFIX = '/_karma_webpack_';
 
   let controller;
 
@@ -18,7 +20,7 @@ describe('KW_Controller', () => {
   it('correctly sets the default output path prefix', () => {
     expect(
       controller.webpackOptions.output.path.startsWith(
-        EXPECTED_DEFAULT_PATH_PREFIX
+        os.tmpdir() + EXPECTED_DEFAULT_PATH_PREFIX
       )
     ).toBeTruthy();
   });
