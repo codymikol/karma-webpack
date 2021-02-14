@@ -9,7 +9,7 @@
   "bugs": "https://github.com/webpack-contrib/karma-webpack/issues",
   "main": "lib",
   "engines": {
-    "node": ">= 6"
+    "node": ">= 10"
   },
   "scripts": {
     "commitlint": "commitlint",
