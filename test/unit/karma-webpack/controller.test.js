@@ -1,4 +1,5 @@
 const os = require('os');
+const { sep } = require('path');
 
 const KW_Controller = require('../../../lib/karma-webpack/controller');
 const DefaultWebpackOptionsFactory = require('../../../lib/webpack/defaults');
@@ -6,7 +7,7 @@ const DefaultWebpackOptionsFactory = require('../../../lib/webpack/defaults');
 const defaultWebpackOptions = DefaultWebpackOptionsFactory.create();
 
 describe('KW_Controller', () => {
-  const EXPECTED_DEFAULT_PATH_PREFIX = '/_karma_webpack_';
+  const EXPECTED_DEFAULT_PATH_PREFIX = `${sep}_karma_webpack_`;
 
   let controller;
 
