@@ -7,6 +7,7 @@ import karmaChai from 'karma-chai';
 import Scenario from '../../utils/scenario';
 
 const fs = require('fs');
+const os = require('os');
 
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
@@ -17,7 +18,7 @@ const karmaWebpack = require('../../../../lib/index');
 // The karma server integration tests take longer than the jest 5 sec default,
 // we will give them 30 seconds to complete.
 const KARMA_SERVER_TIMEOUT = 30 * 1000;
-const KARMA_CUSTOM_PATH = '/tmp/karma_webpack__custom_file_path';
+const KARMA_CUSTOM_PATH = path.join(os.tmpdir(), 'karma_webpack__custom_file_path');
 
 describe('A basic karma-webpack setup', () => {
   let scenario;
