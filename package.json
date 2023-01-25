@@ -78,6 +78,10 @@
     "standard-version": "^4.4.0",
     "webpack": "^5.10.0"
   },
+  "overrides": {
+    "ansi-regex": "^5.0.1",
+    "glob-parent": "^5.1.2"
+  },
   "keywords": [
     "webpack"
   ],
