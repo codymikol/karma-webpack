@@ -47,7 +47,7 @@
     "@babel/preset-env": "^7.23.2",
     "@commitlint/cli": "^7.1.1",
     "@commitlint/config-conventional": "^7.1.1",
-    "@webpack-contrib/defaults": "^2.5.0",
+    "@webpack-contrib/defaults": "^6.3.0",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^29.7.0",
     "chai": "^4.1.2",
