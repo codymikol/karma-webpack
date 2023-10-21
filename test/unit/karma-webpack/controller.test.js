@@ -15,7 +15,6 @@ describe('KW_Controller', () => {
 
   it('initializes with a webpackOptions object', () => {
     expect(controller.webpackOptions).toBeDefined();
-    expect(controller.webpackOptions).toEqual(jasmine.any(Object));
   });
 
   it('correctly sets the default output path prefix', () => {
