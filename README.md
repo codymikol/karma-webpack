@@ -143,28 +143,16 @@ webpack: {
 }
 ```
 
-<h2 align="center">Maintainers</h2>
+<h2 align="center">Current Maintainers</h2>
 
 <table>
   <tbody>
     <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars0.githubusercontent.com/u/7922109?v=4&s=150">
-        <br>
-        <a href="https://github.com/ryanclark">Ryan Clark</a>
-      </td>
       <td>
         <img width="150" height="150"
              src="https://avatars.githubusercontent.com/u/13606342?s=460&u=467cf9a106d2bb474cf627ffd4e0eac80d0b4705&v=4">
         <br>
         <a href="http://codymikol.com">Cody Mikol</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://avatars3.githubusercontent.com/u/2045543?v=4&s=150">
-        <br>
-        <a href="https://github.com/AprilArcus">April Arcus</a>
       </td>
     </tr>
   <tbody>
@@ -174,9 +162,21 @@ webpack: {
 
 Previous maintainers of the `karma-webpack` plugin that have done such amazing work to get it to where it is today.
 
-<table>
+<table class="maintainers">
   <tbody>
     <tr>
+      <td align="center">
+        <img width="150" height="150"
+        src="https://avatars0.githubusercontent.com/u/7922109?v=4&s=150">
+        <br>
+        <a href="https://github.com/ryanclark">Ryan Clark</a>
+      </td>
+      <td align="center">
+        <img width="150" height="150"
+        src="https://avatars3.githubusercontent.com/u/2045543?v=4&s=150">
+        <br>
+        <a href="https://github.com/AprilArcus">April Arcus</a>
+      </td>
       <td align="center">
         <img width="150" height="150"
         src="https://avatars.githubusercontent.com/u/4650931?v=3&s=150">
