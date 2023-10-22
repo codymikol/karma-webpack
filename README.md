@@ -1,9 +1,6 @@
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
-[![deps][deps]][deps-url]
-[![test][test]][test-url]
 [![coverage][cover]][cover-url]
-[![chat][chat]][chat-url]
 
 <div align="center">
   <a href='https://github.com/karma-runner/karma'>
@@ -222,15 +219,6 @@ Previous maintainers of the `karma-webpack` plugin that have done such amazing w
 
 [node]: https://img.shields.io/node/v/karma-webpack.svg
 [node-url]: https://nodejs.org
-
-[deps]: https://david-dm.org/webpack-contrib/karma-webpack.svg
-[deps-url]: https://david-dm.org/webpack-contrib/karma-webpack
-
-[chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
-[chat-url]: https://gitter.im/webpack/webpack
-
-[test]: http://img.shields.io/travis/webpack-contrib/karma-webpack.svg
-[test-url]: https://travis-ci.org/webpack-contrib/karma-webpack
 
 [cover]: https://codecov.io/gh/webpack-contrib/karma-webpack/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack-contrib/karma-webpack
