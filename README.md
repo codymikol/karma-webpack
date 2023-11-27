@@ -95,7 +95,7 @@ const defaultWebpackOptions = {
 
 ### How it works
 
-This project is a framework and preprocessor for Karma that combines test files and dependencies into 2 shared bundles and 1 chunk per test file. It relies on webpack to generate the bundles/chunks and to keep it updated during autoWatch=true.
+This project is a framework and preprocessor for Karma that combines test files and dependencies into 2 shared bundles and 1 chunk per test file. It relies on webpack to generate the bundles/chunks and to keep it updated during `autoWatch=true`.
 
 The first preproccessor triggers the build of all the bundles/chunks and all following files just return the output of this one build process.
 
