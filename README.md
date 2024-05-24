@@ -103,7 +103,7 @@ The first preproccessor triggers the build of all the bundles/chunks and all fol
 
 By default karma-webpack forces *.js files so if you test *.ts files and use webpack to build typescript to javascript it works out of the box.
 
-If you have a different need you can override by settig `webpack.transformPath`
+If you have a different need you can override by setting `webpack.transformPath`
 
 ```js
 // this is the by default applied transformPath
